@@ -1,0 +1,41 @@
+{
+  "name": "create-react-express-jwt-server",
+  "version": "2.1.2",
+  "description": "Mern Demo",
+  "main": "server.js",
+  "engine": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build",
+    "lint": "eslint . && cd client && npm run lint",
+    "lint:fix": "eslint --fix . && cd client && npm run lint:fix",
+    "test": "cd client && npm run test"
+  },
+  "author": "Ryan Harris, John Kaplanis, Tylor Kolbeck, Shelley Sims",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "nodemon": "^2.0.3",
+    "prettier": "^2.0.5"
+  },
+  "dependencies": {
+    "concurrently": "^5.2.0",
+    "bcrypt-nodejs": "0.0.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.3",
+    "if-env": "^1.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.13",
+    "morgan": "^1.10.0"
+  }
+}
