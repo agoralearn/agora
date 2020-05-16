@@ -8,11 +8,11 @@ import {
 
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
-import Login from './pages/Login';
+import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
-import Signup from './pages/Signup';
-import Home from './pages/ProtectedRoute';
-import Navbar from './components/Navbar';
+import Signup from './pages/Signup/Signup';
+import ProtectedRouteComp from './pages/ProtectedRoute';
+import Navbar from './components/Navbar/Navbar';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -31,7 +31,7 @@ function App() {
           <Switch>
             {/* Protecting routes - keep for reference */}
             {/* <ProtectedRoute exact path="/">
-              <Home />
+              <ProtectedRouteComp />
             </ProtectedRoute> */}
             <Route exact path='/'>
               <Login />
