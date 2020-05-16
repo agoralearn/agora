@@ -1,0 +1,11 @@
+@import "../../css/colors";
+
+.PageHeader_header-text {
+  & hr {
+    width: 80%;
+    border: 0px;
+    outline: none;
+    border: 2px solid $color-primary;
+    border-radius: 3px;
+  }
+}

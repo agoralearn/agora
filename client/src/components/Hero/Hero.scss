@@ -1,0 +1,19 @@
+@import "../../css/colors.scss";
+
+.Hero_wrapper {
+  min-height: 100vh;
+  padding: 10%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Hero_content {
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+}
