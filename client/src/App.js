@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Signup from './pages/Signup/Signup';
 import ProtectedRouteComp from './pages/ProtectedRoute';
 import Navbar from './components/Navbar/Navbar';
+import Home from './pages/Home/Home';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -27,14 +28,14 @@ function App() {
     <AuthProvider>
       <Router>
         <div>
-          <Navbar />
+          {/* <Navbar /> */}
           <Switch>
             {/* Protecting routes - keep for reference */}
             {/* <ProtectedRoute exact path="/">
               <ProtectedRouteComp />
             </ProtectedRoute> */}
             <Route exact path='/'>
-              <Login />
+              <Home />
             </Route>
             <Route exact path='/signup'>
               <Signup />
