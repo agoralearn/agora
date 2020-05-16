@@ -1,0 +1,11 @@
+@import "./colors";
+
+// Set text color to defined primary color
+.color-primary {
+  color: $color-primary;
+}
+
+// Font weight light
+.f-w-l {
+  font-weight: 300;
+}
