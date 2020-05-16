@@ -5,6 +5,16 @@ html {
   box-sizing: border-box;
   font-size: 16px;
   color: $color-gray-dark;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 *,

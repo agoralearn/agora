@@ -1,0 +1,19 @@
+@import "../../css/globals";
+
+.Navbar_wrapper {
+  position: absolute;
+  top: 0;
+  background: $color-primary;
+  height: 50px;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+.Navbar_logo {
+  display: flex;
+  align-items: center;
+}

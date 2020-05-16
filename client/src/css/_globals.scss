@@ -5,7 +5,27 @@
   color: $color-primary;
 }
 
+.color-white {
+  color: $color-white;
+}
+
 // Font weight light
 .f-w-l {
   font-weight: 300;
+}
+
+.u-m-r {
+  margin-right: 16px;
+}
+
+.u-m-l {
+  margin-left: 16px;
+}
+
+.u-m-r-sm {
+  margin-right: 8px;
+}
+
+.u-m-l-sm {
+  margin-left: 8px;
 }

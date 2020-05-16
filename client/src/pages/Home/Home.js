@@ -1,10 +1,11 @@
 import React from 'react';
+import './Home.scss';
 import Hero from '../../components/Hero/Hero';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
 export default function Home() {
   return (
-    <div>
+    <div className='Home_wrapper'>
       {/* Hero Component */}
       <Hero>
         <Hero.Content>
