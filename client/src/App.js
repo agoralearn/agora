@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 import {
   Route,
   BrowserRouter as Router,
   Switch,
-  Redirect,
-} from "react-router-dom";
+  Redirect
+} from 'react-router-dom';
 
 // Our Components
-import { AuthProvider, useAuth } from "./utils/auth";
-import Login from "./pages/Login";
-import Profile from "./pages/Profile";
-import Signup from "./pages/Signup";
-import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
+import { AuthProvider, useAuth } from './utils/auth';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
+import Signup from './pages/Signup';
+import Home from './pages/Protected Route';
+import Navbar from './components/Navbar';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
   if (isLoggedIn) {
     return children;
   }
-  return <Redirect to="/signup" />;
+  return <Redirect to='/signup' />;
 }
 
 function App() {
@@ -29,16 +29,17 @@ function App() {
         <div>
           <Navbar />
           <Switch>
-            <ProtectedRoute exact path="/">
+            {/* Protecting routes - keep for reference */}
+            {/* <ProtectedRoute exact path="/">
               <Home />
-            </ProtectedRoute>
-            <Route exact path="/login">
+            </ProtectedRoute> */}
+            <Route exact path='/'>
               <Login />
             </Route>
-            <Route exact path="/signup">
+            <Route exact path='/signup'>
               <Signup />
             </Route>
-            <ProtectedRoute exact path="/profile">
+            <ProtectedRoute exact path='/profile'>
               <Profile />
             </ProtectedRoute>
           </Switch>
