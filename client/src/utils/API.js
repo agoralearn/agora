@@ -10,5 +10,8 @@ export default {
   },
   getTutors: (filters) => {
     return axios.get('/api/tutors', { params: filters });
+  },
+  getTutorsById: (id) => {
+    return axios.get('/api/tutors/' + id);
   }
 };

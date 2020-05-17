@@ -1,15 +1,15 @@
 const db = require('../models');
 
-function signUpUser(req, res) {
-  db.User.create(req.body)
-    .then((response) => {
-      res.json(response);
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
-}
-
 module.exports = {
-  signUpUser
+  getUserById: function (req, res) {
+    db.User.findById(req.params.id)
+      .then((data) => {
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).send({ success: false, message: 'No user found' });
+        }
+      })
+      .catch((err) => res.status(400).send(err));
+  }
 };
