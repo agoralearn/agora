@@ -25,7 +25,71 @@ const UserSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  bio: {
+    type: String
+  },
+  subjects: {
+    type: [String]
+  },
+  groupSize: {
+    type: [Num]
+  },
+  timeFrame: {
+    type: [String]
+  },
+  age: {
+    type: [String]
+  },
+  education: {
+    type: [String]
+  },
+  rating: {
+    type: Num
+  },
+  role: {
+    type: String
+  },
+  price: {
+    type: Num
+  },
+  favorites: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  sessionsCompleted: {
+    type: Num
+  },
+  chats: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Chat'
+    }
+  ],
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review'
+    }
+  ],
+  tutorSessions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Session'
+    }
+  ]
 });
 
 // Execute before each user.save() call
