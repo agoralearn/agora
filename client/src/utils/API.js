@@ -13,5 +13,8 @@ export default {
       firstname: firstname,
       lastname: lastname
     });
+  },
+  getTutors: (filters) => {
+    return axios.get('/api/tutors', { params: filters });
   }
 };
