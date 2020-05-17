@@ -18,7 +18,7 @@ router.get('/api/user/:id', isAuthenticated, (req, res) => {
 });
 
 router.post('/api/student', (req, res) => {
-  db.User.create(req.body)
+  db.Student.create(req.body)
     .then((response) => {
       res.json(response);
     })
