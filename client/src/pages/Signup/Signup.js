@@ -42,17 +42,6 @@ function Signup() {
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
         <div className='form-group'>
-          <label htmlFor='username'>Username:</label>
-          <input
-            className='form-control'
-            placeholder='Username goes here...'
-            name='username'
-            type='text'
-            id='username'
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
           <label htmlFor='email'>Email address:</label>
           <input
             className='form-control'
@@ -71,6 +60,17 @@ function Signup() {
             name='password'
             type='password'
             id='pwd'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='firstname'>First Name:</label>
+          <input
+            className='form-control'
+            placeholder='firstname goes here...'
+            name='firstname'
+            type='text'
+            id='firstname'
             onChange={handleChange}
           />
         </div>
