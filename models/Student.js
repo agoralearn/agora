@@ -31,8 +31,12 @@ const StudentSchema = new Schema({
     required: true,
     trim: true
   },
+  image: {
+    type: String
+  },
   age: {
-    type: [String]
+    type: [String],
+    required: true
   },
   education: {
     type: String
@@ -48,7 +52,7 @@ const StudentSchema = new Schema({
     }
   ],
   sessionsCompleted: {
-    type: Num
+    type: Number
   },
   chats: [
     {

@@ -31,14 +31,20 @@ const TutorSchema = new Schema({
     required: true,
     trim: true
   },
+  image: {
+    type: String
+  },
   bio: {
     type: String
   },
   subjects: {
     type: [String]
   },
-  groupSize: {
-    type: [Num]
+  minGroupSize: {
+    type: Number
+  },
+  maxGroupSize: {
+    type: Number
   },
   timeFrame: {
     type: [String]
@@ -50,17 +56,14 @@ const TutorSchema = new Schema({
     type: [String]
   },
   rating: {
-    type: Num
+    type: Number
   },
   role: {
     type: String,
     defaultValue: 'tutor'
   },
   price: {
-    type: Num
-  },
-  sessionsCompleted: {
-    type: Num
+    type: Number
   },
   chats: [
     {
@@ -85,7 +88,8 @@ const TutorSchema = new Schema({
 // Execute before each user.save() call
 TutorSchema.pre('save', function (callback) {
   const user = this;
-
+  // user.createdAt = new Date(Date.now());
+  console.log('test hash');
   // Break out if the password hasn't changed
   if (!user.isModified('password')) {
     return callback();
