@@ -1,6 +1,5 @@
 module.exports = {
-  Tutor: require('./Tutor'),
-  Student: require('./Student'),
+  User: require('./User'),
   Chat: require('./Chat'),
   Message: require('./Message'),
   Review: require('./Review'),
