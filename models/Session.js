@@ -12,8 +12,9 @@ const SessionSchema = new Schema({
     ref: 'User',
     required: true
   },
-  date: {
-    type: Date
+  createdAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
