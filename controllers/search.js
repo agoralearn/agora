@@ -13,6 +13,13 @@ function getTutors(req, res) {
     });
 }
 
+function getTutorById(req, res) {
+  db.User.findById(req.params.id)
+    .then((dbModel) => res.json(dbModel))
+    .catch((err) => res.status(422).json(err));
+}
+
 module.exports = {
-  getTutors
+  getTutors,
+  getTutorById
 };
