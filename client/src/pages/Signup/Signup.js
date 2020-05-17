@@ -4,17 +4,14 @@ import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 
 function Signup() {
-  const [formState, setFormState] = useState(
-    {
-      firstname: '',
-      lastname: '',
-      email: '',
-      password: '',
-      lastname: '',
-      age: ''
-    },
-    [formState]
-  );
+  const [formState, setFormState] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+    age: '',
+    role: 'student'
+  });
 
   const { isLoggedIn } = useAuth();
 
@@ -43,6 +40,7 @@ function Signup() {
   };
 
   const handleChange = (event) => {
+    console.log(event.target.name);
     const { name, value } = event.target;
     setFormState({
       ...formState,
@@ -51,16 +49,21 @@ function Signup() {
   };
 
   return (
-    <div className='container'>
+    <div className='container' style={{ marginTop: '100px' }}>
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
         {/* student or tutor selection */}
-        <label for='role'>I am signing up as a:</label>
-        <select id='role'>
-          <option name='role' value='student' onChange={handleChange}>
+        <label htmlFor='role'>I am signing up as a:</label>
+        <select
+          id='role'
+          name='role'
+          defaultValue={formState.role}
+          onChange={handleChange}
+        >
+          <option name='role' value='student'>
             Student
           </option>
-          <option name='role' value='tutor' onChange={handleChange}>
+          <option name='role' value='tutor'>
             Tutor
           </option>
         </select>
@@ -119,9 +122,10 @@ function Signup() {
             onChange={handleChange}
           />
         </div>
-        <button type='submit' className='btn btn-primary'>
+        {formState.role === 'tutor' ? <p>TUTOR</p> : null}
+        {/* <button type='submit' className='btn btn-primary'>
           Submit
-        </button>
+        </button> */}
       </form>
       <p>
         <Link to='/login'>Go to Login</Link>
