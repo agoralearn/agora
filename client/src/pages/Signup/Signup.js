@@ -20,7 +20,7 @@ function Signup() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    API.signUpStudent(
+    API.signUpUser(
       formState.email,
       formState.password,
       formState.age,
