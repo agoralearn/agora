@@ -28,9 +28,9 @@ function Signup() {
       formState.lastname
     )
       .then((res) => {
-        // once the user has signed up
-        // send them to the login page
-        history.replace('/login');
+        // once the student has signed up
+        // send them to the tutor search page
+        history.replace('/tutors');
       })
       .catch((err) => alert(err));
   };
@@ -47,6 +47,20 @@ function Signup() {
     <div className='container'>
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
+        {/* student or tutor checkbox */}
+        <div>
+          <input
+            type='checkbox'
+            id='student'
+            name='role'
+            defaultValue='student'
+          />
+          <label htmlFor='role'> I am signing up as as student</label>
+          <br />
+          <input type='checkbox' id='tutor' name='role' defaultValue='tutor' />
+          <label htmlFor='role'> I am signing up as as tutor</label>
+        </div>
+
         <div className='form-group'>
           <label htmlFor='email'>Email address:</label>
           <input
