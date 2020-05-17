@@ -138,7 +138,7 @@ const tutorSeed = [
     firstName: 'Carmen',
     lastName: 'Wells',
     bio:
-      "Hola, I'm Carmen from Havana, Cuba. I have taught Spanish in middle and high school for 20 years. I am recently retired and flexible for a day or evening sessions.",
+      'Hola, I am Carmen from Havana, Cuba. I have taught Spanish in middle and high school for 20 years. I am recently retired and flexible for a day or evening sessions.',
     image: 'https://randomuser.me/api/portraits/women/4.jpg',
     subjects: ['spanish'],
     minGroupSize: 1,
