@@ -1,3 +1,17 @@
 .Home_wrapper {
   height: 100%;
 }
+
+.Home_Hero-btns {
+}
+
+.Home_Hero-btns button {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+
+.Home_Hero-btns button:last-of-type {
+  margin-bottom: 20px;
+}
