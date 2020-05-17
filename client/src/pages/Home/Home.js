@@ -17,25 +17,8 @@ export default function Home() {
       {/* Hero Component */}
       <Hero>
         <Hero.Content>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              marginBottom: '100px',
-              height: '100%'
-            }}
-          >
-            <h1
-              className='color-white'
-              style={{
-                textAlign: 'left',
-                lineHeight: '49px',
-                fontWeight: '900',
-                letterSpacing: '2px',
-                fontSize: '48px'
-              }}
-            >
+          <div className='Hero_content-text'>
+            <h1 className='Hero_content-text-lg color-white'>
               A New Way to Learn
             </h1>
             <div>
@@ -69,15 +52,15 @@ export default function Home() {
           <h2>How It Works</h2>
         </PageHeader>
         <h4 className='u-m text-center'>Search For A Tutor</h4>
-        <div style={{ textAlign: 'center' }}>
+        <div className='text-center'>
           <SearchIcon />
         </div>
         <h4 className='u-m text-center'>Request A Session</h4>
-        <div style={{ textAlign: 'center' }}>
+        <div className='text-center'>
           <RequestIcon />
         </div>
         <h4 className='u-m text-center'>Virtually Meet Your Tutor</h4>
-        <div style={{ textAlign: 'center' }}>
+        <div className='text-center'>
           <MeetIcon />
         </div>
       </Section>

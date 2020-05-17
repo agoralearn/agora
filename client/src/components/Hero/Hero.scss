@@ -7,10 +7,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  // display: flex;
   padding-top: 100px;
-  // align-items: center;
-  // justify-content: center;
 }
 
 .Hero_content {
@@ -20,4 +17,20 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+}
+
+.Hero_content-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
+  height: 100%;
+}
+
+.Hero_content-text-lg {
+  text-align: left;
+  line-height: 49px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 48px;
 }
