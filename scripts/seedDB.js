@@ -15,9 +15,7 @@ mongoose
   .then(() => console.log('MongoDB Connected!'))
   .catch((err) => console.error(err));
 
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/agoraDB');
-
-const tutorSeed = [
+const userSeed = [
   {
     email: 'courtney@mail.com',
     password: 'test',
@@ -152,17 +150,14 @@ const tutorSeed = [
     chats: [],
     reviews: [],
     tutorSessions: []
-  }
-];
-
-const studentSeed = [
+  },
   {
     email: 'ollie@mail.com',
     password: 'test',
     firstName: 'Ollie',
     lastName: 'Rice',
     age: 13,
-    education: 'middle',
+    education: ['middle'],
     role: 'student',
     favorites: [],
     sessionsCompleted: 2,
@@ -175,7 +170,7 @@ const studentSeed = [
     firstName: 'Norma',
     lastName: 'Moody',
     age: 17,
-    education: 'high',
+    education: ['high'],
     role: 'student',
     favorites: [],
     sessionsCompleted: 3,
@@ -188,7 +183,7 @@ const studentSeed = [
     firstName: 'David',
     lastName: 'Morrison',
     age: 15,
-    education: 'high',
+    education: ['high'],
     role: 'student',
     favorites: [],
     sessionsCompleted: 6,
@@ -201,7 +196,7 @@ const studentSeed = [
     firstName: 'Jeannie',
     lastName: 'Watts',
     age: 20,
-    education: 'undergraduate',
+    education: ['undergraduate'],
     role: 'student',
     favorites: [],
     sessionsCompleted: 1,
@@ -210,19 +205,8 @@ const studentSeed = [
   }
 ];
 
-db.Tutor.deleteMany({})
-  .then(() => db.Tutor.insertMany(tutorSeed))
-  .then((data) => {
-    console.log(data.length + ' records inserted!');
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
-
-db.Student.deleteMany({})
-  .then(() => db.Student.insertMany(studentSeed))
+db.User.deleteMany({})
+  .then(() => db.User.insertMany(userSeed))
   .then((data) => {
     console.log(data.length + ' records inserted!');
     process.exit(0);

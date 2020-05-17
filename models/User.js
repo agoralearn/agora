@@ -31,20 +31,26 @@ const UserSchema = new Schema({
     required: true,
     trim: true
   },
+  image: {
+    type: String
+  },
   bio: {
     type: String
   },
   subjects: {
     type: [String]
   },
-  groupSize: {
-    type: [Number]
+  minGroupSize: {
+    type: Number
+  },
+  maxGroupSize: {
+    type: Number
   },
   timeFrame: {
     type: [String]
   },
   age: {
-    type: [String]
+    type: Number
   },
   education: {
     type: [String]
@@ -64,9 +70,6 @@ const UserSchema = new Schema({
       ref: 'User'
     }
   ],
-  sessionsCompleted: {
-    type: Number
-  },
   chats: [
     {
       type: Schema.Types.ObjectId,
