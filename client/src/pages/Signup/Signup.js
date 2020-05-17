@@ -4,11 +4,17 @@ import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 
 function Signup() {
-  const [formState, setFormState] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+  const [formState, setFormState] = useState(
+    {
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      lastname: '',
+      age: ''
+    },
+    [formState]
+  );
 
   const { isLoggedIn } = useAuth();
 
@@ -25,7 +31,8 @@ function Signup() {
       formState.password,
       formState.age,
       formState.firstname,
-      formState.lastname
+      formState.lastname,
+      formState.role
     )
       .then((res) => {
         // once the student has signed up
@@ -47,20 +54,16 @@ function Signup() {
     <div className='container'>
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
-        {/* student or tutor checkbox */}
-        <div>
-          <input
-            type='checkbox'
-            id='student'
-            name='role'
-            defaultValue='student'
-          />
-          <label htmlFor='role'> I am signing up as as student</label>
-          <br />
-          <input type='checkbox' id='tutor' name='role' defaultValue='tutor' />
-          <label htmlFor='role'> I am signing up as as tutor</label>
-        </div>
-
+        {/* student or tutor selection */}
+        <label for='role'>I am signing up as a:</label>
+        <select id='role'>
+          <option name='role' value='student' onChange={handleChange}>
+            Student
+          </option>
+          <option name='role' value='tutor' onChange={handleChange}>
+            Tutor
+          </option>
+        </select>
         <div className='form-group'>
           <label htmlFor='email'>Email address:</label>
           <input
