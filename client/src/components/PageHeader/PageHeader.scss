@@ -1,7 +1,16 @@
 @import "../../css/colors";
 
+.PageHeader_wrapper {
+  text-align: center;
+  margin: 30px auto;
+}
+
 .PageHeader_header-text {
+  position: relative;
+  display: inline-block;
+
   & hr {
+    position: relative;
     width: 80%;
     border: 0px;
     outline: none;

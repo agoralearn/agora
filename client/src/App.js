@@ -14,6 +14,7 @@ import Signup from './pages/Signup/Signup';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
 // import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
+import NavBar from './components/Navbar/Navbar';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -27,7 +28,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
+        <NavBar />
         <Switch>
           {/* Protecting routes - keep for reference */}
           {/* <ProtectedRoute exact path="/">
