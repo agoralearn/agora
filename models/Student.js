@@ -2,67 +2,69 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
-const StudentSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    index: {
-      unique: true
-    }
+const StudentSchema = new Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      index: {
+        unique: true
+      }
+    },
+    password: {
+      type: String,
+      required: true
+    },
+    createdAt: {
+      type: Number
+    },
+    firstName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    lastName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    age: {
+      type: [String]
+    },
+    education: {
+      type: String
+    },
+    role: {
+      type: String,
+      defaultValue: 'student'
+    },
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      }
+    ],
+    sessionsCompleted: {
+      type: Number
+    },
+    chats: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Chat'
+      }
+    ],
+    tutorSessions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Session'
+      }
+    ]
   },
-  password: {
-    type: String,
-    required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  firstName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  lastName: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  age: {
-    type: [String]
-  },
-  education: {
-    type: String
-  },
-  role: {
-    type: String,
-    defaultValue: 'student'
-  },
-  favorites: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
-  sessionsCompleted: {
-    type: Num
-  },
-  chats: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Chat'
-    }
-  ],
-  tutorSessions: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Session'
-    }
-  ]
-});
+  { timestamps: true }
+);
 
 // Execute before each user.save() call
 StudentSchema.pre('save', function (callback) {
