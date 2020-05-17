@@ -4,7 +4,7 @@ function getTutors(req, res) {
   // const searchParameters = req.query;
 
   // need to destructure search parameters and pass them into find somehow
-  db.Tutor.find()
+  db.User.find({ role: 'Tutor' })
     .then((data) => {
       res.json(data);
     })
