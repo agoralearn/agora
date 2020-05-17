@@ -1,7 +1,8 @@
 import React from 'react';
+import './Button.scss';
 
-export default function Button() {
-  return <button className='btn'></button>;
+export default function Button({ children, className }) {
+  return <button className={`btn ${className}`}>{children}</button>;
 }
 
 Button.Link = function ({ children, className }) {

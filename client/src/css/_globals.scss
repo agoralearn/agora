@@ -5,8 +5,16 @@
   color: $color-primary;
 }
 
+.color-secondary {
+  color: $color-secondary;
+}
+
 .color-white {
   color: $color-white;
+}
+
+.color-dark {
+  color: $color-gray-dark;
 }
 
 // Font weight light
@@ -37,6 +45,14 @@
 // Margin left 8px
 .u-m-l-sm {
   margin-left: 8px;
+}
+
+.u-m-b {
+  margin-bottom: 16px;
+}
+
+.u-m-t {
+  margin-top: 16px;
 }
 
 // Center align text

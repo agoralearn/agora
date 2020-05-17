@@ -1,6 +1,6 @@
 import React from 'react';
 import './Hero.scss';
-import backgroundImage from '../../Assets/images/agora-hero.png';
+import backgroundImage from '../../Assets/images/agora-hero4.png';
 
 function Hero({ heroImage, children }) {
   return (

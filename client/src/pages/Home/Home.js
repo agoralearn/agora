@@ -3,6 +3,8 @@ import './Home.scss';
 import Hero from '../../components/Hero/Hero';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
+import Button from '../../components/Button/Button';
+
 import {
   SearchIcon,
   MeetIcon,
@@ -15,14 +17,49 @@ export default function Home() {
       {/* Hero Component */}
       <Hero>
         <Hero.Content>
-          <PageHeader>
-            <h1 className='color-primary'>A New Way To Learn</h1>
-          </PageHeader>
-          <p className='color-primary f-w-l'>
-            Receive one on one tutoring or find a tutor for your group from our
-            many talented tutors
-          </p>
-          <h3 className='color-primary u-m'>Sign Up As A...</h3>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              marginBottom: '100px',
+              height: '100%'
+            }}
+          >
+            <h1
+              className='color-white'
+              style={{
+                textAlign: 'left',
+                lineHeight: '49px',
+                fontWeight: '900',
+                letterSpacing: '2px',
+                fontSize: '48px'
+              }}
+            >
+              A New Way to Learn
+            </h1>
+            <div>
+              <hr></hr>
+            </div>
+
+            <p className='color-white f-w-b'>
+              Receive one on one tutoring or find a tutor for your group from
+              our many talented tutors
+            </p>
+          </div>
+
+          <div>
+            <h3 className='color-white u-m-t'>Sign Up As A...</h3>
+            <div>
+              <div className='Home_Hero-btns'>
+                <Button className='btn btn-secondary'>TUTOR</Button>
+                <Button className='btn btn-secondary'>STUDENT</Button>
+              </div>
+            </div>
+            <Button.Link className='color-white'>
+              <span className='color-secondary'>Browse </span>All Tutors
+            </Button.Link>
+          </div>
         </Hero.Content>
       </Hero>
 
