@@ -6,7 +6,7 @@ export default {
   },
   // sign up a user to our service
   signUpStudent: (firstname, lastname, email, password) => {
-    return axios.post('api/user/student', {
+    return axios.post('api/student', {
       firstname: firstname,
       lastname: lastname,
       email: email,

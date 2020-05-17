@@ -17,7 +17,7 @@ router.get('/api/user/:id', isAuthenticated, (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
-router.post('/api/user/student', (req, res) => {
+router.post('/api/student', (req, res) => {
   db.User.create(req.body)
     .then((response) => {
       res.json(response);
