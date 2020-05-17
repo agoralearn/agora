@@ -1,11 +1,11 @@
-const db = require("../models");
-const jwt = require("jsonwebtoken");
+const db = require('../models');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   logUserIn: function (email, password) {
     return new Promise((resolve, reject) => {
       db.User.findOne({
-        email: email,
+        email: email
       })
         .then((user) => {
           user.verifyPassword(password, (err, isMatch) => {
@@ -17,21 +17,21 @@ module.exports = {
               ); // Sigining the token
               resolve({
                 success: true,
-                message: "Token Issued!",
+                message: 'Token Issued!',
                 token: token,
-                user: user,
+                user: user
               });
             } else {
               reject({
                 success: false,
-                message: "Authentication failed. Wrong password.",
+                message: 'Authentication failed. Wrong password.'
               });
             }
           });
         })
         .catch((err) =>
-          reject({ success: false, message: "User not found", error: err })
+          reject({ success: false, message: 'User not found', error: err })
         );
     });
-  },
+  }
 };

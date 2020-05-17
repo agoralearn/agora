@@ -8,11 +8,11 @@ import {
 
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
-import Login from './pages/Login/Login';
+// import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup/Signup';
-import ProtectedRouteComp from './pages/ProtectedRoute';
-import Navbar from './components/Navbar/Navbar';
+// import ProtectedRouteComp from './pages/ProtectedRoute';
+// import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 
 function ProtectedRoute({ children, ...rest }) {
