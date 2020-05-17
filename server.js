@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
+// app.use("/api/user", userRouter)
+// app.use("/api/tutor", tutorRouter)
+// app.use("/api/chat", chatRouter)
+
 app.use(authRouter, usersRouter, errorMiddleware);
 
 // Send all other requests to react app

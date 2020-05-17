@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
-const UserSchema = new Schema({
+const TutorSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -53,17 +53,12 @@ const UserSchema = new Schema({
     type: Num
   },
   role: {
-    type: String
+    type: String,
+    defaultValue: 'tutor'
   },
   price: {
     type: Num
   },
-  favorites: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  ],
   sessionsCompleted: {
     type: Num
   },
@@ -88,7 +83,7 @@ const UserSchema = new Schema({
 });
 
 // Execute before each user.save() call
-UserSchema.pre('save', function (callback) {
+TutorSchema.pre('save', function (callback) {
   const user = this;
 
   // Break out if the password hasn't changed
@@ -112,7 +107,7 @@ UserSchema.pre('save', function (callback) {
   });
 });
 
-UserSchema.methods.verifyPassword = function (password, cb) {
+TutorSchema.methods.verifyPassword = function (password, cb) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
       return cb(err);
@@ -121,6 +116,6 @@ UserSchema.methods.verifyPassword = function (password, cb) {
   });
 };
 
-const User = mongoose.model('User', UserSchema);
+const Tutor = mongoose.model('Tutor', TutorSchema);
 
-module.exports = User;
+module.exports = Tutor;

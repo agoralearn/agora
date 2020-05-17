@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
-const UserSchema = new Schema({
+const StudentSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -31,32 +31,15 @@ const UserSchema = new Schema({
     required: true,
     trim: true
   },
-  bio: {
-    type: String
-  },
-  subjects: {
-    type: [String]
-  },
-  groupSize: {
-    type: [Num]
-  },
-  timeFrame: {
-    type: [String]
-  },
   age: {
     type: [String]
   },
   education: {
-    type: [String]
-  },
-  rating: {
-    type: Num
-  },
-  role: {
     type: String
   },
-  price: {
-    type: Num
+  role: {
+    type: String,
+    defaultValue: 'student'
   },
   favorites: [
     {
@@ -73,12 +56,6 @@ const UserSchema = new Schema({
       ref: 'Chat'
     }
   ],
-  reviews: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Review'
-    }
-  ],
   tutorSessions: [
     {
       type: Schema.Types.ObjectId,
@@ -88,7 +65,7 @@ const UserSchema = new Schema({
 });
 
 // Execute before each user.save() call
-UserSchema.pre('save', function (callback) {
+StudentSchema.pre('save', function (callback) {
   const user = this;
 
   // Break out if the password hasn't changed
@@ -112,7 +89,7 @@ UserSchema.pre('save', function (callback) {
   });
 });
 
-UserSchema.methods.verifyPassword = function (password, cb) {
+StudentSchema.methods.verifyPassword = function (password, cb) {
   bcrypt.compare(password, this.password, (err, isMatch) => {
     if (err) {
       return cb(err);
@@ -121,6 +98,6 @@ UserSchema.methods.verifyPassword = function (password, cb) {
   });
 };
 
-const User = mongoose.model('User', UserSchema);
+const Student = mongoose.model('Student', StudentSchema);
 
-module.exports = User;
+module.exports = Student;
