@@ -1,0 +1,23 @@
+.TutorCard_wrapper {
+  // background: dodgerblue;
+  border-radius: 6px;
+  padding: 10px;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 3fr;
+
+  & h2 {
+    font-weight: 600;
+  }
+}
+
+.TutorCard_content > div {
+  margin-bottom: 10px;
+}
+
+.TutorCard_badges-subjects {
+  & span {
+    margin-right: 6px;
+  }
+}
