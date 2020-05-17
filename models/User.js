@@ -38,7 +38,7 @@ const UserSchema = new Schema({
     type: [String]
   },
   groupSize: {
-    type: [Num]
+    type: [Number]
   },
   timeFrame: {
     type: [String]
