@@ -3,6 +3,7 @@ import './Home.scss';
 import Hero from '../../components/Hero/Hero';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
+import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
 
 import {
@@ -71,16 +72,7 @@ export default function Home() {
           <h2>Top Rated Tutors</h2>
         </PageHeader>
         <div>
-          <p>Tutor Card</p>
-        </div>
-        <div>
-          <p>Tutor Card</p>
-        </div>
-        <div>
-          <p>Tutor Card</p>
-        </div>
-        <div>
-          <p>Tutor Card</p>
+          <TutorCard />
         </div>
       </Section>
     </div>
