@@ -5,7 +5,11 @@ export default {
     return axios.get(`/api/user/${id}`);
   },
   // sign up a user to our service
-  signUpUser: (username, email, password) => {
-    return axios.post('api/signup', {username: username, email: email, password: password});
+  signUpStudent: (username, email, password) => {
+    return axios.post('api/user/student', {
+      username: username,
+      email: email,
+      password: password
+    });
   }
 };
