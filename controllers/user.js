@@ -1,6 +1,6 @@
 const db = require('../models');
 
-function signUpUser() {
+function signUpUser(req, res) {
   db.User.create(req.body)
     .then((response) => {
       res.json(response);
