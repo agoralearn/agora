@@ -10,7 +10,9 @@ function Signup() {
     email: '',
     password: '',
     age: '',
-    role: 'student'
+    role: 'student',
+    minGroupSize: '',
+    maxGroupSize: ''
   });
 
   const { isLoggedIn } = useAuth();
@@ -29,7 +31,9 @@ function Signup() {
       formState.age,
       formState.firstname,
       formState.lastname,
-      formState.role
+      formState.role,
+      formState.minGroupSize,
+      formState.maxGroupSize
     )
       .then((res) => {
         // once the student has signed up
@@ -89,17 +93,7 @@ function Signup() {
             onChange={handleChange}
           />
         </div>
-        <div className='form-group'>
-          <label htmlFor='age'>Age:</label>
-          <input
-            className='form-control'
-            placeholder='Age goes here...'
-            name='age'
-            type='age'
-            id='age'
-            onChange={handleChange}
-          />
-        </div>
+
         <div className='form-group'>
           <label htmlFor='firstname'>First Name:</label>
           <input
@@ -122,7 +116,44 @@ function Signup() {
             onChange={handleChange}
           />
         </div>
-        {formState.role === 'tutor' ? <p>TUTOR</p> : null}
+        {formState.role === 'student' ? (
+          <div className='form-group'>
+            <label htmlFor='age'>Age:</label>
+            <input
+              className='form-control'
+              placeholder='Age goes here...'
+              name='age'
+              type='age'
+              id='age'
+              onChange={handleChange}
+            />
+          </div>
+        ) : (
+          <>
+            <div className='form-group'>
+              <label htmlFor='minGroupSize'>Minimum Group Size:</label>
+              <input
+                className='form-control'
+                placeholder='please enter a min number of students...'
+                name='minGroupSize'
+                type='minGroupSize'
+                id='minGroupSize'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='maxGroupSize'>Maximum Group Size:</label>
+              <input
+                className='form-control'
+                placeholder='please enter a max number of students...'
+                name='maxGroupSize'
+                type='maxGroupSize'
+                id='maxGroupSize'
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
         {/* <button type='submit' className='btn btn-primary'>
           Submit
         </button> */}
