@@ -50,13 +50,13 @@ const UserSchema = new Schema({
     type: [String]
   },
   rating: {
-    type: Num
+    type: Number
   },
   role: {
     type: String
   },
   price: {
-    type: Num
+    type: Number
   },
   favorites: [
     {
@@ -65,7 +65,7 @@ const UserSchema = new Schema({
     }
   ],
   sessionsCompleted: {
-    type: Num
+    type: Number
   },
   chats: [
     {

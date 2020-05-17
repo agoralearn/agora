@@ -2,19 +2,35 @@
 
 .Hero_wrapper {
   height: 100%;
-  padding: 10%;
+  padding: 20px;
   background-position: left;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding-top: 100px;
 }
 
 .Hero_content {
   border-radius: 10px;
   padding: 10px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.Hero_content-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 100px;
+  height: 100%;
+}
+
+.Hero_content-text-lg {
+  text-align: left;
+  line-height: 49px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 48px;
 }
