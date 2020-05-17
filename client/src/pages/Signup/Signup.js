@@ -21,10 +21,11 @@ function Signup() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
     API.signUpStudent(
-      formState.firstname,
-      formState.lastname,
       formState.email,
-      formState.password
+      formState.password,
+      formState.age,
+      formState.firstname,
+      formState.lastname
     )
       .then((res) => {
         // once the user has signed up
@@ -65,6 +66,17 @@ function Signup() {
             name='password'
             type='password'
             id='pwd'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='age'>Age:</label>
+          <input
+            className='form-control'
+            placeholder='Age goes here...'
+            name='age'
+            type='age'
+            id='age'
             onChange={handleChange}
           />
         </div>

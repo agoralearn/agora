@@ -7,10 +7,11 @@ export default {
   // sign up a user to our service
   signUpStudent: (firstname, lastname, email, password) => {
     return axios.post('api/student', {
-      firstname: firstname,
-      lastname: lastname,
       email: email,
-      password: password
+      password: password,
+      age: age,
+      firstname: firstname,
+      lastname: lastname
     });
   }
 };
