@@ -67,10 +67,21 @@ function Signup() {
           <label htmlFor='firstname'>First Name:</label>
           <input
             className='form-control'
-            placeholder='firstname goes here...'
+            placeholder='First name goes here...'
             name='firstname'
             type='text'
             id='firstname'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='lastname'>Last Name:</label>
+          <input
+            className='form-control'
+            placeholder='Last name goes here...'
+            name='lastname'
+            type='text'
+            id='lastname'
             onChange={handleChange}
           />
         </div>
