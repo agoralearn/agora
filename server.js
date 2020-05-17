@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const searchRouter = require('./routes/search');
 const errorMiddleware = require('./routes/errorMiddleware');
+const chatRouter = require('./routes/chat');
 
 const PORT = process.env.PORT || 3001;
 
@@ -27,12 +28,12 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-// app.use("/api/user", userRouter)
+// app.use('/api/user', usersRouter);
 // app.use("/api/tutor", tutorRouter)
-// app.use("/api/chat", chatRouter)
 
 app.use(authRouter, usersRouter, errorMiddleware);
-app.use(searchRouter);
+app.use('/api', searchRouter);
+app.use(chatRouter);
 
 // Send all other requests to react app
 app.get('*', (req, res) => {
