@@ -20,7 +20,12 @@ function Signup() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    API.signUpUser(formState.username, formState.email, formState.password)
+    API.signUpStudent(
+      formState.firstname,
+      formState.lastname,
+      formState.email,
+      formState.password
+    )
       .then((res) => {
         // once the user has signed up
         // send them to the login page
