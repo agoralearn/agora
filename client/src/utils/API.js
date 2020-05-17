@@ -5,26 +5,8 @@ export default {
     return axios.get(`/api/user/${id}`);
   },
   // sign up a user to our service
-  signUpUser: (
-    email,
-    password,
-    age,
-    firstname,
-    lastname,
-    role,
-    minGroupSize,
-    maxGroupSize
-  ) => {
-    return axios.post('/api/user', {
-      email: email,
-      password: password,
-      age: age,
-      firstname: firstname,
-      lastname: lastname,
-      role: role,
-      minGroupSize: minGroupSize,
-      maxGroupSize: maxGroupSize
-    });
+  signUpUser: (user) => {
+    return axios.post('/api/user', user);
   },
   getTutors: (filters) => {
     return axios.get('/api/tutors', { params: filters });

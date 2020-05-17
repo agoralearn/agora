@@ -3,14 +3,14 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 
-function Signup() {
+function Signup({ role = 'student' }) {
   const [formState, setFormState] = useState({
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     age: '',
-    role: 'student',
+    role: role,
     minGroupSize: '',
     maxGroupSize: ''
   });
@@ -25,16 +25,7 @@ function Signup() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    API.signUpUser(
-      formState.email,
-      formState.password,
-      formState.age,
-      formState.firstname,
-      formState.lastname,
-      formState.role,
-      formState.minGroupSize,
-      formState.maxGroupSize
-    )
+    API.signUpUser(formState)
       .then((res) => {
         // once the student has signed up
         // send them to the tutor search page
@@ -95,24 +86,24 @@ function Signup() {
         </div>
 
         <div className='form-group'>
-          <label htmlFor='firstname'>First Name:</label>
+          <label htmlFor='firstName'>First Name:</label>
           <input
             className='form-control'
             placeholder='First name goes here...'
-            name='firstname'
+            name='firstName'
             type='text'
-            id='firstname'
+            id='firstName'
             onChange={handleChange}
           />
         </div>
         <div className='form-group'>
-          <label htmlFor='lastname'>Last Name:</label>
+          <label htmlFor='lastName'>Last Name:</label>
           <input
             className='form-control'
             placeholder='Last name goes here...'
-            name='lastname'
+            name='lastName'
             type='text'
-            id='lastname'
+            id='lastName'
             onChange={handleChange}
           />
         </div>

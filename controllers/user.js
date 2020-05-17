@@ -5,7 +5,9 @@ function signUpUser(req, res) {
     .then((response) => {
       res.json(response);
     })
-    .catch((err) => res.status(400).send(err));
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 }
 
 module.exports = {
