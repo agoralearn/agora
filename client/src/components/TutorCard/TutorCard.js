@@ -10,7 +10,7 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
     const MAX_BIO_LENGTH = 22;
 
     let isOverLength = false;
-    let shortBio = bio.split(' ');
+    const shortBio = bio.split(' ');
 
     isOverLength = shortBio.length > MAX_BIO_LENGTH ? true : false;
 
@@ -39,6 +39,7 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
             if (index < 3) {
               return <Badge key={subject}>{subject}</Badge>;
             }
+            return null;
           })}
 
           {subjects.length > 3 ? (
