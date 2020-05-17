@@ -1,11 +1,12 @@
 @import "../../css/colors.scss";
 
 .Hero_wrapper {
-  min-height: 100vh;
+  height: 100%;
   padding: 10%;
   background-position: left;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
   position: relative;
   display: flex;
   align-items: center;

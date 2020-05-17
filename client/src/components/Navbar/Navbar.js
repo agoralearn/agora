@@ -1,6 +1,26 @@
 import React from 'react';
+import './Navbar.scss';
 import { Link } from 'react-router-dom';
+import Button from '../Button/Button';
 import { useAuth } from '../../utils/auth';
+import Logo from '../../components/Logo/Logo';
+import LogoText from '../../components/LogoText/LogoText';
+
+function Navbar() {
+  return (
+    <nav className='Navbar_wrapper'>
+      <div className='Navbar_logo'>
+        <Logo />
+        <LogoText className='u-m-l-sm' />
+      </div>
+      <div>
+        <Link to='login'>
+          <Button.Link className='color-white'>Login</Button.Link>
+        </Link>
+      </div>
+    </nav>
+  );
+}
 
 const createLink = ({ text, to, ...rest }) => {
   const className = 'nav-link';
@@ -41,19 +61,6 @@ function NavLinks() {
         </li>
       ))}
     </ul>
-  );
-}
-
-function Navbar() {
-  return (
-    <nav className='navbar navbar-expand navbar-dark bg-primary'>
-      <div className='container'>
-        <Link className='navbar-brand' to='/'>
-          React JWT App
-        </Link>
-        <NavLinks />
-      </div>
-    </nav>
   );
 }
 

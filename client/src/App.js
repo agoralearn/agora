@@ -27,24 +27,22 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div>
-          {/* <Navbar /> */}
-          <Switch>
-            {/* Protecting routes - keep for reference */}
-            {/* <ProtectedRoute exact path="/">
+        <Navbar />
+        <Switch>
+          {/* Protecting routes - keep for reference */}
+          {/* <ProtectedRoute exact path="/">
               <ProtectedRouteComp />
             </ProtectedRoute> */}
-            <Route exact path='/'>
-              <Home />
-            </Route>
-            <Route exact path='/signup'>
-              <Signup />
-            </Route>
-            <ProtectedRoute exact path='/profile'>
-              <Profile />
-            </ProtectedRoute>
-          </Switch>
-        </div>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route exact path='/signup'>
+            <Signup />
+          </Route>
+          <ProtectedRoute exact path='/profile'>
+            <Profile />
+          </ProtectedRoute>
+        </Switch>
       </Router>
     </AuthProvider>
   );
