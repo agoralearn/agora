@@ -5,9 +5,14 @@ import { useAuth } from '../../utils/auth';
 
 function Signup() {
   const [formState, setFormState] = useState({
-    username: '',
+    firstname: '',
+    lastname: '',
     email: '',
-    password: ''
+    password: '',
+    age: '',
+    role: 'student',
+    minGroupSize: '',
+    maxGroupSize: ''
   });
 
   const { isLoggedIn } = useAuth();
@@ -20,12 +25,15 @@ function Signup() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    API.signUpStudent(
+    API.signUpUser(
       formState.email,
       formState.password,
       formState.age,
       formState.firstname,
-      formState.lastname
+      formState.lastname,
+      formState.role,
+      formState.minGroupSize,
+      formState.maxGroupSize
     )
       .then((res) => {
         // once the student has signed up
@@ -36,6 +44,7 @@ function Signup() {
   };
 
   const handleChange = (event) => {
+    console.log(event.target.name);
     const { name, value } = event.target;
     setFormState({
       ...formState,
@@ -44,23 +53,24 @@ function Signup() {
   };
 
   return (
-    <div className='container'>
+    <div className='container' style={{ marginTop: '100px' }}>
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
-        {/* student or tutor checkbox */}
-        <div>
-          <input
-            type='checkbox'
-            id='student'
-            name='role'
-            defaultValue='student'
-          />
-          <label htmlFor='role'> I am signing up as as student</label>
-          <br />
-          <input type='checkbox' id='tutor' name='role' defaultValue='tutor' />
-          <label htmlFor='role'> I am signing up as as tutor</label>
-        </div>
-
+        {/* student or tutor selection */}
+        <label htmlFor='role'>I am signing up as a:</label>
+        <select
+          id='role'
+          name='role'
+          defaultValue={formState.role}
+          onChange={handleChange}
+        >
+          <option name='role' value='student'>
+            Student
+          </option>
+          <option name='role' value='tutor'>
+            Tutor
+          </option>
+        </select>
         <div className='form-group'>
           <label htmlFor='email'>Email address:</label>
           <input
@@ -83,17 +93,7 @@ function Signup() {
             onChange={handleChange}
           />
         </div>
-        <div className='form-group'>
-          <label htmlFor='age'>Age:</label>
-          <input
-            className='form-control'
-            placeholder='Age goes here...'
-            name='age'
-            type='age'
-            id='age'
-            onChange={handleChange}
-          />
-        </div>
+
         <div className='form-group'>
           <label htmlFor='firstname'>First Name:</label>
           <input
@@ -116,9 +116,47 @@ function Signup() {
             onChange={handleChange}
           />
         </div>
-        <button type='submit' className='btn btn-primary'>
+        {formState.role === 'student' ? (
+          <div className='form-group'>
+            <label htmlFor='age'>Age:</label>
+            <input
+              className='form-control'
+              placeholder='Age goes here...'
+              name='age'
+              type='age'
+              id='age'
+              onChange={handleChange}
+            />
+          </div>
+        ) : (
+          <>
+            <div className='form-group'>
+              <label htmlFor='minGroupSize'>Minimum Group Size:</label>
+              <input
+                className='form-control'
+                placeholder='please enter a min number of students...'
+                name='minGroupSize'
+                type='minGroupSize'
+                id='minGroupSize'
+                onChange={handleChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='maxGroupSize'>Maximum Group Size:</label>
+              <input
+                className='form-control'
+                placeholder='please enter a max number of students...'
+                name='maxGroupSize'
+                type='maxGroupSize'
+                id='maxGroupSize'
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
+        {/* <button type='submit' className='btn btn-primary'>
           Submit
-        </button>
+        </button> */}
       </form>
       <p>
         <Link to='/login'>Go to Login</Link>
