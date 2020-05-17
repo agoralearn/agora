@@ -15,7 +15,7 @@ export default {
     minGroupSize,
     maxGroupSize
   ) => {
-    return axios.post('api/user', {
+    return axios.post('/api/user', {
       email: email,
       password: password,
       age: age,

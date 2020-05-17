@@ -154,9 +154,9 @@ function Signup() {
             </div>
           </>
         )}
-        {/* <button type='submit' className='btn btn-primary'>
+        <button type='submit' className='btn btn-primary'>
           Submit
-        </button> */}
+        </button>
       </form>
       <p>
         <Link to='/login'>Go to Login</Link>
