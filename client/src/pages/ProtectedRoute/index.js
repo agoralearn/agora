@@ -1,14 +1,14 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import logo from "./logo.svg";
-import "./home.css";
-import { useAuth } from "../../utils/auth";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import logo from './logo.svg';
+import './home.css';
+import { useAuth } from '../../utils/auth';
 
 function Home() {
   const { user, logout } = useAuth();
   const history = useHistory();
 
-  const goToEditProfile = () => history.push("/profile");
+  const goToEditProfile = () => history.push('/profile');
 
   return (
     <div className="App">
