@@ -20,11 +20,17 @@ function Signup() {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    API.signUpUser(formState.username, formState.email, formState.password)
+    API.signUpStudent(
+      formState.email,
+      formState.password,
+      formState.age,
+      formState.firstname,
+      formState.lastname
+    )
       .then((res) => {
-        // once the user has signed up
-        // send them to the login page
-        history.replace('/login');
+        // once the student has signed up
+        // send them to the tutor search page
+        history.replace('/tutors');
       })
       .catch((err) => alert(err));
   };
@@ -41,17 +47,20 @@ function Signup() {
     <div className='container'>
       <h1>Signup</h1>
       <form onSubmit={handleFormSubmit}>
-        <div className='form-group'>
-          <label htmlFor='username'>Username:</label>
+        {/* student or tutor checkbox */}
+        <div>
           <input
-            className='form-control'
-            placeholder='Username goes here...'
-            name='username'
-            type='text'
-            id='username'
-            onChange={handleChange}
+            type='checkbox'
+            id='student'
+            name='role'
+            defaultValue='student'
           />
+          <label htmlFor='role'> I am signing up as as student</label>
+          <br />
+          <input type='checkbox' id='tutor' name='role' defaultValue='tutor' />
+          <label htmlFor='role'> I am signing up as as tutor</label>
         </div>
+
         <div className='form-group'>
           <label htmlFor='email'>Email address:</label>
           <input
@@ -71,6 +80,39 @@ function Signup() {
             name='password'
             type='password'
             id='pwd'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='age'>Age:</label>
+          <input
+            className='form-control'
+            placeholder='Age goes here...'
+            name='age'
+            type='age'
+            id='age'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='firstname'>First Name:</label>
+          <input
+            className='form-control'
+            placeholder='First name goes here...'
+            name='firstname'
+            type='text'
+            id='firstname'
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <label htmlFor='lastname'>Last Name:</label>
+          <input
+            className='form-control'
+            placeholder='Last name goes here...'
+            name='lastname'
+            type='text'
+            id='lastname'
             onChange={handleChange}
           />
         </div>

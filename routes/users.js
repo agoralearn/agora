@@ -17,4 +17,12 @@ router.get('/api/user/:id', isAuthenticated, (req, res) => {
     .catch((err) => res.status(400).send(err));
 });
 
+router.post('/api/student', (req, res) => {
+  db.Student.create(req.body)
+    .then((response) => {
+      res.json(response);
+    })
+    .catch((err) => res.status(400).send(err));
+});
+
 module.exports = router;
