@@ -6,6 +6,13 @@ export default {
   },
   // sign up a user to our service
   signUpUser: (username, email, password) => {
-    return axios.post('api/signup', {username: username, email: email, password: password});
+    return axios.post('api/signup', {
+      username: username,
+      email: email,
+      password: password
+    });
+  },
+  getTutors: (filters) => {
+    return axios.get('/api/tutors', { params: filters });
   }
 };

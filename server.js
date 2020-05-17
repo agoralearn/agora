@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const initDb = require('./config/initDb');
 const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
+const searchRouter = require('./routes/search');
 const errorMiddleware = require('./routes/errorMiddleware');
 
 const PORT = process.env.PORT || 3001;
@@ -31,6 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 // app.use("/api/chat", chatRouter)
 
 app.use(authRouter, usersRouter, errorMiddleware);
+app.use(searchRouter);
 
 // Send all other requests to react app
 app.get('*', (req, res) => {
