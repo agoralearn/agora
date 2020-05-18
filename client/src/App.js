@@ -8,7 +8,7 @@ import {
 
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
-// import Login from './pages/Login/Login';
+import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup/Signup';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
@@ -39,6 +39,9 @@ function App() {
           </Route>
           <Route exact path='/signup'>
             <Signup />
+          </Route>
+          <Route exact path='/login'>
+            <Login />
           </Route>
           <ProtectedRoute exact path='/profile'>
             <Profile />
