@@ -11,5 +11,16 @@ module.exports = {
         }
       })
       .catch((err) => res.status(400).send(err));
+  },
+  updateUser: function (req, res) {
+    const filter = { _id: req.params.id };
+    db.User.findOneAndUpdate(filter, req.body).then((data) => {
+      res.json(data).catch((err) => res.status(400).send(err));
+    });
+  },
+  signUpUser: function (req, res) {
+    db.User.create(req.body)
+      .then((data) => res.json(data))
+      .catch((err) => res.status(400).json(err));
   }
 };
