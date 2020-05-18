@@ -13,5 +13,21 @@ export default {
   },
   getTutorsById: (id) => {
     return axios.get('/api/tutors/' + id);
+  },
+  getChat: (chatId) => {
+    return axios.get('/api/chat/' + chatId);
+  },
+  startChat: (userId1, userId2) => {
+    return axios.post('/api/chat', { userIds: [userId1, userId2] });
+  },
+  addMessageToChat: (chatId, message, userId) => {
+    return axios.post('/api/chat/message', {
+      chatId: chatId,
+      message: message,
+      userId: userId
+    });
+  },
+  getChatsByUserId: () => {
+    return axios.get('/api/chat/chats/:userId');
   }
 };
