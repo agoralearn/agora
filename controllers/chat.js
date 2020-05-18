@@ -2,7 +2,7 @@ const db = require('../models');
 
 module.exports = {
   // Start a new chat
-  // Pass two user ids in userIds
+  // Pass two user ids in userIds in the body
   startChat: function (req, res) {
     const userIds = req.body.userIds;
     console.log(userIds);
@@ -26,5 +26,34 @@ module.exports = {
           });
         });
     }
+  },
+
+  addMessageToChat: function (req, res) {
+    // Check if the user belongs to the chat first
+    // First create the message
+    db.Message.create({
+      sender: req.body.userId,
+      read: [req.body.userId],
+      message: req.body.message
+    })
+      // Add the message the associated chat
+      .then((message) => {
+        const messageId = message._id;
+
+        return db.Chat.findByIdAndUpdate(req.body.chatId, {
+          $push: { messages: messageId }
+        });
+      })
+      // Send the sent message back to the client so it can use
+      // it for UI updates
+      .then(() => {
+        res.json({ message: req.body.message });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send(500).json({ message: err.message });
+      });
+
+    // Add the message's ID to the associated chat
   }
 };
