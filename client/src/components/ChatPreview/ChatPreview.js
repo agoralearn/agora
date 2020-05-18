@@ -2,7 +2,7 @@ import React from 'react';
 import './ChatPreview.scss';
 // import ProfileImage from '../ProfileImage/ProfileImage';
 
-function ChatPreview({ currentUser, users, message }) {
+function ChatPreview({ users, message }) {
   function buildMessagePreview() {
     const preview = message;
     const MAX_PREVIEW = 22;

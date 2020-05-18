@@ -24,7 +24,7 @@ export default function Inbox() {
           <ChatPreview
             currentUser={currentUserId}
             users={chat.users}
-            message={chat.messages[0]}
+            message={chat.messages}
           />
         ))}
       </div>

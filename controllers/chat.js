@@ -4,28 +4,40 @@ module.exports = {
   // Start a new chat
   // Pass two user ids in userIds in the body
   startChat: function (req, res) {
-    const userIds = req.body.userIds;
-    console.log(userIds);
-    // A new chat needs to have two users to start it
-    if (userIds.length < 2) {
-      res.status(500).json({
-        message: 'A chat requires a minimum of two user IDs.',
-        userIds: req.body.userIds
-      });
-    } else {
+    const { userIds, message } = req.body;
+    db.Message.create({
+      message: message,
+      read: [userIds[0]],
+      sender: userIds[0]
+    }).then((message) => {
       db.Chat.create({
-        users: [...userIds],
-        messages: []
-      })
-        .then((result) => {
-          res.send(result);
-        })
-        .catch((err) => {
-          res.status(500).json({
-            error: err.message
+        users: userIds,
+        messages: [message._id]
+      }).then((chat) => {
+        const chatsToUser = userIds.map((userId) => {
+          return db.User.findByIdAndUpdate(
+            userId,
+            {
+              $push: { chats: chat._id }
+            },
+            { returnOriginal: false }
+          ).populate({
+            path: 'chats',
+            populate: {
+              path: 'users messages',
+              select: 'firstName lastName image message sender read'
+            }
           });
         });
-    }
+        Promise.all(chatsToUser).then((users) => {
+          res.json(
+            users[0].chats.filter((lastChat) => {
+              return lastChat._id.toString() == chat._id.toString();
+            })[0]
+          );
+        });
+      });
+    });
   },
 
   addMessageToChat: function (req, res) {
@@ -68,9 +80,25 @@ module.exports = {
       .catch((err) => res.status(400).send(err));
   },
   getChatsByUserId: function (req, res) {
-    db.User.findById(req.params.userId)
-      .populate('chats')
-      .exec((data) => {
+    // all user's chats, users in the chats by name + image, last message in chat,
+    db.Chat.find({
+      users: req.params.userId
+    })
+      .populate({
+        path: 'users',
+        select: 'firstName lastName image'
+      })
+      .populate({
+        path: 'messages',
+        options: {
+          sort: {
+            createdAt: 'desc'
+          },
+          limit: 1
+        }
+      })
+      // .populate('userIds')
+      .then((data) => {
         if (data) {
           res.json(data);
         } else {
