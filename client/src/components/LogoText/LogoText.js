@@ -1,6 +1,5 @@
 import React from 'react';
 import './Logotext.scss';
-import { withRouter } from 'react-router-dom';
 
 export default function LogoText({ className }) {
   // <style>.cls-1{fill:#231f20;}</style>
