@@ -12,7 +12,7 @@ function ChatPreview({ users, message }) {
 
     isOverLength = shortPrev.length > MAX_PREVIEW ? true : false;
 
-    const preview = { messages };
+    // const preview = { messages };
     return (
       <p>
         {shortPrev.slice(0, MAX_PREVIEW).join(' ')}

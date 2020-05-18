@@ -32,7 +32,7 @@ module.exports = {
         Promise.all(chatsToUser).then((users) => {
           res.json(
             users[0].chats.filter((lastChat) => {
-              return lastChat._id.toString() == chat._id.toString();
+              return lastChat._id.toString() === chat._id.toString();
             })[0]
           );
         });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../utils/API';
+import ChatPreview from '../../components/ChatPreview/ChatPreview';
 import './Inbox.scss';
 
 export default function Inbox() {
