@@ -3,8 +3,8 @@ const searchController = require('../controllers/search');
 
 const router = express.Router();
 
-router.get('/tutors', searchController.getTutors);
+router.get('/', searchController.getTutors);
 
-router.get('/tutors/:id', searchController.getTutorById);
+router.get('/:id', searchController.getTutorById);
 
 module.exports = router;
