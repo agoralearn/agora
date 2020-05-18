@@ -1,6 +1,6 @@
-@import "./css/colors";
-@import "./css/globals";
-@import "./css/typography";
+@import './css/colors';
+@import './css/globals';
+@import './css/typography';
 
 html {
   box-sizing: border-box;
@@ -16,6 +16,7 @@ body {
 
 #root {
   height: 100%;
+  margin-top: $navbar-height;
 }
 
 *,

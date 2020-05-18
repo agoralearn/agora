@@ -1,10 +1,10 @@
-@import "../../css/globals";
+@import '../../css/globals';
 
 .Navbar_wrapper {
   position: absolute;
   top: 0;
   background: $color-primary;
-  height: 50px;
+  height: $navbar-height;
   width: 100%;
   z-index: 1;
   display: flex;
