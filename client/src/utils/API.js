@@ -8,6 +8,9 @@ export default {
   signUpUser: (user) => {
     return axios.post('/api/user', user);
   },
+  updateUser: (id) => {
+    return axios.patch(`/api/user/${id}`);
+  },
   getTutors: (filters) => {
     return axios.get('/api/tutors', { params: filters });
   },
