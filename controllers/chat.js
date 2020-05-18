@@ -55,5 +55,16 @@ module.exports = {
       });
 
     // Add the message's ID to the associated chat
+  },
+  getChat: function (req, res) {
+    db.Chat.findById(req.params.id)
+      .then((data) => {
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).send({ success: false, message: 'No chat found' });
+        }
+      })
+      .catch((err) => res.status(400).send(err));
   }
 };
