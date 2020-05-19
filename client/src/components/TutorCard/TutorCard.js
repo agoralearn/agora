@@ -28,10 +28,7 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
 
   return (
     <div className='TutorCard_wrapper'>
-      <ProfileImage
-        profileImg={profileImg}
-        style={{ height: '200px', width: '200px' }}
-      />
+      <ProfileImage profileImg={profileImg} />
 
       <div className='TutorCard_content'>
         <div>
