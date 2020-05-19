@@ -50,8 +50,8 @@ function App() {
             <Route component={Inbox}></Route>
           </ProtectedRoute>
 
-          <ProtectedRoute path='/chat/:chatId'>
-            <Route component={Chat}></Route>
+          <ProtectedRoute exact path='/chat/:chatId'>
+            <Route exact path='/chat/:chatId' component={Chat}></Route>
           </ProtectedRoute>
         </Switch>
       </Router>

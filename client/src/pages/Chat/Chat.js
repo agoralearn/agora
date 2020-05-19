@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import './Chat.scss';
 import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
+import API from '../../utils/API';
 
 const testMessages = [
   {
@@ -33,7 +34,7 @@ const testMessages = [
   }
 ];
 
-export default function Chat({ match, history }) {
+export default function Chat({ match, history, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState(testMessages);
 
@@ -44,9 +45,11 @@ export default function Chat({ match, history }) {
   useEffect(() => {
     // Scroll to bottom on page load if message list is long
     chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
-
     const chatId = match.params.chatId;
-    console.log(chatId);
+    API.getChat(chatId).then(({ data }) => {
+      console.log(data);
+    });
+
     // Make database call to get messages
     // when page first loads here
   }, [match.params.chatId]);

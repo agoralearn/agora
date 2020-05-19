@@ -8,7 +8,6 @@ import PageHeader from '../../components/PageHeader/PageHeader';
 import './Inbox.scss';
 
 export default function Inbox(props) {
-  console.log(props);
   const [chats, setChats] = useState([]);
   // const currentUserId = '5ec196146b0a589818189458';
 
@@ -19,6 +18,7 @@ export default function Inbox(props) {
   const getChats = () => {
     API.getChatsByUserId()
       .then((res) => {
+        console.log(res.data);
         setChats(res.data);
       })
       .catch((err) => console.log(err));
@@ -31,13 +31,17 @@ export default function Inbox(props) {
         <h2 className='header-text'>Sessions</h2>
       </PageHeader>
       <div className='chats-div'>
-        {chats.map((chat) => (
-          <ChatPreview
-            key={chat._id}
-            users={chat.users}
-            message={chat.messages}
-          />
-        ))}
+        {chats.map((chat) => {
+          return (
+            <ChatPreview
+              key={chat._id}
+              users={chat.users}
+              message={chat.messages}
+              chatId={chat._id}
+              match={props.match}
+            />
+          );
+        })}
       </div>
     </div>
   );

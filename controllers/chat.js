@@ -76,6 +76,7 @@ module.exports = {
   },
   getChat: function (req, res) {
     db.Chat.findById(req.params.chatId)
+      .populate('messages')
       .then((data) => {
         if (data && data.users.includes(req.user.id)) {
           res.json(data);
