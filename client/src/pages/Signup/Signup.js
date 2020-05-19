@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
-import { Container, Form, Header } from 'semantic-ui-react';
+import { Container, Form, Header, Input, Radio } from 'semantic-ui-react';
 import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
-function Signup({ role = 'student' }) {
+function Signup({ role }) {
   const [formState, setFormState] = useState({
     firstName: '',
     lastName: '',
@@ -46,6 +46,9 @@ function Signup({ role = 'student' }) {
     });
   };
 
+  const handleRadioChange = (e, { value }) =>
+    setFormState({ ...formState, role: value });
+
   return (
     <Container>
       <PageHeader>
@@ -53,27 +56,34 @@ function Signup({ role = 'student' }) {
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
         <div className='Login-form'>
-          <Form.Field>
-            {/* student or tutor selection */}
-            <label htmlFor='role'>I am signing up as a:</label>
-            <select
-              id='role'
-              name='role'
-              defaultValue={formState.role}
-              onChange={handleChange}
-            >
-              <option name='role' value='student'>
-                Student
-              </option>
-              <option name='role' value='tutor'>
-                Tutor
-              </option>
-            </select>
-          </Form.Field>
+          {/* student or tutor selection */}
+          <Form.Group grouped>
+            <label>I am signing up as a:</label>
+            <Form.Field>
+              <Radio
+                label='Student'
+                name='role'
+                value='student'
+                checked={formState.role === 'student'}
+                onChange={handleRadioChange}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label='Tutor'
+                name='role'
+                value='tutor'
+                checked={formState.role === 'tutor'}
+                onChange={handleRadioChange}
+              />
+            </Form.Field>
+          </Form.Group>
           <Form.Field>
             <label htmlFor='email'>Email address:</label>
-            <input
-              placeholder='Email goes here...'
+            <Input
+              fluid
+              icon='mail'
+              placeholder='Email...'
               name='email'
               type='email'
               id='email'
@@ -82,8 +92,10 @@ function Signup({ role = 'student' }) {
           </Form.Field>
           <Form.Field>
             <label htmlFor='pwd'>Password:</label>
-            <input
-              placeholder='Password goes here...'
+            <Input
+              fluid
+              icon='lock'
+              placeholder='Password...'
               name='password'
               type='password'
               id='pwd'
@@ -93,8 +105,10 @@ function Signup({ role = 'student' }) {
 
           <Form.Field>
             <label htmlFor='firstName'>First Name:</label>
-            <input
-              placeholder='First name goes here...'
+            <Input
+              fluid
+              icon='id badge outline'
+              placeholder='First name...'
               name='firstName'
               type='text'
               id='firstName'
@@ -103,8 +117,10 @@ function Signup({ role = 'student' }) {
           </Form.Field>
           <Form.Field>
             <label htmlFor='lastName'>Last Name:</label>
-            <input
-              placeholder='Last name goes here...'
+            <Input
+              fluid
+              icon='id badge outline'
+              placeholder='Last name...'
               name='lastName'
               type='text'
               id='lastName'
@@ -114,8 +130,9 @@ function Signup({ role = 'student' }) {
           {formState.role === 'student' ? (
             <Form.Field>
               <label htmlFor='age'>Age:</label>
-              <input
-                placeholder='Age goes here...'
+              <Input
+                fluid
+                placeholder='Age...'
                 name='age'
                 type='number'
                 id='age'
@@ -126,7 +143,8 @@ function Signup({ role = 'student' }) {
             <>
               <Form.Field>
                 <label htmlFor='minGroupSize'>Minimum Group Size:</label>
-                <input
+                <Input
+                  fluid
                   placeholder='Min students per session...'
                   name='minGroupSize'
                   type='number'
@@ -136,7 +154,8 @@ function Signup({ role = 'student' }) {
               </Form.Field>
               <Form.Field>
                 <label htmlFor='maxGroupSize'>Maximum Group Size:</label>
-                <input
+                <Input
+                  fluid
                   placeholder='Max students per session...'
                   name='maxGroupSize'
                   type='number'
@@ -160,5 +179,9 @@ function Signup({ role = 'student' }) {
     </Container>
   );
 }
+
+Signup.defaultProps = {
+  role: 'student'
+};
 
 export default Signup;
