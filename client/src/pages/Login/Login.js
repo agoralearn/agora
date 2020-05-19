@@ -4,7 +4,6 @@ import { useAuth } from '../../utils/auth';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Button from '../../components/Button/Button';
 import { Container, Form, Header, Input } from 'semantic-ui-react';
-import './Login.scss';
 
 function Login() {
   const [email, setEmail] = useState('');
