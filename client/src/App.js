@@ -16,6 +16,7 @@ import Chat from './pages/Chat/Chat';
 import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
 import TutorBio from './pages/TutorBio/TutorBio';
+
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
   // Render children depending on how the component is
@@ -31,25 +32,27 @@ function App() {
       <Router>
         <NavBar />
         <Switch>
-          {/* Protecting routes - keep for reference */}
-          {/* <ProtectedRoute exact path='/'>
-            <ProtectedRouteComp />
-          </ProtectedRoute> */}
           <Route exact path='/'>
             <Home />
           </Route>
           <Route component={Signup} exact path='/signup' />
+
           <Route exact path='/login'>
             <Login />
           </Route>
-          <Route path='/tutorbio/:userId' component={TutorBio} />
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <ProtectedRoute>
-            <Route exact path='/inbox' component={Inbox}></Route>
+
+          <Route exact path='/tutorbio/:userId' component={TutorBio} />
+
+          <ProtectedRoute exact path='/inbox'>
+            <Route component={Inbox}></Route>
           </ProtectedRoute>
-          <ProtectedRoute path='/chat/:chatId' component={Chat} />
+
+          <ProtectedRoute path='/chat/:chatId'>
+            <Route component={Chat}></Route>
+          </ProtectedRoute>
         </Switch>
       </Router>
     </AuthProvider>
