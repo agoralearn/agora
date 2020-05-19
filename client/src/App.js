@@ -42,6 +42,7 @@ function App() {
           <Route exact path='/login'>
             <Login />
           </Route>
+          <Route path='/tutorbio/:userId' component={TutorBio} />
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
@@ -49,7 +50,6 @@ function App() {
             <Route exact path='/inbox' component={Inbox}></Route>
           </ProtectedRoute>
           <ProtectedRoute path='/chat/:chatId' component={Chat} />
-          <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
       </Router>
     </AuthProvider>
