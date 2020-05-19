@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import Button from '../../components/Button/Button';
+import { Container, Form } from 'semantic-ui-react';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -24,41 +27,41 @@ function Login() {
   };
 
   return (
-    <div className='container'>
-      <h1>Login</h1>
-      <form onSubmit={handleFormSubmit}>
-        <div className='form-group'>
+    <Container>
+      <PageHeader>
+        <h1>Login</h1>
+      </PageHeader>
+      <Form onSubmit={handleFormSubmit}>
+        <Form.Field>
           <label htmlFor='email'>Email address:</label>
           <input
-            className='form-control'
-            placeholder='Email goes here...'
+            placeholder='Email...'
             name='email'
             type='email'
             id='email'
             value={email}
             onChange={({ target }) => setEmail(target.value)}
           />
-        </div>
-        <div className='form-group'>
+        </Form.Field>
+        <Form.Field>
           <label htmlFor='pwd'>Password:</label>
           <input
-            className='form-control'
-            placeholder='Password goes here...'
+            placeholder='Password...'
             name='password'
             type='password'
             id='pwd'
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-        <button type='submit' className='btn btn-primary'>
+        </Form.Field>
+        <Button type='submit' className='btn btn-primary'>
           Submit
-        </button>
-      </form>
+        </Button>
+      </Form>
       <p>
-        <Link to='/signup'>Go to Signup</Link>
+        <Link to='/signup'>Don't have an account? Signup here</Link>
       </p>
-    </div>
+    </Container>
   );
 }
 
