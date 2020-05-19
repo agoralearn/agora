@@ -33,14 +33,11 @@ function App() {
       <Router>
         <NavBar />
         <Switch>
-          {/* Protecting routes - keep for reference */}
-          {/* <ProtectedRoute exact path='/'>
-            <ProtectedRouteComp />
-          </ProtectedRoute> */}
           <Route exact path='/'>
             <Home />
           </Route>
           <Route component={Signup} exact path='/signup' />
+
           <Route exact path='/login'>
             <Login />
           </Route>
@@ -50,11 +47,16 @@ function App() {
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <ProtectedRoute>
-            <Route exact path='/inbox' component={Inbox}></Route>
+
+          <Route exact path='/tutorbio/:userId' component={TutorBio} />
+
+          <ProtectedRoute exact path='/inbox'>
+            <Route component={Inbox}></Route>
           </ProtectedRoute>
-          <ProtectedRoute path='/chat/:chatId' component={Chat} />
-          <Route path='/tutorbio/:userId' component={TutorBio} />
+
+          <ProtectedRoute path='/chat/:chatId'>
+            <Route component={Chat}></Route>
+          </ProtectedRoute>
         </Switch>
       </Router>
     </AuthProvider>
