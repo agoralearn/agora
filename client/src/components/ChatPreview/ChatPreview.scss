@@ -27,8 +27,19 @@
   }
   color: $color-gray-dark;
   margin-left: 10px;
+  max-width: 200px;
+  display: inline-block;
 }
 .message-preview {
   font-size: smaller;
   color: $color-gray-dark;
+}
+
+.rate-tag {
+  float: right;
+  align-content: center;
+  padding-top: 7px;
+}
+.rate-btn {
+  color: $color-primary;
 }

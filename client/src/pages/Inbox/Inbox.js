@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import ChatPreview from '../../components/ChatPreview/ChatPreview';
-import GoBack from '../../components/GoBack/GoBack';
+// import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 // import { Container } from 'semantic-ui-react';
 
@@ -25,9 +25,9 @@ export default function Inbox() {
 
   return (
     <div className='inbox-container'>
-      <GoBack
-      // history={history}
-      />
+      {/* <GoBack
+      history={history}
+      /> */}
       <PageHeader>
         <h1 className='header-text'>Sessions</h1>
       </PageHeader>
