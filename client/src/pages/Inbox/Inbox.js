@@ -9,14 +9,14 @@ import './Inbox.scss';
 
 export default function Inbox({ history }) {
   const [chats, setChats] = useState([]);
-  const currentUserId = '5ec196146b0a589818189458';
+  // const currentUserId = '5ec196146b0a589818189458';
 
   useEffect(() => {
     getChats();
   }, []);
 
   const getChats = () => {
-    API.getChatsByUserId(currentUserId)
+    API.getChatsByUserId()
       .then((res) => {
         setChats(res.data);
       })

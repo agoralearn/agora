@@ -2,14 +2,13 @@ import React from 'react';
 import './ChatPreview.scss';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import Modal from '../../components/Modal/Modal';
-import RatingStars from '../RatingStars/RatingStars';
+import ReviewModal from '../../components/ReviewModal/ReviewModal';
 
 function ChatPreview({ users, message }) {
   // const currentUserName = users[0].firstName + users[0].lastName;
   const currentUserImage = users[0].image;
   const otherUserName = users[1].firstName + ' ' + users[1].lastName;
   const otherUserImage = users[1].image;
-  const rating = 5;
 
   function buildMessagePreview() {
     const preview = message[0].message;
@@ -66,7 +65,7 @@ function ChatPreview({ users, message }) {
           trigger={<button className='rate-btn'>Rate </button>}
           header={`Rate ${otherUserName}`}
         >
-          <RatingStars rating={rating} />
+          <ReviewModal />
         </Modal>
       </div>
     </div>
