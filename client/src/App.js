@@ -5,7 +5,6 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
-
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
 import Login from './pages/Login/Login';
@@ -19,17 +18,15 @@ import NavBar from './components/Navbar/Navbar';
 import TutorBio from './pages/TutorBio/TutorBio';
 import Search from './pages/Search/Search';
 
-function ProtectedRoute({ children, component, ...rest }) {
+function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
-
   // Render children depending on how the component is
   // passed to the route
   if (isLoggedIn) {
-    return children || component();
+    return children;
   }
   return <Redirect to='/signup' />;
 }
-
 function App() {
   return (
     <AuthProvider>
@@ -37,9 +34,9 @@ function App() {
         <NavBar />
         <Switch>
           {/* Protecting routes - keep for reference */}
-          {/* <ProtectedRoute exact path="/">
-              <ProtectedRouteComp />
-            </ProtectedRoute> */}
+          {/* <ProtectedRoute exact path='/'>
+            <ProtectedRouteComp />
+          </ProtectedRoute> */}
           <Route exact path='/'>
             <Home />
           </Route>
@@ -53,7 +50,9 @@ function App() {
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <ProtectedRoute exact path='/inbox' component={Inbox} />
+          <ProtectedRoute>
+            <Route exact path='/inbox' component={Inbox}></Route>
+          </ProtectedRoute>
           <ProtectedRoute path='/chat/:chatId' component={Chat} />
           <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
@@ -61,5 +60,4 @@ function App() {
     </AuthProvider>
   );
 }
-
 export default App;
