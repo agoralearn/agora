@@ -18,10 +18,13 @@ import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
 import TutorBio from './pages/TutorBio/TutorBio';
 
-function ProtectedRoute({ children, ...rest }) {
+function ProtectedRoute({ children, component, ...rest }) {
   const { isLoggedIn } = useAuth();
+
+  // Render children depending on how the component is
+  // passed to the route
   if (isLoggedIn) {
-    return children;
+    return children || component();
   }
   return <Redirect to='/signup' />;
 }
@@ -46,10 +49,8 @@ function App() {
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <Route exact path='/inbox'>
-            <Inbox />
-          </Route>
-          <Route path='/chat/:chatId' component={Chat} />
+          <ProtectedRoute exact path='/inbox' component={Inbox} />
+          <ProtectedRoute path='/chat/:chatId' component={Chat} />
           <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
       </Router>
