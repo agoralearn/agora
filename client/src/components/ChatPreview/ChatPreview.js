@@ -29,7 +29,7 @@ function ChatPreview({ users, message }) {
 
   return (
     <div className='ChatPreview_wrapper'>
-      <div className='profile_img_div'>
+      <div className='ChatPreview_profile-img-div'>
         <ProfileImage
           profileImg={currentUserImage}
           style={{
@@ -56,13 +56,19 @@ function ChatPreview({ users, message }) {
           }}
         />
       </div>
-      <div className='user-preview-div'>
-        <p className='users'>{otherUserName}, me</p>
-        <div className='message-preview'>{buildMessagePreview()}</div>
+      <div className='ChatPreview_user-preview-div'>
+        <p className='ChatPreview_user-preview-div-users'>
+          {otherUserName}, me
+        </p>
+        <div className='ChatPreview_user-preview-div-message-preview'>
+          {buildMessagePreview()}
+        </div>
       </div>
-      <div className='rate-tag'>
+      <div className='ChatPreview_rate-tag'>
         <Modal
-          trigger={<button className='rate-btn'>Rate </button>}
+          trigger={
+            <button className='ChatPreview_Modal-rate-btn'>Rate </button>
+          }
           header={`Rate ${otherUserName}`}
         >
           <ReviewModal />
