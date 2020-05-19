@@ -2,11 +2,29 @@ import React from 'react';
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
 import Button from '../Button/Button';
-// import { useAuth } from '../../utils/auth';
+import { useAuth } from '../../utils/auth';
 import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
 
 function Navbar() {
+  const { isLoggedIn, logout } = useAuth();
+
+  function showLoginOrProfile() {
+    if (isLoggedIn) {
+      return (
+        <Button.Link className='color-white' onClick={logout}>
+          Logout
+        </Button.Link>
+      );
+    } else {
+      return (
+        <Link to='login'>
+          <Button.Link className='color-white'>Login</Button.Link>
+        </Link>
+      );
+    }
+  }
+
   return (
     <nav className='Navbar_wrapper'>
       <Link to='/'>
@@ -15,11 +33,7 @@ function Navbar() {
           <LogoText className='u-m-l-sm' />
         </div>
       </Link>
-      <div>
-        <Link to='login'>
-          <Button.Link className='color-white'>Login</Button.Link>
-        </Link>
-      </div>
+      <div>{showLoginOrProfile()}</div>
     </nav>
   );
 }
