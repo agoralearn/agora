@@ -16,6 +16,7 @@ import Chat from './pages/Chat/Chat';
 // import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
+import TutorBio from './pages/TutorBio/TutorBio';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -48,6 +49,7 @@ function App() {
             <Profile />
           </ProtectedRoute>
           <Route path='/chat/:chatId' component={Chat} />
+          <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
       </Router>
     </AuthProvider>
