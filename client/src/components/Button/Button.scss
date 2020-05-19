@@ -1,4 +1,4 @@
-@import "../../css/colors";
+@import '../../css/colors';
 
 .btn {
   outline: none;
@@ -9,6 +9,11 @@
   box-shadow: none;
   font-size: 16px;
   letter-spacing: 2px;
+
+  &:hover {
+    cursor: pointer;
+    background: $color-secondary;
+  }
 }
 
 .btn-light {
@@ -33,5 +38,10 @@
   padding: 0px;
   font-weight: bold;
   font-size: 16px;
-  color: $color-primary;
+  color: $color-secondary;
+  letter-spacing: 1px;
+
+  &:hover {
+    background: none;
+  }
 }
