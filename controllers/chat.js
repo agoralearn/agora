@@ -87,7 +87,7 @@ module.exports = {
   getChatsByUserId: function (req, res) {
     // all user's chats, users in the chats by name + image, last message in chat,
     const userId = req.user.id;
-
+    console.log(userId);
     db.Chat.find({
       users: userId
     })

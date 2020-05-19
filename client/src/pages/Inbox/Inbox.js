@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import ChatPreview from '../../components/ChatPreview/ChatPreview';
-// import GoBack from '../../components/GoBack/GoBack';
+import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 // import { Container } from 'semantic-ui-react';
 
 import './Inbox.scss';
 
-export default function Inbox() {
+export default function Inbox(props) {
+  console.log(props);
   const [chats, setChats] = useState([]);
-  const currentUserId = '5ec196146b0a589818189458';
+  // const currentUserId = '5ec196146b0a589818189458';
 
   useEffect(() => {
     getChats();
   }, []);
 
   const getChats = () => {
-    API.getChatsByUserId(currentUserId)
+    API.getChatsByUserId()
       .then((res) => {
         setChats(res.data);
       })
@@ -25,11 +26,9 @@ export default function Inbox() {
 
   return (
     <div className='inbox-container'>
-      {/* <GoBack
-      history={history}
-      /> */}
+      <GoBack history={props.history} />
       <PageHeader>
-        <h1 className='header-text'>Sessions</h1>
+        <h2 className='header-text'>Sessions</h2>
       </PageHeader>
       <div className='chats-div'>
         {chats.map((chat) => (

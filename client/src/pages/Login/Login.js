@@ -29,7 +29,7 @@ function Login() {
   return (
     <Container>
       <PageHeader>
-        <h1>Login</h1>
+        <h2>Login</h2>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
         <div className='Access-form'>
