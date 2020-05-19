@@ -4,8 +4,9 @@ import Badge from '../Badge/Badge';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import RatingStars from '../RatingStars/RatingStars';
 import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
 
-function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
+function TutorCard({ name, subjects, bio, rating, sessions, profileImg, id }) {
   function buildBioDisplay() {
     const MAX_BIO_LENGTH = 22;
 
@@ -28,14 +29,15 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
 
   return (
     <div className='TutorCard_wrapper'>
-      <ProfileImage
-        profileImg={profileImg}
-        style={{ height: '200px', width: '200px' }}
-      />
+      <ProfileImage profileImg={profileImg} />
 
       <div className='TutorCard_content'>
         <div>
-          <h2>{name}</h2>
+          <h2>
+            <Link to={`/tutorbio/${id}`}>
+              {name.firstName} {name.lastName}
+            </Link>
+          </h2>
         </div>
         <div className='TutorCard_badges-subjects'>
           {subjects.map((subject, index) => {
@@ -52,8 +54,8 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
           ) : null}
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <RatingStars rating={rating} />
-          <span>({sessions})</span>
+          <RatingStars rating={rating} name={name.firstName} />
+          {/* <span>({sessions})</span> */}
         </div>
         <div>{buildBioDisplay()}</div>
       </div>
@@ -62,7 +64,10 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
 }
 
 TutorCard.defaultProps = {
-  name: 'Jim Halpert',
+  name: {
+    firstName: 'Tylor',
+    lastName: 'Kolbeck'
+  },
   subjects: ['Math', 'English', 'Algebra', 'Biology'],
   bio:
     'This is a short description about me. It will have a maximum character length before it is cut off with a show more button.',

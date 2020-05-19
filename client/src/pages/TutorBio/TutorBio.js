@@ -21,6 +21,7 @@ const testTutorData = {
 };
 
 function Profile() {
+  console.log('ON BIO PAGE');
   const { firstName, lastName } = testTutorData;
   // const [messageModalOpen, setMessageModalOpen] = useState(false);
   // const [username, setUsername] = useState('');

@@ -1,0 +1,23 @@
+@import '../../css/globals';
+
+.inbox-container {
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-end;
+  padding: 10px, 0px, 10px, 0px;
+  width: 100%;
+  max-width: 600px;
+  // height: 100vh;
+  // background: rgba(#fff, 0.1);
+  // box-shadow: 2px 1px 10px rgba(#a9a6a6, 0.4);
+  // margin: 0 auto;
+  margin-top: -$navbar-height/2;
+  background-color: $color-almost-white;
+}
+.chats-div {
+  margin: 10px 0px 10px 0px;
+}
+.header-text {
+  padding-top: 20px;
+  font-weight: light;
+}

@@ -15,21 +15,30 @@ function Signup({ location }) {
     age: '',
     role: location.role || 'student',
     minGroupSize: '',
-    maxGroupSize: ''
+    maxGroupSize: '',
+    disabled: true,
+    agree: false
   });
 
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user, login } = useAuth();
 
   const history = useHistory();
 
-  if (isLoggedIn) {
-    return <Redirect to='/' />;
+  if (isLoggedIn && user) {
+    return user.role === 'student' ? (
+      <Redirect to='/tutors' />
+    ) : (
+      <Redirect to='/tutorbio' />
+    );
   }
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
     API.signUpUser(formState)
-      .then((res) => {
+      .then(() => {
+        return login(formState.email, formState.password);
+      })
+      .then(() => {
         formState.role === 'student'
           ? history.replace('/tutors')
           : history.replace('/tutorbio');
@@ -37,16 +46,30 @@ function Signup({ location }) {
       .catch((err) => alert(err));
   };
 
+  const isValid = () => {
+    return (
+      formState.firstName &&
+      formState.lastName &&
+      formState.email &&
+      formState.password &&
+      formState.agree
+    );
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({
       ...formState,
-      [name]: value
+      [name]: value,
+      disabled: !isValid()
     });
   };
 
   const handleRadioChange = (e, { value }) =>
     setFormState({ ...formState, role: value });
+
+  const handleAgree = (e, { checked }) =>
+    setFormState({ ...formState, agree: checked });
 
   return (
     <Container>
@@ -54,7 +77,7 @@ function Signup({ location }) {
         <h1>Create an Account</h1>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
-        <div className='Login-form'>
+        <div className='Access-form'>
           {/* student or tutor selection */}
           <Form.Group grouped>
             <label>I am signing up as a:</label>
@@ -80,6 +103,7 @@ function Signup({ location }) {
           <Form.Field>
             <label htmlFor='email'>Email address:</label>
             <Input
+              required
               fluid
               icon='mail'
               placeholder='Email...'
@@ -92,6 +116,7 @@ function Signup({ location }) {
           <Form.Field>
             <label htmlFor='pwd'>Password:</label>
             <Input
+              required
               fluid
               icon='lock'
               placeholder='Password...'
@@ -105,6 +130,7 @@ function Signup({ location }) {
           <Form.Field>
             <label htmlFor='firstName'>First Name:</label>
             <Input
+              required
               fluid
               icon='id badge outline'
               placeholder='First name...'
@@ -117,6 +143,7 @@ function Signup({ location }) {
           <Form.Field>
             <label htmlFor='lastName'>Last Name:</label>
             <Input
+              required
               fluid
               icon='id badge outline'
               placeholder='Last name...'
@@ -164,9 +191,22 @@ function Signup({ location }) {
               </Form.Field>
             </>
           )}
-          <Button type='submit' className='btn btn-primary'>
+          <Form.Checkbox
+            inline
+            label='I agree to the terms and conditions'
+            checked={formState.agree}
+            required
+            onChange={handleAgree}
+          />
+
+          <Button
+            disabled={formState.disabled}
+            type='submit'
+            className='btn btn-primary'
+          >
             Submit
           </Button>
+
           <Header as='h4'>
             Already have an account?{' '}
             <Link to='login'>

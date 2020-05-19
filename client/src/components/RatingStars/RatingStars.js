@@ -6,7 +6,7 @@ const stars = {
   halfStar: <i className='fas fa-star-half RatingStar'></i>
 };
 
-export default function RatingStars({ rating }) {
+export default function RatingStars({ rating, name }) {
   function buildStarRating(rating) {
     const fullStars = Math.floor(rating / 1);
     const halfStars = rating % 1 > 0 ? true : false;
@@ -16,20 +16,36 @@ export default function RatingStars({ rating }) {
       ratingArray.push(
         <span className='RatingStar-wrapper'>
           {stars.fullStar}
-          <span className='RatingStar-background--star'>
+          {/* <span className='RatingStar-background--star'>
             <i className='fas fa-star RatingStar'></i>
-          </span>
+          </span> */}
         </span>
       );
     }
 
     if (halfStars) {
       ratingArray.push(
-        <span className='RatingStar-wrapper'>{stars.halfStar}</span>
+        <span className='RatingStar-wrapper'>
+          {stars.halfStar}
+          {/* <span className='RatingStar-background--star'>
+            <i className='fas fa-star RatingStar'></i>
+          </span> */}
+        </span>
       );
     }
+
+    // while (ratingArray.length) {
+    //   ratingArray.push(
+    //     <span className='RatingStar-background--star'>
+    //       <i className='fas fa-star RatingStar'></i>
+    //     </span>
+    //   );
+    // }
+
+    console.log(ratingArray);
     return ratingArray;
   }
+
   return (
     <div>
       {buildStarRating(rating).map((star, index) => (

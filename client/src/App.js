@@ -5,12 +5,12 @@ import {
   Switch,
   Redirect
 } from 'react-router-dom';
-
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
 import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup/Signup';
+import Inbox from './pages/Inbox/Inbox';
 import Chat from './pages/Chat/Chat';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
 import Home from './pages/Home/Home';
@@ -19,38 +19,44 @@ import TutorBio from './pages/TutorBio/TutorBio';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
+  // Render children depending on how the component is
+  // passed to the route
   if (isLoggedIn) {
     return children;
   }
   return <Redirect to='/signup' />;
 }
-
 function App() {
   return (
     <AuthProvider>
       <Router>
         <NavBar />
         <Switch>
-          {/* Protecting routes - keep for reference */}
-          {/* <ProtectedRoute exact path="/">
-              <ProtectedRouteComp />
-            </ProtectedRoute> */}
           <Route exact path='/'>
             <Home />
           </Route>
           <Route component={Signup} exact path='/signup' />
+
           <Route exact path='/login'>
             <Login />
           </Route>
+
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <Route path='/chat/:chatId' component={Chat} />
-          <Route path='/tutorbio/:userId' component={TutorBio} />
+
+          <Route exact path='/tutorbio/:userId' component={TutorBio} />
+
+          <ProtectedRoute exact path='/inbox'>
+            <Route component={Inbox}></Route>
+          </ProtectedRoute>
+
+          <ProtectedRoute path='/chat/:chatId'>
+            <Route component={Chat}></Route>
+          </ProtectedRoute>
         </Switch>
       </Router>
     </AuthProvider>
   );
 }
-
 export default App;

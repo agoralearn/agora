@@ -4,7 +4,6 @@ import { useAuth } from '../../utils/auth';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Button from '../../components/Button/Button';
 import { Container, Form, Header, Input } from 'semantic-ui-react';
-import './Login.scss';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -30,10 +29,10 @@ function Login() {
   return (
     <Container>
       <PageHeader>
-        <h1>Login</h1>
+        <h2>Login</h2>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
-        <div className='Login-form'>
+        <div className='Access-form'>
           <Form.Field>
             <label htmlFor='email'>Email address:</label>
             <Input
