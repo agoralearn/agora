@@ -46,9 +46,7 @@ function App() {
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
-          <Route exact path='/inbox'>
-            <Inbox />
-          </Route>
+          <Route exact path='/inbox' component={Inbox} />
           <Route path='/chat/:chatId' component={Chat} />
           <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>

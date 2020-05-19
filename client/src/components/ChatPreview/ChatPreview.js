@@ -33,11 +33,28 @@ function ChatPreview({ users, message }) {
       <div className='profile_img_div'>
         <ProfileImage
           profileImg={currentUserImage}
-          style={{ height: '20px', width: '20px' }}
+          style={{
+            height: '25px',
+            width: '25px',
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            zIndex: '0'
+          }}
         />
         <ProfileImage
           profileImg={otherUserImage}
-          style={{ height: '20px', width: '20px' }}
+          style={{
+            height: '25px',
+            width: '25px',
+            position: 'absolute',
+            top: '5px',
+            left: '8px',
+            zIndex: '1'
+            // overflow: 'hidden',
+            // borderColor: 'green',
+            // borderWidth: '20'
+          }}
         />
       </div>
       <div className='user-preview-div'>

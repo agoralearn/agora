@@ -6,7 +6,7 @@
   padding: 10px;
   margin-bottom: 10px;
   // width: 100%;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
   // display: grid;
   // grid-gap: 10px;
   // grid-template-columns: 1fr 3fr;
@@ -17,16 +17,17 @@
 }
 
 .profile_img_div {
-  max-height: 20px;
+  // max-height: 20px;
   float: left;
   margin-right: 10px;
+  position: relative;
 }
 .user-preview-div {
   & .users {
     font-weight: 500;
   }
   color: $color-gray-dark;
-  margin-left: 10px;
+  margin-left: 45px;
   max-width: 200px;
   display: inline-block;
 }
@@ -42,4 +43,5 @@
 }
 .rate-btn {
   color: $color-primary;
+  font-size: smaller;
 }

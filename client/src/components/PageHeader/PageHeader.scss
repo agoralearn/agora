@@ -14,7 +14,10 @@
     width: 80%;
     border: 0px;
     outline: none;
-    border: 2px solid $color-primary;
+    border: 1px solid $color-primary;
     border-radius: 3px;
+  }
+  & h2 {
+    font-weight: lighter;
   }
 }
