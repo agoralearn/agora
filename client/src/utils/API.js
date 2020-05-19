@@ -20,8 +20,8 @@ export default {
   getChat: (chatId) => {
     return axios.get('/api/chat/' + chatId);
   },
-  startChat: (userArray) => {
-    return axios.post('/api/chat', { userIds: userArray });
+  startChat: (chatData) => {
+    return axios.post('/api/chat', chatData);
   },
   addMessageToChat: (chatId, message) => {
     return axios.post('/api/chat/message', {

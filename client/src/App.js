@@ -40,7 +40,6 @@ function App() {
           <Route exact path='/login'>
             <Login />
           </Route>
-
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>
