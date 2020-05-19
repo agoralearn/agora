@@ -105,6 +105,7 @@ export default function Home() {
                 name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
                 rating={tutor.rating}
                 bio={tutor.bio}
+                id={tutor._id}
               />
             );
           })}

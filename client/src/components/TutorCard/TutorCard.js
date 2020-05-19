@@ -4,8 +4,9 @@ import Badge from '../Badge/Badge';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import RatingStars from '../RatingStars/RatingStars';
 import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
 
-function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
+function TutorCard({ name, subjects, bio, rating, sessions, profileImg, id }) {
   function buildBioDisplay() {
     const MAX_BIO_LENGTH = 22;
 
@@ -33,7 +34,9 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
       <div className='TutorCard_content'>
         <div>
           <h2>
-            {name.firstName} {name.lastName}
+            <Link to={`/tutorbio/${id}`}>
+              {name.firstName} {name.lastName}
+            </Link>
           </h2>
         </div>
         <div className='TutorCard_badges-subjects'>
