@@ -13,11 +13,20 @@ export default function RatingStars({ rating }) {
     const ratingArray = [];
 
     for (let i = 0; i < fullStars; i++) {
-      ratingArray.push(<span>{stars.fullStar}</span>);
+      ratingArray.push(
+        <span className='RatingStar-wrapper'>
+          {stars.fullStar}
+          <span className='RatingStar-background--star'>
+            <i className='fas fa-star RatingStar'></i>
+          </span>
+        </span>
+      );
     }
 
     if (halfStars) {
-      ratingArray.push(stars.halfStar);
+      ratingArray.push(
+        <span className='RatingStar-wrapper'>{stars.halfStar}</span>
+      );
     }
     return ratingArray;
   }

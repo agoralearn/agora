@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Home.scss';
 import Hero from '../../components/Hero/Hero';
 import PageHeader from '../../components/PageHeader/PageHeader';
@@ -36,8 +37,22 @@ export default function Home() {
             <h3 className='color-white u-m-t'>Sign Up As A...</h3>
             <div>
               <div className='Home_Hero-btns'>
-                <Button className='btn btn-secondary'>TUTOR</Button>
-                <Button className='btn btn-secondary'>STUDENT</Button>
+                <Link
+                  to={{
+                    pathname: '/signup',
+                    role: 'tutor'
+                  }}
+                >
+                  <Button className='btn btn-secondary'>TUTOR</Button>
+                </Link>
+                <Link
+                  to={{
+                    pathname: '/signup',
+                    role: 'student'
+                  }}
+                >
+                  <Button className='btn btn-secondary'>STUDENT</Button>
+                </Link>
               </div>
             </div>
             <Button.Link className='color-white'>

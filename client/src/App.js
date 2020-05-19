@@ -14,9 +14,9 @@ import Signup from './pages/Signup/Signup';
 import Inbox from './pages/Inbox/Inbox';
 import Chat from './pages/Chat/Chat';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
-// import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
+import TutorBio from './pages/TutorBio/TutorBio';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -39,9 +39,7 @@ function App() {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route exact path='/signup'>
-            <Signup />
-          </Route>
+          <Route component={Signup} exact path='/signup' />
           <Route exact path='/login'>
             <Login />
           </Route>
@@ -52,6 +50,7 @@ function App() {
             <Inbox />
           </Route>
           <Route path='/chat/:chatId' component={Chat} />
+          <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
       </Router>
     </AuthProvider>
