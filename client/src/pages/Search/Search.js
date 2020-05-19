@@ -9,10 +9,10 @@ function Search() {
   const [tutors, setTutors] = useState([]);
   const [search, setSearch] = useState({
     subject: 'All',
-    education: '',
+    education: 'All',
     groupSize: 1,
     rating: 3,
-    price: null
+    price: 'All'
   });
 
   const subjectArray = [
@@ -68,7 +68,7 @@ function Search() {
 
   const groupSizes = groupSizeArray.map((size) => ({
     key: size,
-    value: size,
+    value: size.replace(/\D/g, ''),
     text: size
   }));
 
@@ -81,10 +81,28 @@ function Search() {
   ];
 
   useEffect(() => {
-    API.getTutors()
+    function getFilterParams() {
+      const filter = {};
+
+      if (search.subject !== 'All') {
+        filter.subject = search.subject;
+      }
+      if (search.education !== 'All') {
+        filter.education = search.education;
+      }
+      if (search.price !== 'All') {
+        filter.price = search.price;
+      }
+      filter.groupSize = search.groupSize;
+      filter.rating = search.rating;
+
+      return filter;
+    }
+
+    API.getTutors(getFilterParams())
       .then((res) => setTutors(res.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [search]);
 
   const handleChange = (e, { name, value }) => {
     setSearch({
