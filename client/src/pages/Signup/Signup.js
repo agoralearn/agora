@@ -30,9 +30,9 @@ function Signup({ location }) {
     event.preventDefault();
     API.signUpUser(formState)
       .then((res) => {
-        // once the student has signed up
-        // send them to the tutor search page
-        history.replace('/tutors');
+        formState.role === 'student'
+          ? history.replace('/tutors')
+          : history.replace('/tutorbio');
       })
       .catch((err) => alert(err));
   };

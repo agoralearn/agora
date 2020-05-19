@@ -46,6 +46,7 @@ function App() {
             <Profile />
           </ProtectedRoute>
           <Route path='/chat/:chatId' component={Chat} />
+          <Route path='/tutorbio/:userId' component={TutorBio} />
         </Switch>
       </Router>
     </AuthProvider>
