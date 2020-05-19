@@ -28,17 +28,22 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-// app.use('/api/user', usersRouter);
 // app.use("/api/tutor", tutorRouter)
 
-app.use(authRouter, usersRouter, errorMiddleware);
+app.use(authRouter, errorMiddleware);
 
 // Leave for reference incase I f'd something up
 // app.use('/api', searchRouter);
 // app.use(chatRouter);
 
-app.use('/api/tutors', searchRouter);
-app.use('/api/chat', chatRouter);
+// The logged in user
+app.use('/api/user', usersRouter); // Good
+
+// Search or viewing tutor profile
+app.use('/api/tutors', searchRouter); // Good
+
+// Logged in user chat stuff
+app.use('/api/chat', chatRouter); // Good
 
 // Send all other requests to react app
 app.get('*', (req, res) => {
