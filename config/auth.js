@@ -8,6 +8,7 @@ module.exports = {
         email: email
       })
         .then((user) => {
+          console.log(user, password);
           user.verifyPassword(password, (err, isMatch) => {
             if (isMatch && !err) {
               const token = jwt.sign(
