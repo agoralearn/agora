@@ -33,7 +33,7 @@ function Login() {
         <h1>Login</h1>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
-        <div className='Login-form'>
+        <div className='Access-form'>
           <Form.Field>
             <label htmlFor='email'>Email address:</label>
             <Input
