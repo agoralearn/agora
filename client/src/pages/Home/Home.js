@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.scss';
 import Hero from '../../components/Hero/Hero';
@@ -6,6 +6,7 @@ import PageHeader from '../../components/PageHeader/PageHeader';
 import Section from '../../components/Section/Section';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
+import API from '../../utils/API';
 
 import {
   SearchIcon,
@@ -14,6 +15,14 @@ import {
 } from '../../components/Icons/Icons';
 
 export default function Home() {
+  const [topRated, setTopRated] = useState([]);
+
+  useEffect(() => {
+    API.getTutors().then(({ data }) => {
+      setTopRated(data);
+    });
+  }, []);
+
   return (
     <div className='Home_wrapper'>
       {/* Hero Component */}
@@ -87,7 +96,18 @@ export default function Home() {
           <h2>Top Rated Tutors</h2>
         </PageHeader>
         <div>
-          <TutorCard />
+          {topRated.map((tutor) => {
+            return (
+              <TutorCard
+                key={tutor._id}
+                subjects={tutor.subjects}
+                profileImg={tutor.image}
+                name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
+                rating={tutor.rating}
+                bio={tutor.bio}
+              />
+            );
+          })}
         </div>
       </Section>
     </div>

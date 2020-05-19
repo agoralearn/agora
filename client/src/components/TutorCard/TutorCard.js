@@ -32,7 +32,9 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
 
       <div className='TutorCard_content'>
         <div>
-          <h2>{name}</h2>
+          <h2>
+            {name.firstName} {name.lastName}
+          </h2>
         </div>
         <div className='TutorCard_badges-subjects'>
           {subjects.map((subject, index) => {
@@ -49,8 +51,8 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
           ) : null}
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <RatingStars rating={rating} />
-          <span>({sessions})</span>
+          <RatingStars rating={rating} name={name.firstName} />
+          {/* <span>({sessions})</span> */}
         </div>
         <div>{buildBioDisplay()}</div>
       </div>
@@ -59,7 +61,10 @@ function TutorCard({ name, subjects, bio, rating, sessions, profileImg }) {
 }
 
 TutorCard.defaultProps = {
-  name: 'Jim Halpert',
+  name: {
+    firstName: 'Tylor',
+    lastName: 'Kolbeck'
+  },
   subjects: ['Math', 'English', 'Algebra', 'Biology'],
   bio:
     'This is a short description about me. It will have a maximum character length before it is cut off with a show more button.',
