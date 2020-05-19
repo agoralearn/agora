@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import API from '../../utils/API';
-import { Container, Header } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 
 function Search() {
   const [tutors, setTutors] = useState([]);
