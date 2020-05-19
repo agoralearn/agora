@@ -6,14 +6,14 @@ import { Container, Form, Header, Input, Radio } from 'semantic-ui-react';
 import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
-function Signup({ role }) {
+function Signup({ location }) {
   const [formState, setFormState] = useState({
     firstName: '',
     lastName: '',
     email: '',
     password: '',
     age: '',
-    role: role,
+    role: location.role || 'student',
     minGroupSize: '',
     maxGroupSize: ''
   });
@@ -38,7 +38,6 @@ function Signup({ role }) {
   };
 
   const handleChange = (event) => {
-    console.log(event.target.name);
     const { name, value } = event.target;
     setFormState({
       ...formState,
@@ -179,9 +178,5 @@ function Signup({ role }) {
     </Container>
   );
 }
-
-Signup.defaultProps = {
-  role: 'student'
-};
 
 export default Signup;
