@@ -1,4 +1,22 @@
+.RatingStar-wrapper {
+  position: relative;
+}
+
 .RatingStar {
   font-size: 14px;
   color: gold;
+  z-index: 1;
+}
+
+.fa-star-half {
+  z-index: 10;
+}
+
+.RatingStar-background--star {
+  position: absolute;
+  top: 0;
+  & i {
+    color: darkgrey;
+    z-index: -1;
+  }
 }
