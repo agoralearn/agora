@@ -54,7 +54,7 @@ function Signup({ location }) {
         <h1>Create an Account</h1>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
-        <div className='Login-form'>
+        <div className='Access-form'>
           {/* student or tutor selection */}
           <Form.Group grouped>
             <label>I am signing up as a:</label>
