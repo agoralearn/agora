@@ -7,7 +7,8 @@ import PageHeader from '../../components/PageHeader/PageHeader';
 
 import './Inbox.scss';
 
-export default function Inbox({ history }) {
+export default function Inbox(props) {
+  console.log(props);
   const [chats, setChats] = useState([]);
   // const currentUserId = '5ec196146b0a589818189458';
 
@@ -25,7 +26,7 @@ export default function Inbox({ history }) {
 
   return (
     <div className='inbox-container'>
-      <GoBack history={history} />
+      <GoBack history={props.history} />
       <PageHeader>
         <h2 className='header-text'>Sessions</h2>
       </PageHeader>
