@@ -2,14 +2,14 @@ import axios from 'axios';
 export default {
   // Gets a single user by id
   getUser: () => {
-    return axios.get(`/api/user`);
+    return axios.get('/api/user');
   },
   // sign up a user to our service
   signUpUser: (user) => {
     return axios.post('/api/user', user);
   },
   updateUser: () => {
-    return axios.patch(`/api/user`);
+    return axios.patch('/api/user');
   },
   getTutors: (filters) => {
     return axios.get('/api/tutors', { params: filters });
