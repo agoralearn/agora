@@ -7,6 +7,13 @@ import './Search.scss';
 
 function Search() {
   const [tutors, setTutors] = useState([]);
+  const [search, setSearch] = useState({
+    subject: 'All',
+    education: '',
+    groupSize: 1,
+    rating: 3,
+    price: null
+  });
 
   const subjectArray = [
     'All',
@@ -79,6 +86,13 @@ function Search() {
       .catch((err) => console.log(err));
   }, []);
 
+  const handleChange = (e, { name, value }) => {
+    setSearch({
+      ...search,
+      [name]: value
+    });
+  };
+
   const renderTutors = () => {
     return tutors.map((tutor) => (
       <TutorCard
@@ -100,10 +114,12 @@ function Search() {
           <label htmlFor='subject'>Subject</label>
           <Dropdown
             id='subject'
+            name='subject'
             placeholder='Select Subject'
             fluid
             selection
             options={subjects}
+            onChange={handleChange}
           />
         </Form.Field>
         <Form.Group widths='equal'>
@@ -111,20 +127,24 @@ function Search() {
             <label htmlFor='education'>Education Level</label>
             <Dropdown
               id='education'
+              name='education'
               placeholder='Select Education'
               fluid
               selection
               options={educations}
+              onChange={handleChange}
             />
           </Form.Field>
           <Form.Field>
             <label htmlFor='price'>Max Price</label>
             <Dropdown
               id='price'
+              name='price'
               placeholder='Select Price'
               fluid
               selection
               options={prices}
+              onChange={handleChange}
             />
           </Form.Field>
         </Form.Group>
@@ -133,20 +153,24 @@ function Search() {
             <label htmlFor='group'>Group Size</label>
             <Dropdown
               id='group'
+              name='groupSize'
               fluid
               selection
               defaultValue='1'
               options={groupSizes}
+              onChange={handleChange}
             />
           </Form.Field>
           <Form.Field>
             <label htmlFor='rating'>Rating</label>
             <Dropdown
               id='rating'
+              name='rating'
               fluid
               selection
               defaultValue='3'
               options={ratings}
+              onChange={handleChange}
             />
           </Form.Field>
         </Form.Group>
