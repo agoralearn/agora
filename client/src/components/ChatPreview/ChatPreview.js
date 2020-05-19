@@ -5,9 +5,8 @@ import ProfileImage from '../ProfileImage/ProfileImage';
 function ChatPreview({ users, message }) {
   // const currentUserName = users[0].firstName + users[0].lastName;
   const currentUserImage = users[0].image;
-  const otherUserName = users[1].firstName + users[1].lastName;
+  const otherUserName = users[1].firstName + ' ' + users[1].lastName;
   const otherUserImage = users[1].image;
-  const profileImgStyle = '{height: 100% }';
 
   function buildMessagePreview() {
     const preview = message[0].message;
@@ -33,10 +32,18 @@ function ChatPreview({ users, message }) {
           profileImg={currentUserImage}
           style={{ height: '20px', width: '20px' }}
         />
-        <ProfileImage profileImg={otherUserImage} />
+        <ProfileImage
+          profileImg={otherUserImage}
+          style={{ height: '20px', width: '20px' }}
+        />
       </div>
-      <p>{otherUserName}, me</p>
-      <div>{buildMessagePreview()}</div>
+      <div className='user-preview-div'>
+        <p className='users'>{otherUserName}, me</p>
+        <div className='message-preview'>{buildMessagePreview()}</div>
+      </div>
+      <div className='rate-tag'>
+        <a href='/'>Rate</a>
+      </div>
     </div>
   );
 }

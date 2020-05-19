@@ -9,10 +9,12 @@ import LogoText from '../../components/LogoText/LogoText';
 function Navbar() {
   return (
     <nav className='Navbar_wrapper'>
-      <div className='Navbar_logo'>
-        <Logo />
-        <LogoText className='u-m-l-sm' />
-      </div>
+      <Link to='/'>
+        <div className='Navbar_logo'>
+          <Logo />
+          <LogoText className='u-m-l-sm' />
+        </div>
+      </Link>
       <div>
         <Link to='login'>
           <Button.Link className='color-white'>Login</Button.Link>

@@ -12,6 +12,7 @@ import Login from './pages/Login/Login';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup/Signup';
 import Inbox from './pages/Inbox/Inbox';
+import Chat from './pages/Chat/Chat';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
 // import Navbar from './components/Navbar/Navbar';
 import Home from './pages/Home/Home';
@@ -50,6 +51,7 @@ function App() {
           <Route exact path='/inbox'>
             <Inbox />
           </Route>
+          <Route path='/chat/:chatId' component={Chat} />
         </Switch>
       </Router>
     </AuthProvider>
