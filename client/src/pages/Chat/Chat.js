@@ -45,10 +45,11 @@ export default function Chat({ match, history }) {
     // Scroll to bottom on page load if message list is long
     chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
 
-    let chatId = match.params.chatId;
+    const chatId = match.params.chatId;
+    console.log(chatId);
     // Make database call to get messages
     // when page first loads here
-  }, []);
+  }, [match.params.chatId]);
 
   function messageInputChangeHandler(event) {
     setMessageInput(event.target.value);
