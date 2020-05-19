@@ -3,7 +3,7 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Button from '../../components/Button/Button';
-import { Container, Form, Header } from 'semantic-ui-react';
+import { Container, Form, Header, Input } from 'semantic-ui-react';
 import './Login.scss';
 
 function Login() {
@@ -36,8 +36,10 @@ function Login() {
         <div className='Login-form'>
           <Form.Field>
             <label htmlFor='email'>Email address:</label>
-            <input
+            <Input
+              fluid
               placeholder='Email...'
+              icon='mail'
               name='email'
               type='email'
               id='email'
@@ -47,8 +49,10 @@ function Login() {
           </Form.Field>
           <Form.Field>
             <label htmlFor='pwd'>Password:</label>
-            <input
+            <Input
+              fluid
               placeholder='Password...'
+              icon='lock'
               name='password'
               type='password'
               id='pwd'

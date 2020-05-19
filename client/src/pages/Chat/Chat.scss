@@ -1,0 +1,178 @@
+@import "../../css/globals";
+
+.Chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  background: rgba(#fff, 0.1);
+  box-shadow: 2px 1px 10px rgba(#a9a6a6, 0.4);
+  margin: 0 auto;
+  margin-top: -$navbar-height;
+}
+
+.Chat-users {
+  position: absolute;
+  top: $navbar-height;
+  // background: lightgrey;
+  right: 0;
+  left: 0;
+  padding: 10px;
+  background: white;
+
+  & i {
+    margin-right: 4px;
+  }
+
+  & .Chat-users--names {
+    // background: lightgrey;
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+.Chat-log {
+  box-sizing: border-box;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.Chat-message {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  transition: all 0.5s;
+
+  // Other user variation
+  &--right {
+    flex-direction: row-reverse;
+
+    .chat-message__text {
+      background: dodgerblue;
+      color: black;
+    }
+
+    .chat-message__avatar-frame {
+      margin-left: 16px;
+      margin-right: 0;
+    }
+  }
+}
+
+.Chat-message + .Chat-message--right,
+.Chat-message--right + .Chat-message {
+  margin-top: 32px;
+}
+
+.Chat-message--right .Chat-message__text {
+  background: $color-primary;
+}
+
+// Add a corner on first message for user
+.Chat-message:not(.chat-message--right) + .Chat-message--right {
+  .Chat-message__text {
+    border-radius: 18px 0 18px 18px;
+  }
+}
+
+.Chat-message:first-of-type,
+.Chat-message--right + .Chat-message:not(.Chat-message--right) {
+  .Chat-message__text {
+    border-radius: 0 18px 18px;
+  }
+}
+
+// Handle consecutive messages:
+// Remove extra space
+// Hide avatar
+.Chat-message:not(.Chat-message--right) + .Chat-message:not(.Chat-message--right),
+.Chat-message--right + .Chat-message--right {
+  margin-top: 0;
+
+  .Chat-message__avatar-frame {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.Chat-message__avatar-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 16px;
+  background: lightGrey;
+}
+
+.Chat-message--right .Chat-message__avatar-frame {
+  margin-left: 16px;
+}
+
+.Chat-message__avatar {
+  height: 100%;
+}
+
+.Chat-message__text {
+  display: block;
+  max-width: 65%;
+  background: $color-secondary;
+  border-radius: 14px;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 300;
+  color: $color-white;
+
+  animation-duration: 0.3s;
+  animation-name: fly-in;
+}
+
+// Chat input area
+.Chat-input-area {
+  position: relative;
+  border-top: 1px solid lightgrey;
+}
+
+.Chat-input-area__input {
+  width: 100%;
+  background: rgba(#fff, 0.3);
+  border: none;
+  box-sizing: border-box;
+  padding: 20px;
+  padding-right: calc(#{50px} + 20px);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.Chat-input-area__submit-button {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  bottom: 0;
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
+  // background-image: url("../images/paper-plane.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  margin: auto;
+  color: $color-primary;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
