@@ -1,4 +1,4 @@
-@import "../../css/globals";
+@import '../../css/globals';
 
 .Navbar_wrapper {
   position: absolute;
@@ -16,4 +16,11 @@
 .Navbar_logo {
   display: flex;
   align-items: center;
+}
+
+.Navbar_profile {
+  display: inline-block;
+}
+.Navbar_profile-dropdown {
+  float: right;
 }

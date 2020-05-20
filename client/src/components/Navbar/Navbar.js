@@ -16,23 +16,62 @@ function Navbar() {
     function navigateToProfile() {
       history.push('/profile');
     }
-    if (isLoggedIn) {
+    function navigateToBio() {
+      history.push('/tutorbio/' + user.id);
+    }
+    if (isLoggedIn && user.role === 'student') {
       return (
-        // <Button.Link className='color-white' onClick={logout}>
-        //   Logout
-        // </Button.Link>
-        <span>
+        <span className='Navbar_profile'>
           <ProfileImage
             profileImg={user.image}
             style={{
               height: '25px',
-              width: '25px'
+              width: '25px',
+              float: 'left'
             }}
           />
 
-          <Dropdown item simple text='' direction='left'>
+          <Dropdown
+            item
+            simple
+            text=''
+            direction='left'
+            className='Navbar_profile-dropdown'
+          >
             <Dropdown.Menu>
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
+              <Dropdown.Item
+                text='Logout'
+                onClick={() => {
+                  logout();
+                }}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+        </span>
+      );
+    } else if (isLoggedIn && user.role === 'tutor') {
+      return (
+        <span className='Navbar_profile'>
+          <ProfileImage
+            profileImg={user.image}
+            style={{
+              height: '25px',
+              width: '25px',
+              float: 'left'
+            }}
+          />
+
+          <Dropdown
+            item
+            simple
+            text=''
+            direction='left'
+            className='Navbar_profile-dropdown'
+          >
+            <Dropdown.Menu>
+              <Dropdown.Item text='Profile' onClick={navigateToProfile} />
+              <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
               <Dropdown.Item
                 text='Logout'
                 onClick={() => {
