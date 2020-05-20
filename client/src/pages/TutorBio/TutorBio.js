@@ -1,33 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 // import { useAuth } from '../utils/auth';
 import Modal from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
+import { Dimmer, Loader, List, Container } from 'semantic-ui-react';
 
-const testTutorData = {
-  firstName: 'Tylor',
-  lastName: 'Kolbeck',
-  role: 'tutor',
-  image: '',
-  bio: 'This is my bio',
-  subjects: ['Math', 'English', 'Things'],
-  minGroupSize: 1,
-  maxGroupSize: 10,
-  age: 30,
-  education: ['High School Drop Out'],
-  rating: 2.3,
-  price: 900
-};
-// matthew bishop userIds: ['5ec196146b0a58981818945a']
-
-function Profile({ match }) {
-  console.log(match.params.userId);
-  const { firstName, lastName } = testTutorData;
+function TutorBio({ match }) {
+  const [tutor, setTutor] = useState(null);
   const [chatState, setChatState] = useState({
     userIds: [match.params.userId],
     message: ''
   });
+
+  useEffect(() => {
+    API.getTutorById(match.params.userId)
+      .then((res) => {
+        console.log(res.data);
+        setTutor(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [match.params.userId]);
+
   function startChat() {
     console.log(chatState);
     if (chatState.message.trim() !== '') {
@@ -39,6 +35,7 @@ function Profile({ match }) {
     }
     return;
   }
+
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -53,36 +50,46 @@ function Profile({ match }) {
     startChat();
     setChatState({ ...chatState, message: '' });
   }
-  // const [messageModalOpen, setMessageModalOpen] = useState(false);
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // // const { user } = useAuth();
 
-  // useEffect(() => {
-  //   API.getUser(user.id).then((res) => {
-  //     setUsername(res.data.username);
-  //     setEmail(res.data.email);
-  //   });
-  // }, [user]);
+  function renderLoader() {
+    return (
+      <Dimmer active inverted>
+        <Loader inverted content='Loading' />
+      </Dimmer>
+    );
+  }
 
   return (
     <div>
-      <Modal
-        trigger={
-          <Button className='btn-primary' style={{ margin: '20px' }}>
-            Book{' '}
-          </Button>
-        }
-        header={`Contact ${firstName} ${lastName}`}
-      >
-        <MessageModal
-          onMessageChange={handleChange}
-          handleFormSubmit={handleFormSubmit}
-        />
-      </Modal>
-      Tutor Bio
+      {!tutor ? (
+        renderLoader()
+      ) : (
+        <>
+          <Modal
+            trigger={
+              <Button className='btn-primary' style={{ margin: '20px' }}>
+                Book{' '}
+              </Button>
+            }
+            header={`Contact ${tutor.firstName} ${tutor.lastName}`}
+          >
+            <MessageModal
+              onMessageChange={handleChange}
+              handleFormSubmit={handleFormSubmit}
+            />
+          </Modal>
+          <Container>
+            <h3>Subjects</h3>
+            <List horizontal>
+              {tutor.subjects.map((subject) => (
+                <List.Item key={subject}>{subject}</List.Item>
+              ))}
+            </List>
+          </Container>
+        </>
+      )}
     </div>
   );
 }
 
-export default Profile;
+export default TutorBio;
