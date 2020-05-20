@@ -105,6 +105,7 @@ module.exports = {
     db.Chat.find({
       users: userId
     })
+      .sort({ updatedAt: 'desc' })
       .populate({
         path: 'users',
         select: 'firstName lastName image'
@@ -118,7 +119,6 @@ module.exports = {
           limit: 1
         }
       })
-      // .populate('userIds')
       .then((data) => {
         if (data) {
           res.json(data);
