@@ -4,7 +4,12 @@ import API from '../../utils/API';
 import Modal from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
+import Badge from '../../components/Badge/Badge';
+import GoBack from '../../components/GoBack/GoBack';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import { Dimmer, Loader, List, Container } from 'semantic-ui-react';
+import './TutorBio.scss';
 
 function TutorBio({ match }) {
   const [tutor, setTutor] = useState(null);
@@ -60,11 +65,16 @@ function TutorBio({ match }) {
   }
 
   return (
-    <div>
+    <div className='bio-container'>
       {!tutor ? (
         renderLoader()
       ) : (
-        <>
+        <div>
+          <GoBack />
+          <PageHeader>
+            <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
+          </PageHeader>
+          <ProfileImage profileImg={tutor.image} style={{ margin: '0 auto' }} />
           <Modal
             trigger={
               <Button className='btn-primary' style={{ margin: '20px' }}>
@@ -79,14 +89,26 @@ function TutorBio({ match }) {
             />
           </Modal>
           <Container>
-            <h3>Subjects</h3>
+            <h3 className='u-m-t u-m-b'>Subjects</h3>
             <List horizontal>
               {tutor.subjects.map((subject) => (
-                <List.Item key={subject}>{subject}</List.Item>
+                <List.Item className='color-secondary' key={subject}>
+                  <Badge>{subject}</Badge>
+                </List.Item>
               ))}
             </List>
+            <h3 className='u-m-t u-m-b'>Education</h3>
+            <List horizontal>
+              {tutor.education.map((edu) => (
+                <List.Item className='color-secondary' key={edu}>
+                  <Badge>{edu}</Badge>
+                </List.Item>
+              ))}
+            </List>
+            <h3 className='u-m-t u-m-b'>About Me</h3>
+            <p>{tutor.bio}</p>
           </Container>
-        </>
+        </div>
       )}
     </div>
   );
