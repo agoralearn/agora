@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useReducer } from 'react';
+// import { useAuth } from '../../utils/auth';
+// const { user } = useAuth();
 
 export default function ChatBubble({ text, recieved, thumbnail }) {
   return (

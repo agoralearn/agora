@@ -1,5 +1,4 @@
 const db = require('../models');
-
 module.exports = {
   // Start a new chat
   // Pass two user ids in userIds in the body
@@ -42,13 +41,10 @@ module.exports = {
       });
     });
   },
-
   addMessageToChat: function (req, res) {
     // Check if the user belongs to the chat first
     // First create the message
-
     const senderId = req.user.id;
-
     db.Message.create({
       sender: senderId,
       read: [senderId],
@@ -57,7 +53,6 @@ module.exports = {
       // Add the message the associated chat
       .then((message) => {
         const messageId = message._id;
-
         return db.Chat.findByIdAndUpdate(req.body.chatId, {
           $push: { messages: messageId }
         });
@@ -71,20 +66,30 @@ module.exports = {
         console.log(err);
         res.send(500).json({ message: err.message });
       });
-
     // Add the message's ID to the associated chat
   },
   getChat: function (req, res) {
+    console.log(req.params.chatId);
+    console.log(db.Chat);
     db.Chat.findById(req.params.chatId)
+      .populate({
+        path: 'users',
+        select: 'firstName lastName image '
+      })
       .populate('messages')
+      // .populate('messages')
+      // .populate('users')
       .then((data) => {
-        if (data && data.users.includes(req.user.id)) {
+        if (data) {
           res.json(data);
         } else {
           res.status(404).send({ success: false, message: 'No chat found' });
         }
       })
-      .catch((err) => res.status(400).send(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(400).send(err);
+      });
   },
   getChatsByUserId: function (req, res) {
     // all user's chats, users in the chats by name + image, last message in chat,
