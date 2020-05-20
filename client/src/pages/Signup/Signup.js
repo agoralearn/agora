@@ -20,10 +20,10 @@ function Signup({ location }) {
     email: '',
     password: '',
     confirmPassword: '',
-    age: '',
+    age: '1',
     role: location.role || 'student',
-    minGroupSize: '',
-    maxGroupSize: '',
+    minGroupSize: '1',
+    maxGroupSize: '1',
     agree: false
   });
   const [error, setError] = useState('');
@@ -46,6 +46,13 @@ function Signup({ location }) {
     }
     if (formState.password !== formState.confirmPassword) {
       return setError('Your passwords do not match.');
+    }
+    if (formState.role === 'tutor') {
+      if (formState.maxGroupSize < formState.minGroupSize) {
+        return setError(
+          'Maximum group size must be greater than minimum group size.'
+        );
+      }
     }
 
     setLoading(true);
@@ -183,10 +190,12 @@ function Signup({ location }) {
             <Form.Field>
               <label htmlFor='age'>Age:</label>
               <Input
+                required
                 fluid
                 placeholder='Age...'
                 name='age'
                 type='number'
+                min='1'
                 id='age'
                 onChange={handleChange}
               />
@@ -196,10 +205,13 @@ function Signup({ location }) {
               <Form.Field>
                 <label htmlFor='minGroupSize'>Minimum Group Size:</label>
                 <Input
+                  required
                   fluid
                   placeholder='Min students per session...'
                   name='minGroupSize'
                   type='number'
+                  min='1'
+                  defaultValue='1'
                   id='minGroupSize'
                   onChange={handleChange}
                 />
@@ -207,10 +219,13 @@ function Signup({ location }) {
               <Form.Field>
                 <label htmlFor='maxGroupSize'>Maximum Group Size:</label>
                 <Input
+                  required
                   fluid
                   placeholder='Max students per session...'
                   name='maxGroupSize'
                   type='number'
+                  min='1'
+                  defaultValue='1'
                   id='maxGroupSize'
                   onChange={handleChange}
                 />
@@ -224,7 +239,7 @@ function Signup({ location }) {
             checked={formState.agree}
             onChange={handleAgree}
           />
-          <Message error header='Oh fuck!' content={error} />
+          <Message error header='Whoops!' content={error} />
           <Button
             disabled={formState.disabled}
             type='submit'
