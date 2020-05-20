@@ -17,7 +17,7 @@ function Login() {
     return user.role === 'student' ? (
       <Redirect to='/tutors' />
     ) : (
-      <Redirect to={'/profile'} />
+      <Redirect to='/profile' />
     );
   }
 
@@ -26,8 +26,12 @@ function Login() {
 
     setLoading(true);
     login(email, password)
-      // navigate to the profile page
-      .then(() => history.push('/profile'))
+      // navigate to user's inbox
+      .then((user) => {
+        user.role === 'student'
+          ? history.push('/tutors')
+          : history.push('/profile');
+      })
       .catch((err) => {
         setLoading(false);
         setError(err.response.data.message);
