@@ -26,7 +26,7 @@ function ProtectedRoute({ children, ...rest }) {
   if (isLoggedIn) {
     return children;
   }
-  return <Redirect to='/signup' />;
+  return <Redirect to='/' />;
 }
 
 function App() {
