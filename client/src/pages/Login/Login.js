@@ -3,11 +3,13 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import Button from '../../components/Button/Button';
-import { Container, Form, Header, Input } from 'semantic-ui-react';
+import { Container, Form, Header, Input, Message } from 'semantic-ui-react';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { isLoggedIn, login } = useAuth();
   const history = useHistory();
 
@@ -18,11 +20,13 @@ function Login() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
+    setLoading(true);
     login(email, password)
       // navigate to the profile page
       .then(() => history.push('/profile'))
       .catch((err) => {
-        alert(err.response.data.message);
+        setLoading(false);
+        setError(err.response.data.message);
       });
   };
 
@@ -31,12 +35,13 @@ function Login() {
       <PageHeader>
         <h2>Login</h2>
       </PageHeader>
-      <Form onSubmit={handleFormSubmit}>
+      <Form onSubmit={handleFormSubmit} error={error !== ''} loading={loading}>
         <div className='Access-form'>
           <Form.Field>
-            <label htmlFor='email'>Email address:</label>
+            <label htmlFor='email'>Email address</label>
             <Input
               fluid
+              required
               placeholder='Email...'
               icon='mail'
               iconPosition='left'
@@ -48,9 +53,10 @@ function Login() {
             />
           </Form.Field>
           <Form.Field>
-            <label htmlFor='pwd'>Password:</label>
+            <label htmlFor='pwd'>Password</label>
             <Input
               fluid
+              required
               placeholder='Password...'
               icon='lock'
               iconPosition='left'
@@ -61,6 +67,7 @@ function Login() {
               onChange={({ target }) => setPassword(target.value)}
             />
           </Form.Field>
+          <Message error header='Authentication Error' content={error} />
           <Button type='submit' className='btn btn-primary'>
             Submit
           </Button>
