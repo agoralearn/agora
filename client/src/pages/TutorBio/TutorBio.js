@@ -1,33 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 // import { useAuth } from '../utils/auth';
 import Modal from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
+import Badge from '../../components/Badge/Badge';
+import GoBack from '../../components/GoBack/GoBack';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import ProfileImage from '../../components/ProfileImage/ProfileImage';
+import { Dimmer, Loader, List, Container, Grid, Icon } from 'semantic-ui-react';
+import './TutorBio.scss';
 
-const testTutorData = {
-  firstName: 'Tylor',
-  lastName: 'Kolbeck',
-  role: 'tutor',
-  image: '',
-  bio: 'This is my bio',
-  subjects: ['Math', 'English', 'Things'],
-  minGroupSize: 1,
-  maxGroupSize: 10,
-  age: 30,
-  education: ['High School Drop Out'],
-  rating: 2.3,
-  price: 900
-};
-// matthew bishop userIds: ['5ec196146b0a58981818945a']
-
-function Profile({ match }) {
-  console.log(match.params.userId);
-  const { firstName, lastName } = testTutorData;
+function TutorBio({ match }) {
+  const [tutor, setTutor] = useState(null);
   const [chatState, setChatState] = useState({
     userIds: [match.params.userId],
     message: ''
   });
+
+  useEffect(() => {
+    API.getTutorById(match.params.userId)
+      .then((res) => {
+        console.log(res.data);
+        setTutor(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [match.params.userId]);
+
   function startChat() {
     console.log(chatState);
     if (chatState.message.trim() !== '') {
@@ -39,6 +40,7 @@ function Profile({ match }) {
     }
     return;
   }
+
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -53,36 +55,81 @@ function Profile({ match }) {
     startChat();
     setChatState({ ...chatState, message: '' });
   }
-  // const [messageModalOpen, setMessageModalOpen] = useState(false);
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // // const { user } = useAuth();
 
-  // useEffect(() => {
-  //   API.getUser(user.id).then((res) => {
-  //     setUsername(res.data.username);
-  //     setEmail(res.data.email);
-  //   });
-  // }, [user]);
+  function renderLoader() {
+    return (
+      <Dimmer active inverted>
+        <Loader inverted content='Loading' />
+      </Dimmer>
+    );
+  }
 
   return (
-    <div>
-      <Modal
-        trigger={
-          <Button className='btn-primary' style={{ margin: '20px' }}>
-            Book{' '}
-          </Button>
-        }
-        header={`Contact ${firstName} ${lastName}`}
-      >
-        <MessageModal
-          onMessageChange={handleChange}
-          handleFormSubmit={handleFormSubmit}
-        />
-      </Modal>
-      Tutor Bio
+    <div className='bio-container'>
+      {!tutor ? (
+        renderLoader()
+      ) : (
+        <div>
+          <GoBack />
+          <Container>
+            <PageHeader>
+              <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
+            </PageHeader>
+            <ProfileImage
+              profileImg={tutor.image}
+              style={{ margin: '0 auto 30px' }}
+              className='u-m-b'
+            />
+            <Grid className='text-center'>
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  <h5>Rating</h5>
+                  <Icon name='star' color='yellow' />
+                  {tutor.rating}
+                </Grid.Column>
+                <Grid.Column>
+                  <h5>Cost</h5>${tutor.price} / hr
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <Modal
+              trigger={
+                <div className='bio-button-wrapper'>
+                  <Button className='btn-primary' style={{ margin: '20px' }}>
+                    Book Now
+                  </Button>
+                </div>
+              }
+              header={`Contact ${tutor.firstName} ${tutor.lastName}`}
+            >
+              <MessageModal
+                onMessageChange={handleChange}
+                handleFormSubmit={handleFormSubmit}
+              />
+            </Modal>
+            <h3 className='u-m-t u-m-b'>Subjects</h3>
+            <List horizontal>
+              {tutor.subjects.map((subject) => (
+                <List.Item className='color-secondary' key={subject}>
+                  <Badge>{subject}</Badge>
+                </List.Item>
+              ))}
+            </List>
+            <h3 className='u-m-t u-m-b'>Education</h3>
+            <List horizontal>
+              {tutor.education.map((edu) => (
+                <List.Item className='color-secondary' key={edu}>
+                  <Badge>{edu}</Badge>
+                </List.Item>
+              ))}
+            </List>
+            <h3 className='u-m-t u-m-b'>About Me</h3>
+            <p>{tutor.bio}</p>
+          </Container>
+        </div>
+      )}
     </div>
   );
 }
 
-export default Profile;
+export default TutorBio;
