@@ -7,6 +7,7 @@ import Section from '../../components/Section/Section';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
 import API from '../../utils/API';
+import { Dimmer, Loader, Segment } from 'semantic-ui-react';
 
 import {
   SearchIcon,
@@ -16,11 +17,30 @@ import {
 
 export default function Home() {
   const [topRated, setTopRated] = useState([]);
+  const [state, setState] = useState({
+    value: [],
+    error: null,
+    loading: true
+  });
 
   useEffect(() => {
-    API.getTutors().then(({ data }) => {
-      setTopRated(data);
-    });
+    let isSubscribed = true;
+
+    API.getTutors()
+      .then(({ data }) => {
+        return (
+          isSubscribed && setState({ value: data, error: null, loading: false })
+        );
+      })
+      .catch((err) => {
+        return (
+          isSubscribed && setState({ value: [], error: err, loading: false })
+        );
+      });
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   return (
@@ -105,20 +125,29 @@ export default function Home() {
           <h2>Top Rated Tutors</h2>
         </PageHeader>
         <div>
-          {topRated.map((tutor) => {
-            return (
-              <TutorCard
-                key={tutor._id}
-                subjects={tutor.subjects}
-                profileImg={tutor.image}
-                name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
-                rating={tutor.rating}
-                bio={tutor.bio}
-                price={tutor.price}
-                id={tutor._id}
-              />
-            );
-          })}
+          {!state.loading ? (
+            state.value.map((tutor) => {
+              return (
+                <TutorCard
+                  key={tutor._id}
+                  subjects={tutor.subjects}
+                  profileImg={tutor.image}
+                  name={{
+                    firstName: tutor.firstName,
+                    lastName: tutor.lastName
+                  }}
+                  rating={tutor.rating}
+                  bio={tutor.bio}
+                  price={tutor.price}
+                  id={tutor._id}
+                />
+              );
+            })
+          ) : (
+            <Loader inline='centered' active>
+              Loading
+            </Loader>
+          )}
         </div>
       </Section>
     </div>
