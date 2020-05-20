@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import TutorCard from '../../components/TutorCard/TutorCard';
+import Button from '../../components/Button/Button';
 import API from '../../utils/API';
 import { Container, Form, Dropdown } from 'semantic-ui-react';
 import './Search.scss';
 
 const INITIAL_SEARCH_STATE = {
-  subject: 'All',
-  education: 'All',
-  groupSize: 1,
-  rating: 3,
+  subject: 'All Subjects',
+  education: 'All Levels',
+  groupSize: '1',
+  rating: '3',
   price: 'Any'
 };
 
@@ -18,7 +19,7 @@ function Search() {
   const [search, setSearch] = useState(INITIAL_SEARCH_STATE);
 
   const subjectArray = [
-    'All',
+    'All Subjects',
     'english',
     'world history',
     'grammar',
@@ -44,7 +45,7 @@ function Search() {
   }));
 
   const educationArray = [
-    'All',
+    'All Levels',
     'high school',
     'undergraduate',
     'masters',
@@ -58,7 +59,7 @@ function Search() {
   }));
 
   const prices = [
-    { key: 'Any', value: 'Any', text: 'Any' },
+    { key: 'Any', value: 'Any', text: 'Any Price' },
     { key: '10', value: '10', text: '$10/hr' },
     { key: '20', value: '20', text: '$20/hr' },
     { key: '50', value: '50', text: '$50/hr' },
@@ -95,6 +96,10 @@ function Search() {
     });
   };
 
+  const handleReset = (event) => {
+    setSearch(INITIAL_SEARCH_STATE);
+  };
+
   const includeTutor = (tutor) => {
     if (tutor.rating < search.rating) {
       return false;
@@ -105,11 +110,14 @@ function Search() {
     if (tutor.price !== 'Any' && tutor.price > search.price) {
       return false;
     }
-    if (search.subject !== 'All' && !tutor.subjects.includes(search.subject)) {
+    if (
+      search.subject !== 'All Subjects' &&
+      !tutor.subjects.includes(search.subject)
+    ) {
       return false;
     }
     if (
-      search.education !== 'All' &&
+      search.education !== 'All Levels' &&
       !tutor.education.includes(search.education)
     ) {
       return false;
@@ -155,6 +163,7 @@ function Search() {
             placeholder='Select Subject'
             fluid
             selection
+            value={search.subject}
             options={subjects}
             onChange={handleChange}
           />
@@ -168,6 +177,7 @@ function Search() {
               placeholder='Select Education'
               fluid
               selection
+              value={search.education}
               options={educations}
               onChange={handleChange}
             />
@@ -180,6 +190,7 @@ function Search() {
               placeholder='Select Price'
               fluid
               selection
+              value={search.price}
               options={prices}
               onChange={handleChange}
             />
@@ -193,7 +204,7 @@ function Search() {
               name='groupSize'
               fluid
               selection
-              defaultValue='1'
+              value={search.groupSize}
               options={groupSizes}
               onChange={handleChange}
             />
@@ -205,12 +216,15 @@ function Search() {
               name='rating'
               fluid
               selection
-              defaultValue='3'
+              value={search.rating}
               options={ratings}
               onChange={handleChange}
             />
           </Form.Field>
         </Form.Group>
+        <Button type='reset' className='btn btn-primary' onClick={handleReset}>
+          Reset
+        </Button>
       </Form>
       <div className='Search-results'>{renderTutors()}</div>
     </Container>
