@@ -17,6 +17,7 @@ import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
 import TutorBio from './pages/TutorBio/TutorBio';
 import Search from './pages/Search/Search';
+import BottomNav from './components/BottomNav/BottomNav';
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -27,6 +28,7 @@ function ProtectedRoute({ children, ...rest }) {
   }
   return <Redirect to='/signup' />;
 }
+
 function App() {
   return (
     <AuthProvider>
@@ -58,6 +60,7 @@ function App() {
             <Route exact path='/chat/:chatId' component={Chat}></Route>
           </ProtectedRoute>
         </Switch>
+        <BottomNav />
       </Router>
     </AuthProvider>
   );

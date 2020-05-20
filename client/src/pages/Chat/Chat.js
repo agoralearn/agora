@@ -4,6 +4,7 @@ import { useAuth } from '../../utils/auth';
 import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
+import { toTitleCase } from '../../utils/helpers';
 
 export default function Chat({ match, history, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -15,41 +16,34 @@ export default function Chat({ match, history, ...props }) {
   const chatLogRef = useRef(null);
   const { user } = useAuth();
 
-  useEffect(
-    () => {
-      // Scroll to bottom on page load if message list is long
-      chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
-      const chatId = match.params.chatId;
+  useEffect(() => {
+    fetchUserMessages().then(({ data }) => {
+      mapUserstoImages(data);
+      setMessages(data.messages);
+    });
+  }, []);
+  // useEffect(() => {}, []);
 
-      API.getChat(chatId).then(({ data }) => {
-        setMessages(data.messages);
-        setAvatars({
-          userAvatar:
-            data.users[0] === user.id
-              ? data.users[0].image
-              : data.users[1].image,
-          otherAvatar:
-            data.users[1] === user.id
-              ? data.users[1].image
-              : data.users[0].image
-        });
-        setOtherUsers(
-          data.users.map((other) =>
-            other._id !== user.id ? (
-              <h2 className='f-w-l u-m-l' key={other._id}>
-                {other.firstName} {other.lastName}
-              </h2>
-            ) : null
-          )
+  function fetchUserMessages() {
+    const chatId = match.params.chatId;
+    return API.getChat(chatId);
+  }
+  function mapUserstoImages({ users }) {
+    const avatarMap = {};
+    const userNames = [];
+    users.forEach((person) => {
+      avatarMap[person._id] = person.image;
+      if (person._id !== user.id) {
+        userNames.push(
+          <h2 className='f-w-l u-m-l' key={person._id}>
+            {toTitleCase(person.firstName)} {toTitleCase(person.lastName)}
+          </h2>
         );
-      });
-    },
-
-    // Make database call to get messages
-    // when page first loads here
-    [match.params.chatId, user.id]
-  );
-
+      }
+    });
+    setAvatars(avatarMap);
+    setOtherUsers(userNames);
+  }
   function messageInputChangeHandler(event) {
     setMessageInput(event.target.value);
   }
@@ -58,18 +52,20 @@ export default function Chat({ match, history, ...props }) {
     event.preventDefault();
     if (messageInput.trim()) {
       const newMessage = {
-        recieved: false,
-        firstName: 'Janet',
-        lastName: 'Lee',
-        chatId: messages.length + 1,
-        text: messageInput,
-        thumbnail:
-          'https://sundaydigital.com.au/wp-content/uploads/2019/04/sample-avatar-003.jpg'
+        read: [user.id],
+        sender: user.id,
+        message: messageInput,
+        chatId: match.params.chatId
       };
 
-      setMessages([...messages, newMessage]);
-      setMessageInput('');
+      API.addMessageToChat(newMessage)
+        .then(({ data }) => {
+          setMessages([...messages, data]);
+        })
+        .catch((err) => console.log(err));
     }
+
+    setMessageInput('');
   }
 
   useEffect(() => {
@@ -90,12 +86,8 @@ export default function Chat({ match, history, ...props }) {
               key={message._id}
               text={message.message}
               recieved={message.read}
-              // sender={message.sender}
-              thumbnail={
-                message.sender === user.id
-                  ? avatars.userAvatar
-                  : avatars.otherAvatar
-              }
+              sender={message.sender}
+              thumbnail={avatars[message.sender]}
             />
           );
         })}

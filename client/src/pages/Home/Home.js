@@ -33,7 +33,14 @@ export default function Home() {
               A New Way to Learn
             </h1>
             <div>
-              <hr></hr>
+              <hr
+                style={{
+                  background: 'white',
+                  border: '0px',
+                  height: '2px',
+                  outline: 'none'
+                }}
+              ></hr>
             </div>
 
             <p className='color-white f-w-b'>
@@ -107,6 +114,7 @@ export default function Home() {
                 name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
                 rating={tutor.rating}
                 bio={tutor.bio}
+                price={tutor.price}
                 id={tutor._id}
               />
             );

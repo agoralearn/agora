@@ -20,9 +20,13 @@ export default function Button({
   );
 }
 
-Button.Link = function ({ children, className, onClick }) {
+Button.Link = function ({ children, className, onClick, style }) {
   return (
-    <button onClick={onClick} className={`btn btn-link ${className}`}>
+    <button
+      onClick={onClick}
+      className={`btn btn-link ${className}`}
+      style={style}
+    >
       {children}
     </button>
   );

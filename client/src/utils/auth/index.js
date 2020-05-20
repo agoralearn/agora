@@ -12,8 +12,6 @@ export const AuthProvider = ({ value, ...rest }) => {
     isLoggedIn ? authService.getProfile() : null
   );
 
-  console.log(user);
-
   const login = (email, password) => {
     return authService
       .login(email, password)
