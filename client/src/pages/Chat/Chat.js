@@ -5,42 +5,11 @@ import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 
-const testMessages = [
-  {
-    recieved: true,
-    firstName: 'Kyle',
-    lastName: 'Schrute',
-    chatId: 123412,
-    text: 'Hi!',
-    thumbnail:
-      'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'
-  },
-  {
-    recieved: true,
-    firstName: 'Kyle',
-    lastName: 'Schrute',
-    chatId: 124113,
-    text: 'I accept your request for tutoring.',
-    thumbnail:
-      'https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'
-  },
-  {
-    recieved: false,
-    firstName: 'Janet',
-    lastName: 'Lee',
-    chatId: 231412,
-    text: 'But I never asked for tutoring creep. ',
-    thumbnail:
-      'https://sundaydigital.com.au/wp-content/uploads/2019/04/sample-avatar-003.jpg'
-  }
-];
-
 export default function Chat({ match, history, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [avatars, setAvatars] = useState('');
   const [otherUsers, setOtherUsers] = useState([]);
-  // console.log(messages);
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
@@ -53,14 +22,7 @@ export default function Chat({ match, history, ...props }) {
       const chatId = match.params.chatId;
 
       API.getChat(chatId).then(({ data }) => {
-        // if (data.users[0]._id == user.id) {
-        //   userAvatar data.users[0].image});
-        // } else {
-        //   const otheAvatar: data.users[1].image;
-        // }
-        console.log(data);
         setMessages(data.messages);
-        console.log(messages);
         setAvatars({
           userAvatar:
             data.users[0] === user.id
@@ -72,23 +34,20 @@ export default function Chat({ match, history, ...props }) {
               : data.users[0].image
         });
         setOtherUsers(
-          data.users.map((other) => {
-            if (other._id !== user.id) {
-              return (
-                <h2 className='f-w-l u-m-l'>
-                  {other.firstName} {other.lastName}
-                </h2>
-              );
-            }
-          })
+          data.users.map((other) =>
+            other._id !== user.id ? (
+              <h2 className='f-w-l u-m-l' key={other._id}>
+                {other.firstName} {other.lastName}
+              </h2>
+            ) : null
+          )
         );
-        // console.log(avatars.userAvatar);
       });
     },
 
     // Make database call to get messages
     // when page first loads here
-    [match.params.chatId]
+    [match.params.chatId, user.id]
   );
 
   function messageInputChangeHandler(event) {
@@ -110,16 +69,22 @@ export default function Chat({ match, history, ...props }) {
 
       setMessages([...messages, newMessage]);
       setMessageInput('');
-      chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
     }
   }
 
+  useEffect(() => {
+    chatLogRef.current.scrollIntoView(false);
+  }, [messages]);
+
   return (
     <section className='Chat-container'>
-      <GoBack history={history} />
-      {otherUsers}
-      <div className='Chat-log' ref={chatLogRef}>
-        {messages.map((message) => {
+      <div className='Chat-users-names'>
+        <GoBack history={history} />
+        {otherUsers}
+      </div>
+
+      <div className='Chat-log'>
+        {messages.map((message, index) => {
           return (
             <ChatBubble
               key={message._id}
@@ -134,6 +99,7 @@ export default function Chat({ match, history, ...props }) {
             />
           );
         })}
+        <div ref={chatLogRef}></div>
       </div>
 
       <form className='Chat-input-area' onSubmit={messageInputSubmitHandler}>
