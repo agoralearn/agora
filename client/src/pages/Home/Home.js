@@ -7,7 +7,7 @@ import Section from '../../components/Section/Section';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
 import API from '../../utils/API';
-import { Dimmer, Loader, Segment } from 'semantic-ui-react';
+import { Loader } from 'semantic-ui-react';
 
 import {
   SearchIcon,
@@ -16,7 +16,6 @@ import {
 } from '../../components/Icons/Icons';
 
 export default function Home() {
-  const [topRated, setTopRated] = useState([]);
   const [state, setState] = useState({
     value: [],
     error: null,
