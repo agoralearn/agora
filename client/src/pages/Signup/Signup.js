@@ -35,7 +35,7 @@ function Signup({ location }) {
     return user.role === 'student' ? (
       <Redirect to='/tutors' />
     ) : (
-      <Redirect to='/tutorbio' />
+      <Redirect to='/profile' />
     );
   }
 
@@ -63,7 +63,7 @@ function Signup({ location }) {
       .then(() => {
         formState.role === 'student'
           ? history.replace('/tutors')
-          : history.replace('/tutorbio');
+          : history.replace('/profile');
       })
       .catch((err) => {
         setLoading(false);
