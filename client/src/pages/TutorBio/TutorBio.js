@@ -8,7 +8,7 @@ import Badge from '../../components/Badge/Badge';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import { Dimmer, Loader, List, Container } from 'semantic-ui-react';
+import { Dimmer, Loader, List, Container, Grid, Icon } from 'semantic-ui-react';
 import './TutorBio.scss';
 
 function TutorBio({ match }) {
@@ -71,24 +71,42 @@ function TutorBio({ match }) {
       ) : (
         <div>
           <GoBack />
-          <PageHeader>
-            <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
-          </PageHeader>
-          <ProfileImage profileImg={tutor.image} style={{ margin: '0 auto' }} />
-          <Modal
-            trigger={
-              <Button className='btn-primary' style={{ margin: '20px' }}>
-                Book{' '}
-              </Button>
-            }
-            header={`Contact ${tutor.firstName} ${tutor.lastName}`}
-          >
-            <MessageModal
-              onMessageChange={handleChange}
-              handleFormSubmit={handleFormSubmit}
-            />
-          </Modal>
           <Container>
+            <PageHeader>
+              <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
+            </PageHeader>
+            <ProfileImage
+              profileImg={tutor.image}
+              style={{ margin: '0 auto 30px' }}
+              className='u-m-b'
+            />
+            <Grid className='text-center'>
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  <h5>Rating</h5>
+                  <Icon name='star' color='yellow' />
+                  {tutor.rating}
+                </Grid.Column>
+                <Grid.Column>
+                  <h5>Cost</h5>${tutor.price} / hr
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <Modal
+              trigger={
+                <div className='bio-button-wrapper'>
+                  <Button className='btn-primary' style={{ margin: '20px' }}>
+                    Book Now
+                  </Button>
+                </div>
+              }
+              header={`Contact ${tutor.firstName} ${tutor.lastName}`}
+            >
+              <MessageModal
+                onMessageChange={handleChange}
+                handleFormSubmit={handleFormSubmit}
+              />
+            </Modal>
             <h3 className='u-m-t u-m-b'>Subjects</h3>
             <List horizontal>
               {tutor.subjects.map((subject) => (
