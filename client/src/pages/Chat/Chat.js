@@ -15,6 +15,7 @@ export default function Chat({ match, history, ...props }) {
   const chatLogRef = useRef(null);
   const { user } = useAuth();
 
+  console.log(messages);
   useEffect(
     () => {
       // Scroll to bottom on page load if message list is long
@@ -22,12 +23,14 @@ export default function Chat({ match, history, ...props }) {
       const chatId = match.params.chatId;
 
       API.getChat(chatId).then(({ data }) => {
+        console.log(data);
         setMessages(data.messages);
         setAvatars({
           userAvatar:
             data.users[0] === user.id
               ? data.users[0].image
-              : data.users[1].image,
+              : // ? 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'
+                data.users[1].image,
           otherAvatar:
             data.users[1] === user.id
               ? data.users[1].image
@@ -58,18 +61,29 @@ export default function Chat({ match, history, ...props }) {
     event.preventDefault();
     if (messageInput.trim()) {
       const newMessage = {
-        recieved: false,
-        firstName: 'Janet',
-        lastName: 'Lee',
-        chatId: messages.length + 1,
-        text: messageInput,
-        thumbnail:
-          'https://sundaydigital.com.au/wp-content/uploads/2019/04/sample-avatar-003.jpg'
+        read: [user.id],
+        sender: user.id,
+        message: messageInput,
+        chatId: match.params.chatId
       };
-
+      // console.log(match.params.chatId);
       setMessages([...messages, newMessage]);
-      setMessageInput('');
+      API.addMessageToChat(newMessage)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
     }
+    // const newMessage = {
+    //   recieved: false,
+    //   firstName: 'Janet',
+    //   lastName: 'Lee',
+    //   chatId: messages.length + 1,
+    //   text: messageInput,
+    //   thumbnail:
+    //     'https://sundaydigital.com.au/wp-content/uploads/2019/04/sample-avatar-003.jpg'
+
+    setMessageInput('');
   }
 
   useEffect(() => {
@@ -90,7 +104,7 @@ export default function Chat({ match, history, ...props }) {
               key={message._id}
               text={message.message}
               recieved={message.read}
-              // sender={message.sender}
+              sender={message.sender}
               thumbnail={
                 message.sender === user.id
                   ? avatars.userAvatar
