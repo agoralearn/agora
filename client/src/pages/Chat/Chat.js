@@ -38,7 +38,8 @@ const testMessages = [
 export default function Chat({ match, history, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
-  const [avatars, setAvatars] = useState({});
+  const [avatars, setAvatars] = useState('');
+  const [otherUsers, setOtherUsers] = useState([]);
   // console.log(messages);
   // Get a ref to the chat log for scrolling
   // when submitting messages
@@ -52,24 +53,36 @@ export default function Chat({ match, history, ...props }) {
       const chatId = match.params.chatId;
 
       API.getChat(chatId).then(({ data }) => {
+        // if (data.users[0]._id == user.id) {
+        //   userAvatar data.users[0].image});
+        // } else {
+        //   const otheAvatar: data.users[1].image;
+        // }
         console.log(data);
         setMessages(data.messages);
         console.log(messages);
         setAvatars({
           userAvatar:
-            data.users[0]._id === user.id
+            data.users[0] === user.id
               ? data.users[0].image
               : data.users[1].image,
           otherAvatar:
-            data.users[1]._id === user.id
+            data.users[1] === user.id
               ? data.users[1].image
               : data.users[0].image
         });
-        // if (data.users[0]._id == user.id) {
-        //   setAvatar({...avatars, userAvatar: data.users[0].image});
-        // } else {
-        //   const otheAvatar: data.users[1].image;
-        // }
+        setOtherUsers(
+          data.users.map((other) => {
+            if (other._id !== user.id) {
+              return (
+                <h2 className='f-w-l u-m-l'>
+                  {other.firstName} {other.lastName}
+                </h2>
+              );
+            }
+          })
+        );
+        // console.log(avatars.userAvatar);
       });
     },
 
@@ -104,7 +117,7 @@ export default function Chat({ match, history, ...props }) {
   return (
     <section className='Chat-container'>
       <GoBack history={history} />
-
+      {otherUsers}
       <div className='Chat-log' ref={chatLogRef}>
         {messages.map((message) => {
           return (
