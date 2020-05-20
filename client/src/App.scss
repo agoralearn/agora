@@ -19,6 +19,10 @@ body {
   padding-top: $navbar-height;
 }
 
+a {
+  color: $color-primary;
+}
+
 *,
 *:before,
 *:after {
