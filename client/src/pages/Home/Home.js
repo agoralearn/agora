@@ -64,9 +64,11 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <Button.Link className='color-white'>
-              <span className='color-secondary'>Browse </span>All Tutors
-            </Button.Link>
+            <Link to='/tutors'>
+              <Button.Link className='color-white'>
+                <span className='color-secondary'>Browse </span>All Tutors
+              </Button.Link>
+            </Link>
           </div>
         </Hero.Content>
       </Hero>

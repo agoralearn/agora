@@ -74,7 +74,7 @@ function Signup({ location }) {
   return (
     <Container>
       <PageHeader>
-        <h1>Create an Account</h1>
+        <h2>Create an Account</h2>
       </PageHeader>
       <Form onSubmit={handleFormSubmit}>
         <div className='Access-form'>

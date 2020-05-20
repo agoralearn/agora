@@ -39,6 +39,7 @@ function Login() {
               fluid
               placeholder='Email...'
               icon='mail'
+              iconPosition='left'
               name='email'
               type='email'
               id='email'
@@ -52,6 +53,7 @@ function Login() {
               fluid
               placeholder='Password...'
               icon='lock'
+              iconPosition='left'
               name='password'
               type='password'
               id='pwd'
