@@ -2,7 +2,6 @@ import React from 'react';
 import './TutorCard.scss';
 import Badge from '../Badge/Badge';
 import ProfileImage from '../ProfileImage/ProfileImage';
-import RatingStars from '../RatingStars/RatingStars';
 import Button from '../Button/Button';
 import { Link } from 'react-router-dom';
 import { Rating } from 'semantic-ui-react';
