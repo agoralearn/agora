@@ -22,6 +22,8 @@ export default function Chat({ match, history, ...props }) {
       setMessages(data.messages);
     });
   }, []);
+  // useEffect(() => {}, []);
+
   function fetchUserMessages() {
     const chatId = match.params.chatId;
     return API.getChat(chatId);
@@ -39,7 +41,6 @@ export default function Chat({ match, history, ...props }) {
         );
       }
     });
-
     setAvatars(avatarMap);
     setOtherUsers(userNames);
   }
@@ -56,10 +57,10 @@ export default function Chat({ match, history, ...props }) {
         message: messageInput,
         chatId: match.params.chatId
       };
-      setMessages([...messages, newMessage]);
+
       API.addMessageToChat(newMessage)
-        .then((res) => {
-          console.log(res.data);
+        .then(({ data }) => {
+          setMessages([...messages, data]);
         })
         .catch((err) => console.log(err));
     }

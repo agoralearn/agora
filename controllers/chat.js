@@ -45,6 +45,7 @@ module.exports = {
     // Check if the user belongs to the chat first
     // First create the message
     // const senderId = req.user.id;
+    let messageToReturn;
     db.Message.create({
       sender: req.user.id,
       read: [req.user.id],
@@ -52,6 +53,7 @@ module.exports = {
     })
       // Add the message the associated chat
       .then((message) => {
+        messageToReturn = message;
         const messageId = message._id;
         return db.Chat.findByIdAndUpdate(
           req.body.chatId,
@@ -64,7 +66,8 @@ module.exports = {
       // Send the sent message back to the client so it can use
       // it for UI updates
       .then(() => {
-        res.json({ message: req.body.message });
+        // console.log(something);
+        res.json(messageToReturn);
       })
       .catch((err) => {
         console.log(err);
