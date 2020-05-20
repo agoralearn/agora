@@ -37,6 +37,7 @@ const testMessages = [
 export default function Chat({ match, history, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState(testMessages);
+  const [otherUsers, setOtherUsers] = useState([]);
 
   // Get a ref to the chat log for scrolling
   // when submitting messages
@@ -73,16 +74,23 @@ export default function Chat({ match, history, ...props }) {
 
       setMessages([...messages, newMessage]);
       setMessageInput('');
-      chatLogRef.current.scrollTop = chatLogRef.current.scrollHeight;
     }
   }
 
+  useEffect(() => {
+    chatLogRef.current.scrollIntoView(false);
+  }, [messages]);
+
   return (
     <section className='Chat-container'>
-      <GoBack history={history} />
+      <div className='Chat-users-names'>
+        <GoBack history={history} />
+        {otherUsers}
+        <h2 className='f-w-l u-m-l'>asdfs</h2>
+      </div>
 
-      <div className='Chat-log' ref={chatLogRef}>
-        {messages.map((message) => {
+      <div className='Chat-log'>
+        {messages.map((message, index) => {
           return (
             <ChatBubble
               key={message.chatId}
@@ -92,6 +100,7 @@ export default function Chat({ match, history, ...props }) {
             />
           );
         })}
+        <div ref={chatLogRef}></div>
       </div>
 
       <form className='Chat-input-area' onSubmit={messageInputSubmitHandler}>
