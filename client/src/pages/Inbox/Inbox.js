@@ -9,7 +9,6 @@ import './Inbox.scss';
 
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
-  // const currentUserId = '5ec196146b0a589818189458';
 
   useEffect(() => {
     getChats();
