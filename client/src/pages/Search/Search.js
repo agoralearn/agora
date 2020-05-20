@@ -5,15 +5,17 @@ import API from '../../utils/API';
 import { Container, Form, Dropdown } from 'semantic-ui-react';
 import './Search.scss';
 
+const INITIAL_SEARCH_STATE = {
+  subject: 'All',
+  education: 'All',
+  groupSize: 1,
+  rating: 3,
+  price: 'Any'
+};
+
 function Search() {
   const [tutors, setTutors] = useState([]);
-  const [search, setSearch] = useState({
-    subject: 'All',
-    education: 'All',
-    groupSize: 1,
-    rating: 3,
-    price: 'All'
-  });
+  const [search, setSearch] = useState(INITIAL_SEARCH_STATE);
 
   const subjectArray = [
     'All',
@@ -56,7 +58,7 @@ function Search() {
   }));
 
   const prices = [
-    { key: 'All', value: 'All', text: 'Any' },
+    { key: 'Any', value: 'Any', text: 'Any' },
     { key: '10', value: '10', text: '$10/hr' },
     { key: '20', value: '20', text: '$20/hr' },
     { key: '50', value: '50', text: '$50/hr' },
@@ -81,28 +83,10 @@ function Search() {
   ];
 
   useEffect(() => {
-    function getFilterParams() {
-      const filter = {};
-
-      if (search.subject !== 'All') {
-        filter.subject = search.subject;
-      }
-      if (search.education !== 'All') {
-        filter.education = search.education;
-      }
-      if (search.price !== 'All') {
-        filter.price = search.price;
-      }
-      filter.groupSize = search.groupSize;
-      filter.rating = search.rating;
-
-      return filter;
-    }
-
-    API.getTutors(getFilterParams())
+    API.getTutors()
       .then((res) => setTutors(res.data))
       .catch((err) => console.log(err));
-  }, [search]);
+  }, []);
 
   const handleChange = (e, { name, value }) => {
     setSearch({
@@ -111,15 +95,50 @@ function Search() {
     });
   };
 
+  const includeTutor = (tutor) => {
+    if (tutor.rating < search.rating) {
+      return false;
+    }
+    if (tutor.maxGroupSize < search.groupSize) {
+      return false;
+    }
+    if (tutor.price !== 'Any' && tutor.price > search.price) {
+      return false;
+    }
+    if (search.subject !== 'All' && !tutor.subjects.includes(search.subject)) {
+      return false;
+    }
+    if (
+      search.education !== 'All' &&
+      !tutor.education.includes(search.education)
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const filterTutors = () => {
+    return tutors.filter((tutor) => {
+      return includeTutor(tutor);
+    });
+  };
+
   const renderTutors = () => {
-    return tutors.map((tutor) => (
-      <TutorCard
-        key={tutor._id}
-        {...tutor}
-        name={`${tutor.firstName} ${tutor.lastName}`}
-        profileImg={tutor.image}
-      />
-    ));
+    const filteredTutors = filterTutors();
+
+    if (filteredTutors.length > 0) {
+      return filteredTutors.map((tutor) => (
+        <TutorCard
+          key={tutor._id}
+          {...tutor}
+          name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
+          profileImg={tutor.image}
+        />
+      ));
+    } else {
+      return <p className='No-results'>No Matching Tutors...</p>;
+    }
   };
 
   return (

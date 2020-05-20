@@ -101,7 +101,7 @@ const userSeed = [
     maxGroupSize: 10,
     timeFrame: ['on-going'],
     age: 18,
-    education: ['undergraduate', 'master', 'doctorate'],
+    education: ['undergraduate', 'masters', 'doctorate'],
     rating: 5,
     role: 'tutor',
     price: 80,
