@@ -10,11 +10,8 @@ export default function GoBack({ history }) {
   // component has history in its context
 
   return (
-    <div className='Chat-users' onClick={goBackHandler}>
-      <i className='fas fa-arrow-left'></i>Back
-      <div className='Chat-users--names'>
-        <p>Tylor K.</p>
-      </div>
+    <div onClick={goBackHandler}>
+      <i className='fas fa-arrow-left' style={{ marginRight: '4px' }}></i>Back
     </div>
   );
 }

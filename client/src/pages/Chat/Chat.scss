@@ -1,22 +1,32 @@
 @import "../../css/globals";
 
 .Chat-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-  max-width: 600px;
-  height: 100vh;
+  height: calc(100vh - 60px);
   background: rgba(#fff, 0.1);
   box-shadow: 2px 1px 10px rgba(#a9a6a6, 0.4);
   margin: 0 auto;
-  margin-top: -$navbar-height;
+  margin-top: auto;
+  padding-top: 50px;
+}
+
+.Chat-users-names {
+  background: white;
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .Chat-users {
   position: absolute;
   top: $navbar-height;
-  // background: lightgrey;
   right: 0;
   left: 0;
   padding: 10px;
@@ -27,7 +37,6 @@
   }
 
   & .Chat-users--names {
-    // background: lightgrey;
     font-size: 20px;
     text-align: center;
   }
