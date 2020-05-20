@@ -1,12 +1,12 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import './Navbar.scss';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
 import { useAuth } from '../../utils/auth';
 import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
 import ProfileImage from '../ProfileImage/ProfileImage';
-import { Dropdown, Menu } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 function Navbar() {
   const { isLoggedIn, logout, user } = useAuth();
