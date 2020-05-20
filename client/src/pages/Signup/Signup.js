@@ -95,7 +95,7 @@ function Signup({ location }) {
         <div className='Access-form'>
           {/* student or tutor selection */}
           <Form.Group grouped>
-            <label>I am signing up as a:</label>
+            <label>I am signing up as a</label>
             <Form.Field>
               <Radio
                 label='Student'
@@ -116,7 +116,7 @@ function Signup({ location }) {
             </Form.Field>
           </Form.Group>
           <Form.Field>
-            <label htmlFor='email'>Email address:</label>
+            <label htmlFor='email'>Email address</label>
             <Input
               required
               fluid
@@ -130,7 +130,7 @@ function Signup({ location }) {
             />
           </Form.Field>
           <Form.Field error={formState.passwordError}>
-            <label htmlFor='pwd'>Password:</label>
+            <label htmlFor='pwd'>Password</label>
             <Input
               required
               fluid
@@ -144,7 +144,7 @@ function Signup({ location }) {
             />
           </Form.Field>
           <Form.Field>
-            <label htmlFor='confPwd'>Confirm Password:</label>
+            <label htmlFor='confPwd'>Confirm Password</label>
             <Input
               required
               fluid
@@ -159,7 +159,7 @@ function Signup({ location }) {
           </Form.Field>
 
           <Form.Field>
-            <label htmlFor='firstName'>First Name:</label>
+            <label htmlFor='firstName'>First Name</label>
             <Input
               required
               fluid
@@ -173,7 +173,7 @@ function Signup({ location }) {
             />
           </Form.Field>
           <Form.Field>
-            <label htmlFor='lastName'>Last Name:</label>
+            <label htmlFor='lastName'>Last Name</label>
             <Input
               required
               fluid
@@ -188,7 +188,7 @@ function Signup({ location }) {
           </Form.Field>
           {formState.role === 'student' ? (
             <Form.Field>
-              <label htmlFor='age'>Age:</label>
+              <label htmlFor='age'>Age</label>
               <Input
                 required
                 fluid
@@ -203,7 +203,7 @@ function Signup({ location }) {
           ) : (
             <>
               <Form.Field>
-                <label htmlFor='minGroupSize'>Minimum Group Size:</label>
+                <label htmlFor='minGroupSize'>Minimum Group Size</label>
                 <Input
                   required
                   fluid
@@ -217,7 +217,7 @@ function Signup({ location }) {
                 />
               </Form.Field>
               <Form.Field>
-                <label htmlFor='maxGroupSize'>Maximum Group Size:</label>
+                <label htmlFor='maxGroupSize'>Maximum Group Size</label>
                 <Input
                   required
                   fluid
