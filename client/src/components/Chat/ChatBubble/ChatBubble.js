@@ -1,8 +1,14 @@
 import React from 'react';
+import { useAuth } from '../../../utils/auth';
 
-export default function ChatBubble({ text, recieved, thumbnail }) {
+export default function ChatBubble({ text, sender, thumbnail }) {
+  const { user } = useAuth();
   return (
-    <div className={`Chat-message Chat-message${recieved ? '' : '--right'}`}>
+    <div
+      className={`Chat-message Chat-message${
+        sender !== user.id ? '' : '--right'
+      }`}
+    >
       <span className='Chat-message__avatar-frame'>
         <img
           src={thumbnail}

@@ -64,7 +64,7 @@ function ChatPreview({ users, message, chatId }) {
             {otherUserName}, me
           </p>
           <div className='ChatPreview_user-preview-div-message-preview'>
-            {buildMessagePreview()}
+            {message.length > 0 && buildMessagePreview()}
           </div>
         </div>
         <div className='ChatPreview_rate-tag'>

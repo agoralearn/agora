@@ -44,27 +44,34 @@ module.exports = {
   addMessageToChat: function (req, res) {
     // Check if the user belongs to the chat first
     // First create the message
-    const senderId = req.user.id;
+    // const senderId = req.user.id;
+    let messageToReturn;
     db.Message.create({
-      sender: senderId,
-      read: [senderId],
+      sender: req.user.id,
+      read: [req.user.id],
       message: req.body.message
     })
       // Add the message the associated chat
       .then((message) => {
+        messageToReturn = message;
         const messageId = message._id;
-        return db.Chat.findByIdAndUpdate(req.body.chatId, {
-          $push: { messages: messageId }
-        });
+        return db.Chat.findByIdAndUpdate(
+          req.body.chatId,
+          {
+            $push: { messages: messageId }
+          },
+          { returnOriginal: false }
+        );
       })
       // Send the sent message back to the client so it can use
       // it for UI updates
       .then(() => {
-        res.json({ message: req.body.message });
+        // console.log(something);
+        res.json(messageToReturn);
       })
       .catch((err) => {
         console.log(err);
-        res.send(500).json({ message: err.message });
+        res.sendStatus(500).json({ message: err.message });
       });
     // Add the message's ID to the associated chat
   },

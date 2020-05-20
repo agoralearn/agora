@@ -23,10 +23,12 @@ export default {
   startChat: (chatData) => {
     return axios.post('/api/chat', chatData);
   },
-  addMessageToChat: (chatId, message) => {
+  addMessageToChat: ({ chatId, message, sender, read }) => {
     return axios.post('/api/chat/message', {
       chatId: chatId,
-      message: message
+      message: message,
+      sender: sender,
+      read: read
     });
   },
   getChatsByUserId: () => {
