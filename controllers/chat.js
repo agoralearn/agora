@@ -4,9 +4,10 @@ module.exports = {
   // Start a new chat
   // Pass two user ids in userIds in the body
   startChat: function (req, res) {
+    console.log('body' + req.body);
+    console.log('userIds' + req.body.userIds);
     const { message } = req.body;
     const userIds = [req.user.id, ...req.body.userIds];
-
     db.Message.create({
       message: message,
       read: [req.user.id],
@@ -75,6 +76,7 @@ module.exports = {
   },
   getChat: function (req, res) {
     db.Chat.findById(req.params.chatId)
+      .populate('messages')
       .then((data) => {
         if (data && data.users.includes(req.user.id)) {
           res.json(data);
