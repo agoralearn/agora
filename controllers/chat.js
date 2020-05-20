@@ -46,8 +46,8 @@ module.exports = {
     // First create the message
     // const senderId = req.user.id;
     db.Message.create({
-      sender: req.body.senderId,
-      read: [req.body.senderId],
+      sender: req.user.id,
+      read: [req.user.id],
       message: req.body.message
     })
       // Add the message the associated chat

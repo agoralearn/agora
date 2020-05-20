@@ -3,7 +3,6 @@ import { useAuth } from '../../../utils/auth';
 
 export default function ChatBubble({ text, sender, thumbnail }) {
   const { user } = useAuth();
-  console.log('sender: ', sender);
   return (
     <div
       className={`Chat-message Chat-message${
