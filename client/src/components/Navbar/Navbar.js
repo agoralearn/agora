@@ -19,7 +19,8 @@ function Navbar() {
     function navigateToBio() {
       history.push('/tutorbio/' + user.id);
     }
-    if (isLoggedIn && user.role === 'student') {
+
+    if (isLoggedIn) {
       return (
         <span className='Navbar_profile'>
           <ProfileImage
@@ -40,38 +41,9 @@ function Navbar() {
           >
             <Dropdown.Menu>
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
-              <Dropdown.Item
-                text='Logout'
-                onClick={() => {
-                  logout();
-                }}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </span>
-      );
-    } else if (isLoggedIn && user.role === 'tutor') {
-      return (
-        <span className='Navbar_profile'>
-          <ProfileImage
-            profileImg={user.image}
-            style={{
-              height: '25px',
-              width: '25px',
-              float: 'left'
-            }}
-          />
-
-          <Dropdown
-            item
-            simple
-            text=''
-            direction='left'
-            className='Navbar_profile-dropdown'
-          >
-            <Dropdown.Menu>
-              <Dropdown.Item text='Profile' onClick={navigateToProfile} />
-              <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
+              {user.role === 'tutor' ? (
+                <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
+              ) : null}
               <Dropdown.Item
                 text='Logout'
                 onClick={() => {
