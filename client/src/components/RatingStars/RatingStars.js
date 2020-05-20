@@ -42,7 +42,6 @@ export default function RatingStars({ rating, name }) {
     //   );
     // }
 
-    console.log(ratingArray);
     return ratingArray;
   }
 
