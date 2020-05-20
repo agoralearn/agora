@@ -1,20 +1,47 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import './Navbar.scss';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
 import { useAuth } from '../../utils/auth';
 import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
+import ProfileImage from '../ProfileImage/ProfileImage';
+import { Dropdown, Menu } from 'semantic-ui-react';
 
 function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
+  const history = useHistory();
 
   function showLoginOrProfile() {
+    function navigateToProfile() {
+      history.push('/profile');
+    }
     if (isLoggedIn) {
       return (
-        <Button.Link className='color-white' onClick={logout}>
-          Logout
-        </Button.Link>
+        // <Button.Link className='color-white' onClick={logout}>
+        //   Logout
+        // </Button.Link>
+        <span>
+          <ProfileImage
+            profileImg={user.image}
+            style={{
+              height: '25px',
+              width: '25px'
+            }}
+          />
+
+          <Dropdown item simple text='' direction='left'>
+            <Dropdown.Menu>
+              <Dropdown.Item text='Profile' onClick={navigateToProfile} />
+              <Dropdown.Item
+                text='Logout'
+                onClick={() => {
+                  logout();
+                }}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+        </span>
       );
     } else {
       return (
