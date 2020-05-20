@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
-import { Container, Form, Header, Input, Radio } from 'semantic-ui-react';
+import {
+  Container,
+  Form,
+  Header,
+  Input,
+  Radio,
+  Message
+} from 'semantic-ui-react';
 import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
@@ -12,16 +19,16 @@ function Signup({ location }) {
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
     age: '',
     role: location.role || 'student',
     minGroupSize: '',
     maxGroupSize: '',
-    disabled: true,
     agree: false
   });
-
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { isLoggedIn, user, login } = useAuth();
-
   const history = useHistory();
 
   if (isLoggedIn && user) {
@@ -34,6 +41,14 @@ function Signup({ location }) {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
+    if (!formState.agree) {
+      return setError('You must agree to the Terms & Conditions.');
+    }
+    if (formState.password !== formState.confirmPassword) {
+      return setError('Your passwords do not match.');
+    }
+
+    setLoading(true);
     API.signUpUser(formState)
       .then(() => {
         return login(formState.email, formState.password);
@@ -43,40 +58,33 @@ function Signup({ location }) {
           ? history.replace('/tutors')
           : history.replace('/tutorbio');
       })
-      .catch((err) => alert(err));
-  };
-
-  const isValid = () => {
-    return (
-      formState.firstName &&
-      formState.lastName &&
-      formState.email &&
-      formState.password &&
-      formState.agree
-    );
+      .catch((err) => {
+        setLoading(false);
+        setError(err.response.data.message);
+      });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({
       ...formState,
-      [name]: value,
-      disabled: !isValid()
+      [name]: value
     });
   };
 
   const handleRadioChange = (e, { value }) =>
     setFormState({ ...formState, role: value });
 
-  const handleAgree = (e, { checked }) =>
+  const handleAgree = (e, { checked }) => {
     setFormState({ ...formState, agree: checked });
+  };
 
   return (
     <Container>
       <PageHeader>
         <h2>Create an Account</h2>
       </PageHeader>
-      <Form onSubmit={handleFormSubmit}>
+      <Form onSubmit={handleFormSubmit} error={error !== ''} loading={loading}>
         <div className='Access-form'>
           {/* student or tutor selection */}
           <Form.Group grouped>
@@ -106,6 +114,7 @@ function Signup({ location }) {
               required
               fluid
               icon='mail'
+              iconPosition='left'
               placeholder='Email...'
               name='email'
               type='email'
@@ -113,16 +122,31 @@ function Signup({ location }) {
               onChange={handleChange}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field error={formState.passwordError}>
             <label htmlFor='pwd'>Password:</label>
             <Input
               required
               fluid
               icon='lock'
+              iconPosition='left'
               placeholder='Password...'
               name='password'
               type='password'
               id='pwd'
+              onChange={handleChange}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label htmlFor='confPwd'>Confirm Password:</label>
+            <Input
+              required
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password...'
+              name='confirmPassword'
+              type='Password'
+              id='confPwd'
               onChange={handleChange}
             />
           </Form.Field>
@@ -133,6 +157,7 @@ function Signup({ location }) {
               required
               fluid
               icon='id badge outline'
+              iconPosition='left'
               placeholder='First name...'
               name='firstName'
               type='text'
@@ -146,6 +171,7 @@ function Signup({ location }) {
               required
               fluid
               icon='id badge outline'
+              iconPosition='left'
               placeholder='Last name...'
               name='lastName'
               type='text'
@@ -192,13 +218,13 @@ function Signup({ location }) {
             </>
           )}
           <Form.Checkbox
+            required
             inline
             label='I agree to the terms and conditions'
             checked={formState.agree}
-            required
             onChange={handleAgree}
           />
-
+          <Message error header='Oh fuck!' content={error} />
           <Button
             disabled={formState.disabled}
             type='submit'

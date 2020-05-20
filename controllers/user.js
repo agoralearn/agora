@@ -23,6 +23,14 @@ module.exports = {
   signUpUser: function (req, res) {
     db.User.create(req.body)
       .then((data) => res.json(data))
-      .catch((err) => res.status(400).json(err));
+      .catch((err) => {
+        if (err && err.code === 11000) {
+          res
+            .status(400)
+            .json({ message: 'An account with that email already exists.' });
+        } else {
+          res.status(400).json({ message: 'Internal Server Error.' });
+        }
+      });
   }
 };
