@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
 const path = require('path');
 const morgan = require('morgan');
 const initDb = require('./config/initDb');
@@ -9,8 +10,11 @@ const usersRouter = require('./routes/users');
 const searchRouter = require('./routes/search');
 const errorMiddleware = require('./routes/errorMiddleware');
 const chatRouter = require('./routes/chat');
+const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3001;
+
+const socketMapping = {};
 
 // log all requests to the console in development
 if (process.env.NODE_ENV !== 'production') {
@@ -27,7 +31,6 @@ initDb();
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
-
 // app.use("/api/tutor", tutorRouter)
 
 app.use(authRouter, errorMiddleware);
@@ -40,7 +43,16 @@ app.use(authRouter, errorMiddleware);
 app.use('/api/user', usersRouter); // Good
 
 // Search or viewing tutor profile
-app.use('/api/tutors', searchRouter); // Good
+app.use(
+  '/api/tutors',
+  (req, res, next) => {
+    console.log(socketMapping);
+    io.emit('news', { hello: 'Getting News' });
+
+    next();
+  },
+  searchRouter
+); // Good
 
 // Logged in user chat stuff
 app.use('/api/chat', chatRouter); // Good
@@ -50,6 +62,14 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+  socket.emit('news', { hello: 'world' });
+  socket.on('online', (data) => {
+    socketMapping[data.id] = socket;
+    console.log(data);
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`🌎 ==> Server now on port ${PORT}!`);
 });

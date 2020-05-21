@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './BottomNav.scss';
 import { Icon } from 'semantic-ui-react';
 import { useAuth } from '../../utils/auth';
 import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
+const socket = io('http://localhost:3001');
 
 export default function BottomNav() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      socket.emit('online', { userId: user.id });
+    }
+  }, [isLoggedIn]);
+
   return (
     <div>
       {isLoggedIn && (

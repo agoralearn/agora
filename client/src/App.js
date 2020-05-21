@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Route,
   BrowserRouter as Router,
@@ -19,6 +19,15 @@ import TutorBio from './pages/TutorBio/TutorBio';
 import Search from './pages/Search/Search';
 import BottomNav from './components/BottomNav/BottomNav';
 
+// SOCKET IO
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
+
+socket.on('news', (data) => {
+  console.log(data);
+});
+
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
   // Render children depending on how the component is
@@ -30,6 +39,11 @@ function ProtectedRoute({ children, ...rest }) {
 }
 
 function App() {
+  // useEffect(() => {
+  //   console.log(isLoggedIn);
+  //   socket.emit('my other event', { my: 'asdasf' });
+  // }, [isLoggedIn]);
+
   return (
     <AuthProvider>
       <Router>
