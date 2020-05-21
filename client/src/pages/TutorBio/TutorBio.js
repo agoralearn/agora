@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 import { Link } from 'react-router-dom';
-import Modal from '../../components/Modal/Modal';
+import ModalWrapper from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
 import Badge from '../../components/Badge/Badge';
@@ -26,6 +26,7 @@ function TutorBio({ match }) {
     userIds: [match.params.userId],
     message: ''
   });
+  const [modalOpen, setModalOpen] = useState(false);
   const [inputError, setInputError] = useState(false);
   const { user, isLoggedIn } = useAuth();
 
@@ -51,6 +52,14 @@ function TutorBio({ match }) {
     return;
   }
 
+  function handleModalOpen() {
+    setModalOpen(!modalOpen);
+  }
+  function handleModalClose() {
+    setModalOpen(false);
+    console.log('test');
+  }
+
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -68,6 +77,7 @@ function TutorBio({ match }) {
       startChat();
       setChatState({ ...chatState, message: '' });
       resetInputError();
+      handleModalClose();
     }
   }
 
@@ -113,11 +123,16 @@ function TutorBio({ match }) {
               </Grid.Row>
             </Grid>
             {!(user && user.id === match.params.userId) ? (
-              <Modal
+              <ModalWrapper
+                open={modalOpen}
                 onClose={resetInputError}
                 trigger={
                   <div className='bio-button-wrapper'>
-                    <Button className='btn-primary' style={{ margin: '20px' }}>
+                    <Button
+                      className='btn-primary'
+                      style={{ margin: '20px' }}
+                      onClick={handleModalOpen}
+                    >
                       Book Now
                     </Button>
                   </div>
@@ -165,10 +180,11 @@ function TutorBio({ match }) {
                     <MessageModal
                       onMessageChange={handleChange}
                       handleFormSubmit={handleFormSubmit}
+                      handleModalOpen={handleModalOpen}
                     />
                   </div>
                 )}
-              </Modal>
+              </ModalWrapper>
             ) : null}
 
             <h3 className='u-m-t u-m-b'>Subjects</h3>
