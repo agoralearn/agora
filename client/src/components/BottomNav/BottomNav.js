@@ -14,16 +14,40 @@ export default function BottomNav() {
       socket.emit('online', { userId: user.id });
     }
   }, [isLoggedIn]);
+import { useLocation } from 'react-router-dom';
+
+const pathsToHideButton = ['inbox', 'chat'];
+
+function checkIfShouldRender(path) {
+  let shouldRender = true;
+  const urlPaths = path.split('/');
+
+  pathsToHideButton.forEach((path) => {
+    if (urlPaths.includes(path)) {
+      shouldRender = false;
+    }
+  });
+
+  return shouldRender;
+}
+
+export default function BottomNav(props) {
+  const location = useLocation();
+  const { isLoggedIn } = useAuth();
 
   return (
-    <div>
-      {isLoggedIn && (
-        <Link to='/inbox'>
-          <div className='BottomNav_wrapper'>
-            <Icon name='mail outline'></Icon>
-          </div>
-        </Link>
+    <>
+      {checkIfShouldRender(location.pathname) && (
+        <div>
+          {isLoggedIn && (
+            <Link to='/inbox'>
+              <div className='BottomNav_wrapper'>
+                <Icon name='mail outline'></Icon>
+              </div>
+            </Link>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }

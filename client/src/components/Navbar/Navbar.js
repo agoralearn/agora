@@ -12,37 +12,46 @@ function Navbar() {
   const { isLoggedIn, logout, user } = useAuth();
   const history = useHistory();
 
+  function navigateToProfile() {
+    history.push('/profile');
+  }
+
+  function navigateToBio() {
+    history.push('/tutorbio/' + user.id);
+  }
+
+  function navigateToInbox() {
+    history.push('/inbox');
+  }
+
   function showLoginOrProfile() {
-    function navigateToProfile() {
-      history.push('/profile');
-    }
-    function navigateToBio() {
-      history.push('/tutorbio/' + user.id);
-    }
+    const profileImage = user && (
+      <ProfileImage
+        profileImg={user.image}
+        height='30px'
+        width='30px'
+        style={{ display: 'inline-block' }}
+      />
+    );
 
     if (isLoggedIn) {
       return (
-        <span className='Navbar_profile'>
-          <ProfileImage
-            profileImg={user.image}
-            style={{
-              height: '25px',
-              width: '25px',
-              float: 'left'
-            }}
-          />
-
+        <div className='Navbar_profile'>
+          <Link to='/tutors'>
+            <Button.Link className='btn-link btn-link--white u-m-r'>
+              Tutors
+            </Button.Link>
+          </Link>
           <Dropdown
+            trigger={profileImage}
             item
             simple
-            text=''
             direction='left'
             className='Navbar_profile-dropdown'
           >
             <Dropdown.Menu>
-              <Dropdown.Header content='Menu' />
-              <Dropdown.Divider />
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
+              <Dropdown.Item text='Inbox' onClick={navigateToInbox} />
               {user.role === 'tutor' ? (
                 <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
               ) : null}
@@ -55,7 +64,7 @@ function Navbar() {
               />
             </Dropdown.Menu>
           </Dropdown>
-        </span>
+        </div>
       );
     } else {
       return (
@@ -78,47 +87,5 @@ function Navbar() {
     </nav>
   );
 }
-
-// const createLink = ({ text, to, ...rest }) => {
-//   const className = 'nav-link';
-//   if (to) {
-//     return (
-//       <Link className={className} to={to} {...rest}>
-//         {text}
-//       </Link>
-//     );
-//   }
-//   return (
-//     <span
-//       role='button'
-//       className={className}
-//       style={{ cursor: 'pointer' }}
-//       {...rest}
-//     >
-//       {text}
-//     </span>
-//   );
-// };
-
-// function NavLinks() {
-//   const { isLoggedIn, logout } = useAuth();
-//   const links = [];
-//   if (isLoggedIn) {
-//     links.push({ text: 'Profile', to: '/profile' });
-//     links.push({ text: 'Logout', onClick: () => logout() });
-//   } else {
-//     links.push({ text: 'Signup', to: '/signup' });
-//     links.push({ text: 'Login', to: '/login' });
-//   }
-//   return (
-//     <ul className='navbar-nav'>
-//       {links.map((link, i) => (
-//         <li key={i} className='nav-item'>
-//           {createLink(link)}
-//         </li>
-//       ))}
-//     </ul>
-//   );
-// }
 
 export default Navbar;
