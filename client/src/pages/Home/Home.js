@@ -7,7 +7,7 @@ import Section from '../../components/Section/Section';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
 import API from '../../utils/API';
-import { Loader } from 'semantic-ui-react';
+import { Loader, Grid } from 'semantic-ui-react';
 
 import {
   SearchIcon,
@@ -100,23 +100,30 @@ export default function Home() {
       </Hero>
 
       {/* How It works */}
-      <Section>
-        <PageHeader>
-          <h2>How It Works</h2>
-        </PageHeader>
-        <h4 className='u-m text-center'>Search For A Tutor</h4>
-        <div className='text-center'>
-          <SearchIcon />
-        </div>
-        <h4 className='u-m text-center'>Request A Session</h4>
-        <div className='text-center'>
-          <RequestIcon />
-        </div>
-        <h4 className='u-m text-center'>Virtually Meet Your Tutor</h4>
-        <div className='text-center'>
-          <MeetIcon />
-        </div>
-      </Section>
+
+      <PageHeader>
+        <h2>How It Works</h2>
+      </PageHeader>
+      <Grid stackable columns={3}>
+        <Grid.Column>
+          <h4 className='u-m text-center'>Search For A Tutor</h4>
+          <div className='text-center'>
+            <SearchIcon />
+          </div>
+        </Grid.Column>
+        <Grid.Column>
+          <h4 className='u-m text-center'>Request A Session</h4>
+          <div className='text-center'>
+            <RequestIcon />
+          </div>
+        </Grid.Column>
+        <Grid.Column>
+          <h4 className='u-m text-center'>Virtually Meet Your Tutor</h4>
+          <div className='text-center'>
+            <MeetIcon />
+          </div>
+        </Grid.Column>
+      </Grid>
 
       {/* Top Tutors Section */}
       <Section>
