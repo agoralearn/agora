@@ -53,6 +53,10 @@ $navbar-height: 60px;
   margin-bottom: 16px;
 }
 
+.u-m-b-sm {
+  margin-bottom: 8px;
+}
+
 .u-m-t {
   margin-top: 16px;
 }
@@ -60,4 +64,10 @@ $navbar-height: 60px;
 // Center align text
 .text-center {
   text-align: center;
+}
+.disp-flex {
+  display: flex;
+}
+.disp-inline-b {
+  display: inline-block;
 }
