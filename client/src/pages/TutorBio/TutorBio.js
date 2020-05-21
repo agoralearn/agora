@@ -8,7 +8,15 @@ import Badge from '../../components/Badge/Badge';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import { Dimmer, Loader, List, Container, Grid, Icon } from 'semantic-ui-react';
+import {
+  Dimmer,
+  Loader,
+  List,
+  Container,
+  Grid,
+  Icon,
+  Message
+} from 'semantic-ui-react';
 import './TutorBio.scss';
 
 function TutorBio({ match }) {
@@ -17,6 +25,7 @@ function TutorBio({ match }) {
     userIds: [match.params.userId],
     message: ''
   });
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     API.getTutorById(match.params.userId)
@@ -52,8 +61,13 @@ function TutorBio({ match }) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    startChat();
-    setChatState({ ...chatState, message: '' });
+    if (chatState.message === '') {
+      setError(true);
+    } else {
+      startChat();
+      setChatState({ ...chatState, message: '' });
+      setError(false);
+    }
   }
 
   function renderLoader() {
@@ -102,6 +116,16 @@ function TutorBio({ match }) {
               }
               header={`Contact ${tutor.firstName} ${tutor.lastName}`}
             >
+              {error ? (
+                <Message
+                  error
+                  header='You must provide a message'
+                  content={error}
+                />
+              ) : (
+                <p></p>
+              )}
+
               <MessageModal
                 onMessageChange={handleChange}
                 handleFormSubmit={handleFormSubmit}
