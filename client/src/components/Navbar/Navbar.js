@@ -40,10 +40,13 @@ function Navbar() {
             className='Navbar_profile-dropdown'
           >
             <Dropdown.Menu>
+              <Dropdown.Header content='Menu' />
+              <Dropdown.Divider />
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
               {user.role === 'tutor' ? (
                 <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
               ) : null}
+              <Dropdown.Divider />
               <Dropdown.Item
                 text='Logout'
                 onClick={() => {
