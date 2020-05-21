@@ -12,20 +12,20 @@ function Navbar() {
   const { isLoggedIn, logout, user } = useAuth();
   const history = useHistory();
 
+  function navigateToProfile() {
+    history.push('/profile');
+  }
+
+  function navigateToBio() {
+    history.push('/tutorbio/' + user.id);
+  }
+
+  function navigateToInbox() {
+    history.push('/inbox');
+  }
+
   function showLoginOrProfile() {
-    function navigateToProfile() {
-      history.push('/profile');
-    }
-
-    function navigateToBio() {
-      history.push('/tutorbio/' + user.id);
-    }
-
-    function navigateToInbox() {
-      history.push('/inbox');
-    }
-
-    const profileImage = (
+    const profileImage = user && (
       <ProfileImage
         profileImg={user.image}
         height='30px'
@@ -50,8 +50,6 @@ function Navbar() {
             className='Navbar_profile-dropdown'
           >
             <Dropdown.Menu>
-              {/* <Dropdown.Header content='Menu' /> */}
-              {/* <Dropdown.Divider /> */}
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
               <Dropdown.Item text='Inbox' onClick={navigateToInbox} />
               {user.role === 'tutor' ? (
