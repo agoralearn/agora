@@ -34,25 +34,26 @@ function ChatPreview({ users, message, chatId }) {
       <Link to={`/chat/${chatId}`}>
         <div className='ChatPreview_profile-img-div'>
           <ProfileImage
-            profileImg={currentUserImage}
-            style={{
-              height: '25px',
-              width: '25px',
-              position: 'absolute',
-              top: '0px',
-              left: '0px',
-              zIndex: '0'
-            }}
-          />
-          <ProfileImage
             profileImg={otherUserImage}
+            height='25px'
+            width='25px'
             style={{
-              height: '25px',
-              width: '25px',
               position: 'absolute',
               top: '5px',
               left: '8px',
               zIndex: '1'
+            }}
+          />
+          <ProfileImage
+            profileImg={currentUserImage}
+            height='25px'
+            width='25px'
+            style={{
+              position: 'absolute',
+              top: '0px',
+              left: '0px',
+              zIndex: '0'
+
               // overflow: 'hidden',
               // borderColor: 'green',
               // borderWidth: '20'
