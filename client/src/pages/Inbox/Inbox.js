@@ -25,7 +25,7 @@ export default function Inbox(props) {
 
   return (
     <div className='inbox-container'>
-      <GoBack history={props.history} />
+      <GoBack />
       <PageHeader>
         <h2 className='header-text'>Sessions</h2>
       </PageHeader>
