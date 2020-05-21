@@ -14,10 +14,7 @@ module.exports = {
           user.verifyPassword(password, (err, isMatch) => {
             if (isMatch && !err) {
               // remove password from user object
-              console.log(delete user.password);
-              console.log(user); // still has password
-              console.log(user.hasOwnProperty('password')); // false
-              console.log(user.password); // can still access password after deleting wtf?
+              user.password = null;
               const token = jwt.sign(
                 {
                   id: user._id,
