@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
@@ -48,14 +48,14 @@ const editableFields = [
 ];
 
 function Profile() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [userInfo, setUserInfo] = useState({});
   const [editing, setEditing] = useState(false);
   const [fields, setFields] = useState();
 
   function checkboxFields(current, value, checked) {
     const currentCopy = [...current];
-    let index = current.indexOf(value);
+    const index = current.indexOf(value);
     index < 0 ? currentCopy.push(value) : currentCopy.splice(index, 1);
     return currentCopy;
   }
@@ -78,31 +78,27 @@ function Profile() {
         );
 
       case 'select':
-        return (
-          // <Form.Checkbox onChange={(event, { value }) => console.log(value)}>
-          field.options.map((option) => {
-            return (
-              <Checkbox
-                key={option.label}
-                label={option.label}
-                control='input'
-                name={field.name}
-                checked={userInfo.timeFrame.includes(option.label)}
-                onChange={(event, data) =>
-                  setUserInfo({
-                    ...userInfo,
-                    [field.name]: checkboxFields(
-                      userInfo[field.name],
-                      option.label,
-                      data.checked
-                    )
-                  })
-                }
-              />
-            );
-          })
-          // </Form.Checkbox>
-        );
+        return field.options.map((option) => {
+          return (
+            <Checkbox
+              key={option.label}
+              label={option.label}
+              control='input'
+              name={field.name}
+              checked={userInfo.timeFrame.includes(option.label)}
+              onChange={(event, data) =>
+                setUserInfo({
+                  ...userInfo,
+                  [field.name]: checkboxFields(
+                    userInfo[field.name],
+                    option.label,
+                    data.checked
+                  )
+                })
+              }
+            />
+          );
+        });
 
       case 'textarea':
         return (
@@ -155,6 +151,7 @@ function Profile() {
 
   useEffect(() => {
     renderComponents(editableFields);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
 
   useEffect(() => {
