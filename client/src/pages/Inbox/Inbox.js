@@ -9,7 +9,6 @@ import './Inbox.scss';
 
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
-  // const currentUserId = '5ec196146b0a589818189458';
 
   useEffect(() => {
     getChats();
@@ -26,7 +25,9 @@ export default function Inbox(props) {
 
   return (
     <div className='inbox-container'>
-      <GoBack history={props.history} />
+      <div className='u-m-l'>
+        <GoBack history={props.history} />
+      </div>
       <PageHeader>
         <h2 className='header-text'>Sessions</h2>
       </PageHeader>

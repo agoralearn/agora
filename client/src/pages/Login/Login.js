@@ -10,11 +10,15 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { isLoggedIn, login } = useAuth();
+  const { isLoggedIn, login, user } = useAuth();
   const history = useHistory();
 
-  if (isLoggedIn) {
-    return <Redirect to='/' />;
+  if (isLoggedIn && user) {
+    return user.role === 'student' ? (
+      <Redirect to='/tutors' />
+    ) : (
+      <Redirect to='/profile' />
+    );
   }
 
   const handleFormSubmit = (event) => {
@@ -22,8 +26,12 @@ function Login() {
 
     setLoading(true);
     login(email, password)
-      // navigate to the profile page
-      .then(() => history.push('/profile'))
+      // navigate to user's inbox
+      .then((user) => {
+        user.role === 'student'
+          ? history.push('/tutors')
+          : history.push('/profile');
+      })
       .catch((err) => {
         setLoading(false);
         setError(err.response.data.message);

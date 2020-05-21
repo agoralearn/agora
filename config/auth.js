@@ -9,11 +9,19 @@ module.exports = {
       db.User.findOne({
         email: email
       })
+        .select('+password')
         .then((user) => {
           user.verifyPassword(password, (err, isMatch) => {
             if (isMatch && !err) {
+              // remove password from user object
+              user.password = null;
               const token = jwt.sign(
-                { id: user._id, email: user.email, role: user.role },
+                {
+                  id: user._id,
+                  email: user.email,
+                  role: user.role,
+                  image: user.image
+                },
                 process.env.SERVER_SECRET,
                 { expiresIn: 129600 }
               ); // Sigining the token
