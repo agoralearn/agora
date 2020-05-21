@@ -15,7 +15,6 @@ export default function MessageModal({
       </p>
       <Form>
         <TextArea
-          type='text'
           name='message'
           placeholder='I would like to receive tutoring on...'
           onChange={onMessageChange}
