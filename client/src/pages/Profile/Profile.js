@@ -168,6 +168,13 @@ function Profile() {
   function formSubmitHandler(event) {
     event.preventDefault();
     setEditing(!editing);
+    API.updateUser(userInfo)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
