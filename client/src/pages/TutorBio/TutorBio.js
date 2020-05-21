@@ -70,7 +70,9 @@ function TutorBio({ match }) {
         renderLoader()
       ) : (
         <div>
-          <GoBack />
+          <div className='u-m-l'>
+            <GoBack />
+          </div>
           <Container>
             <PageHeader>
               <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
