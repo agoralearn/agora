@@ -92,7 +92,7 @@ function TutorBio({ match }) {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {!user.id === match.params.userId ? (
+            {!(user.id === match.params.userId) ? (
               <Modal
                 trigger={
                   <div className='bio-button-wrapper'>
