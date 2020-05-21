@@ -111,7 +111,7 @@ function TutorBio({ match }) {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            {!(user.id === match.params.userId) ? (
+            {!(user && user.id === match.params.userId) ? (
               <Modal
                 onClose={resetInputError}
                 trigger={
