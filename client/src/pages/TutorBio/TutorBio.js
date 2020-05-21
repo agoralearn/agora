@@ -26,6 +26,7 @@ function TutorBio({ match }) {
     userIds: [match.params.userId],
     message: ''
   });
+  const [modalOpen, setModalOpen] = useState(false);
   const [inputError, setInputError] = useState(false);
   const { user, isLoggedIn } = useAuth();
 
@@ -51,6 +52,13 @@ function TutorBio({ match }) {
     return;
   }
 
+  function handleModalOpen() {
+    setModalOpen(true);
+  }
+  function handleModalClose() {
+    setModalOpen(false);
+  }
+
   const handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -68,6 +76,7 @@ function TutorBio({ match }) {
       startChat();
       setChatState({ ...chatState, message: '' });
       resetInputError();
+      handleModalClose();
     }
   }
 
@@ -114,10 +123,15 @@ function TutorBio({ match }) {
             </Grid>
             {!(user && user.id === match.params.userId) ? (
               <Modal
+                open={modalOpen}
                 onClose={resetInputError}
                 trigger={
                   <div className='bio-button-wrapper'>
-                    <Button className='btn-primary' style={{ margin: '20px' }}>
+                    <Button
+                      className='btn-primary'
+                      style={{ margin: '20px' }}
+                      onClick={handleModalOpen}
+                    >
                       Book Now
                     </Button>
                   </div>
