@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button';
 import API from '../../utils/API';
 import { Container, Form, Dropdown } from 'semantic-ui-react';
 import './Search.scss';
+import { subjects, education } from '../../utils/categoryData';
 
 const INITIAL_SEARCH_STATE = {
   subject: 'All Subjects',
@@ -14,49 +15,27 @@ const INITIAL_SEARCH_STATE = {
   price: 'Any'
 };
 
+const searchSubjects = [
+  {
+    key: 'All Subjects',
+    text: 'All Subjects',
+    value: 'All Subjects'
+  },
+  ...subjects
+];
+
+const searchEducations = [
+  {
+    key: 'All Levels',
+    text: 'All Levels',
+    value: 'All Levels'
+  },
+  ...education
+];
+
 function Search() {
   const [tutors, setTutors] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH_STATE);
-
-  const subjectArray = [
-    'All Subjects',
-    'english',
-    'world history',
-    'grammar',
-    'algebra',
-    'geometry',
-    'trigonometry',
-    'computer science',
-    'web development',
-    'chemistry',
-    'physics',
-    'biology',
-    'Earth Science',
-    'calculus',
-    'art',
-    'art history',
-    'spanish'
-  ];
-
-  const subjects = subjectArray.map((subject) => ({
-    key: subject,
-    value: subject,
-    text: subject
-  }));
-
-  const educationArray = [
-    'All Levels',
-    'high school',
-    'undergraduate',
-    'masters',
-    'doctorate'
-  ];
-
-  const educations = educationArray.map((education) => ({
-    key: education,
-    value: education,
-    text: education
-  }));
 
   const prices = [
     { key: 'Any', value: 'Any', text: 'Any Price' },
@@ -165,7 +144,7 @@ function Search() {
             fluid
             selection
             value={search.subject}
-            options={subjects}
+            options={searchSubjects}
             onChange={handleChange}
           />
         </Form.Field>
@@ -179,7 +158,7 @@ function Search() {
               fluid
               selection
               value={search.education}
-              options={educations}
+              options={searchEducations}
               onChange={handleChange}
             />
           </Form.Field>
