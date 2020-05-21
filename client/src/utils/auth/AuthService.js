@@ -8,6 +8,7 @@ export default class AuthService {
       .then((res) => {
         // set the token once the user logs in
         this.setToken(res.data.token);
+        console.log(res.data);
         // return the rest of the response
         return res;
       });

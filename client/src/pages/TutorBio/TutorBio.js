@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
-// import { useAuth } from '../utils/auth';
+import { useAuth } from '../../utils/auth';
 import Modal from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
@@ -26,11 +26,11 @@ function TutorBio({ match }) {
     message: ''
   });
   const [inputError, setInputError] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     API.getTutorById(match.params.userId)
       .then((res) => {
-        console.log(res.data);
         setTutor(res.data);
       })
       .catch((err) => {
@@ -109,26 +109,29 @@ function TutorBio({ match }) {
                 </Grid.Column>
               </Grid.Row>
             </Grid>
-            <Modal
-              onClose={resetInputError}
-              trigger={
-                <div className='bio-button-wrapper'>
-                  <Button className='btn-primary' style={{ margin: '20px' }}>
-                    Book Now
-                  </Button>
-                </div>
-              }
-              header={`Contact ${tutor.firstName} ${tutor.lastName}`}
-            >
-              {inputError ? (
-                <Message error header='You must provide a message' />
-              ) : null}
+            {!(user.id === match.params.userId) ? (
+              <Modal
+                onClose={resetInputError}
+                trigger={
+                  <div className='bio-button-wrapper'>
+                    <Button className='btn-primary' style={{ margin: '20px' }}>
+                      Book Now
+                    </Button>
+                  </div>
+                }
+                header={`Contact ${tutor.firstName} ${tutor.lastName}`}
+              >
+                {inputError ? (
+                  <Message error header='You must provide a message' />
+                ) : null}
 
-              <MessageModal
-                onMessageChange={handleChange}
-                handleFormSubmit={handleFormSubmit}
-              />
-            </Modal>
+                <MessageModal
+                  onMessageChange={handleChange}
+                  handleFormSubmit={handleFormSubmit}
+                />
+              </Modal>
+            ) : null}
+
             <h3 className='u-m-t u-m-b'>Subjects</h3>
             <List horizontal>
               {tutor.subjects.map((subject) => (
