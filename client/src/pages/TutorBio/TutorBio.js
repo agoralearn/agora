@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
+import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
@@ -26,7 +27,7 @@ function TutorBio({ match }) {
     message: ''
   });
   const [inputError, setInputError] = useState(false);
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
 
   useEffect(() => {
     API.getTutorById(match.params.userId)
@@ -123,14 +124,50 @@ function TutorBio({ match }) {
                 }
                 header={`Contact ${tutor.firstName} ${tutor.lastName}`}
               >
-                {inputError ? (
-                  <Message error header='You must provide a message' />
-                ) : null}
-
-                <MessageModal
-                  onMessageChange={handleChange}
-                  handleFormSubmit={handleFormSubmit}
-                />
+                {!isLoggedIn ? (
+                  <Message color='violet'>
+                    <Message.Header>
+                      Log in to book a tutor!
+                      <div>
+                        <Link to='/login'>
+                          <Button.Link>
+                            {' '}
+                            Login{' '}
+                            <i
+                              className='fas fa-arrow-right'
+                              style={{ marginRight: '4px' }}
+                            ></i>
+                          </Button.Link>
+                        </Link>
+                      </div>
+                      <div>
+                        <Link to='/signup'>
+                          <Button.Link>
+                            {' '}
+                            Signup{' '}
+                            <i
+                              className='fas fa-arrow-right'
+                              style={{ marginRight: '4px' }}
+                            ></i>
+                          </Button.Link>
+                        </Link>
+                      </div>
+                    </Message.Header>
+                  </Message>
+                ) : (
+                  <div>
+                    {inputError ? (
+                      <Message
+                        error
+                        header='You must provide a message to book this tutor!'
+                      />
+                    ) : null}
+                    <MessageModal
+                      onMessageChange={handleChange}
+                      handleFormSubmit={handleFormSubmit}
+                    />
+                  </div>
+                )}
               </Modal>
             ) : null}
 
