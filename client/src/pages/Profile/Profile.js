@@ -14,7 +14,7 @@ import {
   Checkbox,
   Container
 } from 'semantic-ui-react';
-import { subjects, education } from './subjects';
+import { subjects, education } from '../../utils/categoryData';
 import Button from '../../components/Button/Button';
 import GoBack from '../../components/GoBack/GoBack';
 
