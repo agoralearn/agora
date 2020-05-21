@@ -1,4 +1,4 @@
-@import '../../css/globals';
+@import "../../css/globals";
 
 .Navbar_wrapper {
   position: absolute;
@@ -19,9 +19,18 @@
 }
 
 .Navbar_profile {
-  display: inline-block;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
+
 .Navbar_profile-dropdown {
-  float: right;
   color: $color-white;
+
+  & i::before {
+    color: white;
+    background: pink;
+    position: absolute;
+    top: -5px;
+  }
 }

@@ -1,0 +1,9 @@
+@import "../../css/colors";
+
+.Footer_wrapper {
+  position: absolute;
+  bottom: 0;
+  background: $color-primary;
+  padding: 30px 20px;
+  color: $color-white;
+}

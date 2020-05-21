@@ -109,6 +109,8 @@ function TutorBio({ match }) {
               profileImg={tutor.image}
               style={{ margin: '0 auto 30px' }}
               className='u-m-b'
+              height='200px'
+              width='200px'
             />
             <Grid className='text-center'>
               <Grid.Row columns={2}>
