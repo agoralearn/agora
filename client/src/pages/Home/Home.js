@@ -104,26 +104,28 @@ export default function Home() {
       <PageHeader>
         <h2>How It Works</h2>
       </PageHeader>
-      <Grid stackable columns={3}>
-        <Grid.Column>
-          <h4 className='u-m text-center'>Search For A Tutor</h4>
-          <div className='text-center'>
-            <SearchIcon />
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-          <h4 className='u-m text-center'>Request A Session</h4>
-          <div className='text-center'>
-            <RequestIcon />
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-          <h4 className='u-m text-center'>Virtually Meet Your Tutor</h4>
-          <div className='text-center'>
-            <MeetIcon />
-          </div>
-        </Grid.Column>
-      </Grid>
+      <div className='Home_icons_container'>
+        <Grid stackable columns={3}>
+          <Grid.Column>
+            <h4 className='u-m text-center'>Search For A Tutor</h4>
+            <div className='text-center'>
+              <SearchIcon />
+            </div>
+          </Grid.Column>
+          <Grid.Column>
+            <h4 className='u-m text-center'>Request A Session</h4>
+            <div className='text-center'>
+              <RequestIcon />
+            </div>
+          </Grid.Column>
+          <Grid.Column>
+            <h4 className='u-m text-center'>Virtually Meet Your Tutor</h4>
+            <div className='text-center'>
+              <MeetIcon />
+            </div>
+          </Grid.Column>
+        </Grid>
+      </div>
 
       {/* Top Tutors Section */}
       <Section>
