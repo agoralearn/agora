@@ -14,7 +14,7 @@ import {
   Checkbox,
   Container
 } from 'semantic-ui-react';
-import { subjects, education } from './subjects';
+import { subjects, education } from '../../utils/categoryData';
 import Button from '../../components/Button/Button';
 import GoBack from '../../components/GoBack/GoBack';
 
@@ -57,6 +57,8 @@ const editableFields = [
   { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' }
 ];
 
+const studentFields = ['firstName', 'lastName', 'email', 'education', 'age'];
+
 function Profile() {
   const { user } = useAuth();
   const [userInfo, setUserInfo] = useState();
@@ -69,6 +71,14 @@ function Profile() {
     index < 0 ? currentCopy.push(value) : currentCopy.splice(index, 1);
     return currentCopy;
   }
+
+  // function filterStudentEditFields(field) {
+  // const editableStudentFields = editableFields.filter((field) => {
+  //   if (studentFields.includes(field.name)) {
+  //     return field;
+  //   }
+  // });
+  // }
 
   function determineFieldType(field) {
     switch (field.type) {
@@ -226,11 +236,11 @@ function Profile() {
               <label>{field.label}</label>
             </div>
             <div>
-              {
-                <p key={field.name} onClick={() => setEditing(true)}>
-                  {userInfo[field.name]}
-                </p>
-              }
+              {userInfo.education.map((level) => (
+                <div key={level} className='u-m-r disp-inline-b'>
+                  <Badge>{level}</Badge>
+                </div>
+              ))}
             </div>
           </div>
         );
@@ -281,30 +291,14 @@ function Profile() {
             <div>
               {
                 <p key={field.name} onClick={() => setEditing(true)}>
-                  {userInfo[field.name]} +
+                  {user.role === 'tutor'
+                    ? userInfo[field.name] + '+'
+                    : userInfo[field.name]}
                 </p>
               }
             </div>
           </div>
         );
-
-      /* case 'age':
-        if (user.role === 'student') {
-          return (
-            <div key='yourAge' className='u-m-b'>
-              <div className='u-m-b-sm'>
-                <label>Your Age</label>
-              </div>
-              <div>
-                {
-                  <p key={field.name} onClick={() => setEditing(true)}>
-                    {userInfo[field.name]}
-                  </p>
-                }
-              </div>
-            </div>
-          );
-        } */
 
       case 'price':
         if (user.role === 'tutor') {
@@ -345,9 +339,30 @@ function Profile() {
     }
   }
 
-  function renderComponents(editableFields) {
-    // if (editing) {
-    const fields = editableFields.map((field, index) => {
+  function setEditableFields(editableFields, studentFields) {
+    let userEditableFields = [];
+    if (user.role === 'student') {
+      editableFields.filter((field) => {
+        if (studentFields.includes(field.name)) {
+          userEditableFields.push(field);
+        }
+      });
+    }
+    console.log('hello', userEditableFields);
+  }
+
+  function renderComponents(editableFields, studentFields) {
+    let userEditableFields = [];
+    if (user.role === 'student') {
+      editableFields.filter((field) => {
+        if (studentFields.includes(field.name)) {
+          userEditableFields.push(field);
+        }
+      });
+    } else {
+      userEditableFields = editableFields;
+    }
+    const fields = userEditableFields.map((field, index) => {
       if (editing) {
         return (
           <Form.Field key={index}>
@@ -398,7 +413,8 @@ function Profile() {
   }
 
   useEffect(() => {
-    renderComponents(editableFields);
+    setEditableFields(editableFields, studentFields);
+    renderComponents(editableFields, studentFields);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
 

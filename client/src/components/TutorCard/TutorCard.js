@@ -43,7 +43,7 @@ function TutorCard({
     <div className='TutorCard_wrapper'>
       <div className='TutorCard_content'>
         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-          <ProfileImage profileImg={profileImg} />
+          <ProfileImage profileImg={profileImg} height='50px' width='50px' />
 
           <div style={{ marginLeft: '10px' }}>
             <div style={{ width: '100%' }}>

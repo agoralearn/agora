@@ -60,6 +60,7 @@ function App() {
             <Route exact path='/chat/:chatId' component={Chat}></Route>
           </ProtectedRoute>
         </Switch>
+
         <BottomNav />
       </Router>
     </AuthProvider>
