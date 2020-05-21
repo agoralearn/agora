@@ -24,6 +24,7 @@ function Signup({ location }) {
     role: location.role || 'student',
     minGroupSize: '1',
     maxGroupSize: '1',
+    image: 'https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar.jpg',
     agree: false
   });
   const [error, setError] = useState('');
@@ -35,7 +36,7 @@ function Signup({ location }) {
     return user.role === 'student' ? (
       <Redirect to='/tutors' />
     ) : (
-      <Redirect to='/tutorbio' />
+      <Redirect to='/profile' />
     );
   }
 
@@ -63,7 +64,7 @@ function Signup({ location }) {
       .then(() => {
         formState.role === 'student'
           ? history.replace('/tutors')
-          : history.replace('/tutorbio');
+          : history.replace('/profile');
       })
       .catch((err) => {
         setLoading(false);

@@ -17,3 +17,20 @@
   display: flex;
   align-items: center;
 }
+
+.Navbar_profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.Navbar_profile-dropdown {
+  color: $color-white;
+
+  & i::before {
+    color: white;
+    background: pink;
+    position: absolute;
+    top: -5px;
+  }
+}

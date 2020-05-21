@@ -8,13 +8,13 @@ export default {
   signUpUser: (user) => {
     return axios.post('/api/user', user);
   },
-  updateUser: () => {
-    return axios.patch('/api/user');
+  updateUser: (userInfo) => {
+    return axios.patch('/api/user', userInfo);
   },
   getTutors: (filters) => {
     return axios.get('/api/tutors', { params: filters });
   },
-  getTutorsById: (id) => {
+  getTutorById: (id) => {
     return axios.get('/api/tutors/' + id);
   },
   getChat: (chatId) => {

@@ -139,6 +139,7 @@ function Search() {
       return filteredTutors.map((tutor) => (
         <TutorCard
           key={tutor._id}
+          id={tutor._id}
           {...tutor}
           name={{ firstName: tutor.firstName, lastName: tutor.lastName }}
           profileImg={tutor.image}

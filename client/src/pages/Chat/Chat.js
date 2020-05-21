@@ -6,7 +6,7 @@ import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 import { toTitleCase } from '../../utils/helpers';
 
-export default function Chat({ match, history, ...props }) {
+export default function Chat({ match, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [avatars, setAvatars] = useState('');
@@ -17,33 +17,33 @@ export default function Chat({ match, history, ...props }) {
   const { user } = useAuth();
 
   useEffect(() => {
+    function fetchUserMessages() {
+      const chatId = match.params.chatId;
+      return API.getChat(chatId);
+    }
+    function mapUserstoImages({ users }) {
+      const avatarMap = {};
+      const userNames = [];
+      users.forEach((person) => {
+        avatarMap[person._id] = person.image;
+        if (person._id !== user.id) {
+          userNames.push(
+            <h2 className='f-w-l u-m-l' key={person._id}>
+              {toTitleCase(person.firstName)} {toTitleCase(person.lastName)}
+            </h2>
+          );
+        }
+      });
+      setAvatars(avatarMap);
+      setOtherUsers(userNames);
+    }
     fetchUserMessages().then(({ data }) => {
       mapUserstoImages(data);
       setMessages(data.messages);
     });
-  }, []);
+  }, [match.params.chatId, user.id]);
   // useEffect(() => {}, []);
 
-  function fetchUserMessages() {
-    const chatId = match.params.chatId;
-    return API.getChat(chatId);
-  }
-  function mapUserstoImages({ users }) {
-    const avatarMap = {};
-    const userNames = [];
-    users.forEach((person) => {
-      avatarMap[person._id] = person.image;
-      if (person._id !== user.id) {
-        userNames.push(
-          <h2 className='f-w-l u-m-l' key={person._id}>
-            {toTitleCase(person.firstName)} {toTitleCase(person.lastName)}
-          </h2>
-        );
-      }
-    });
-    setAvatars(avatarMap);
-    setOtherUsers(userNames);
-  }
   function messageInputChangeHandler(event) {
     setMessageInput(event.target.value);
   }
@@ -75,7 +75,7 @@ export default function Chat({ match, history, ...props }) {
   return (
     <section className='Chat-container'>
       <div className='Chat-users-names'>
-        <GoBack history={history} />
+        <GoBack />
         {otherUsers}
       </div>
 

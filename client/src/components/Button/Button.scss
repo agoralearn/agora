@@ -1,4 +1,4 @@
-@import '../../css/colors';
+@import "../../css/colors";
 
 .btn {
   outline: none;
@@ -52,4 +52,8 @@
   &:hover {
     background: none;
   }
+}
+
+.btn-link--white {
+  color: white;
 }

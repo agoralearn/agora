@@ -8,7 +8,7 @@ import {
 // Our Components
 import { AuthProvider, useAuth } from './utils/auth';
 import Login from './pages/Login/Login';
-import Profile from './pages/Profile';
+import Profile from './pages/Profile/Profile';
 import Signup from './pages/Signup/Signup';
 import Inbox from './pages/Inbox/Inbox';
 import Chat from './pages/Chat/Chat';
@@ -26,7 +26,7 @@ function ProtectedRoute({ children, ...rest }) {
   if (isLoggedIn) {
     return children;
   }
-  return <Redirect to='/signup' />;
+  return <Redirect to='/' />;
 }
 
 function App() {
@@ -60,6 +60,7 @@ function App() {
             <Route exact path='/chat/:chatId' component={Chat}></Route>
           </ProtectedRoute>
         </Switch>
+
         <BottomNav />
       </Router>
     </AuthProvider>
