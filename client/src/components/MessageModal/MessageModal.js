@@ -2,7 +2,11 @@ import React from 'react';
 import { Form, TextArea } from 'semantic-ui-react';
 import Button from '../Button/Button';
 
-export default function MessageModal({ onMessageChange, handleFormSubmit }) {
+export default function MessageModal({
+  onMessageChange,
+  handleFormSubmit,
+  handleModalOpen
+}) {
   return (
     <div>
       <p style={{ paddingBottom: '20px' }}>
@@ -15,6 +19,13 @@ export default function MessageModal({ onMessageChange, handleFormSubmit }) {
           placeholder='I would like to recieve tutoring on...'
           onChange={onMessageChange}
         />
+        <Button
+          className='btn-secondary u-m-r'
+          style={{ marginTop: '20px' }}
+          onClick={handleModalOpen}
+        >
+          Cancel
+        </Button>
         <Button
           className='btn-primary'
           style={{ marginTop: '20px' }}
