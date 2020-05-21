@@ -5,7 +5,7 @@ import Button from '../Button/Button';
 export default function MessageModal({
   onMessageChange,
   handleFormSubmit,
-  handleModalOpen
+  handleModalToggle
 }) {
   return (
     <div>
@@ -16,13 +16,13 @@ export default function MessageModal({
       <Form>
         <TextArea
           name='message'
-          placeholder='I would like to recieve tutoring on...'
+          placeholder='I would like to receive tutoring on...'
           onChange={onMessageChange}
         />
         <Button
           className='btn-secondary u-m-r'
           style={{ marginTop: '20px' }}
-          onClick={handleModalOpen}
+          onClick={handleModalToggle}
         >
           Cancel
         </Button>
