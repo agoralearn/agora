@@ -6,7 +6,7 @@ import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 import { toTitleCase } from '../../utils/helpers';
 
-export default function Chat({ match, history, ...props }) {
+export default function Chat({ match, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [avatars, setAvatars] = useState('');
@@ -75,7 +75,7 @@ export default function Chat({ match, history, ...props }) {
   return (
     <section className='Chat-container'>
       <div className='Chat-users-names'>
-        <GoBack history={history} />
+        <GoBack />
         {otherUsers}
       </div>
 

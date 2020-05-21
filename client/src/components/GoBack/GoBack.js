@@ -1,10 +1,16 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+<<<<<<< HEAD
 
 export default function GoBack() {
   const history = useHistory();
   console.log(history);
 
+=======
+
+export default function GoBack() {
+  const history = useHistory();
+>>>>>>> a9b668931970ac695cd7689f6991696f1c8896b0
   function goBackHandler() {
     history.goBack();
   }
