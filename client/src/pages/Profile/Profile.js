@@ -2,11 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
+import './Profile.scss';
+import Badge from '../../components/Badge/Badge';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import { Input, Form, Dropdown, TextArea, Checkbox } from 'semantic-ui-react';
+import {
+  Input,
+  Form,
+  Dropdown,
+  TextArea,
+  Checkbox,
+  Container
+} from 'semantic-ui-react';
 import { subjects, education } from './subjects';
 import Button from '../../components/Button/Button';
+import GoBack from '../../components/GoBack/GoBack';
 
 const editableFields = [
   {
@@ -49,7 +59,7 @@ const editableFields = [
 
 function Profile() {
   const { user } = useAuth();
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState();
   const [editing, setEditing] = useState(false);
   const [fields, setFields] = useState();
 
@@ -81,6 +91,7 @@ function Profile() {
         return field.options.map((option) => {
           return (
             <Checkbox
+              className='u-m-r'
               key={option.label}
               label={option.label}
               control='input'
@@ -137,11 +148,21 @@ function Profile() {
             {determineFieldType(field)}
           </Form.Field>
         );
-      } else {
+      } else if (!editing && userInfo) {
+        console.log(userInfo.subjects);
         return (
-          <p key={field.name} onClick={() => setEditing(true)}>
-            {userInfo[field.name]}
-          </p>
+          <>
+            <label>{field.label}</label>
+            {field.name === 'subjects' ? (
+              userInfo.subjects.map((subject) => (
+                <Badge className='u-w-r'>{subject}</Badge>
+              ))
+            ) : (
+              <p key={field.name} onClick={() => setEditing(true)}>
+                {userInfo[field.name]}
+              </p>
+            )}
+          </>
         );
       }
     });
@@ -175,26 +196,34 @@ function Profile() {
   }
 
   return (
-    <div className='container Profile'>
+    <div className='container Profile Profile_container'>
+      <div className='u-m-l'>
+        <GoBack />
+      </div>
       <PageHeader>
         <h2>Profile Settings</h2>
       </PageHeader>
-
-      <ProfileImage profileImg={userInfo.image} />
-      <Button className='btn-primary' onClick={() => setEditing(!editing)}>
-        Edit
-      </Button>
-
-      <p>Email:</p>
-      <Form onSubmit={formSubmitHandler}>
-        {fields}
-
-        {editing && (
-          <Button className='btn-primary' type='submit'>
-            Save
+      {userInfo && (
+        <Container>
+          <ProfileImage profileImg={userInfo.image} />
+          <Button className='btn-primary' onClick={() => setEditing(!editing)}>
+            Edit
           </Button>
-        )}
-      </Form>
+
+          {/* <p>Email:</p> */}
+          <div className='Profile_Form-div'>
+            <Form onSubmit={formSubmitHandler}>
+              {fields}
+
+              {editing && (
+                <Button className='btn-primary' type='submit'>
+                  Save
+                </Button>
+              )}
+            </Form>
+          </div>
+        </Container>
+      )}
     </div>
   );
 }
