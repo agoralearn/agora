@@ -13,9 +13,10 @@ export const AuthProvider = ({ value, ...rest }) => {
   );
 
   const login = (email, password) => {
-    return authService
-      .login(email, password)
-      .then(() => setUser(authService.getProfile()));
+    return authService.login(email, password).then(() => {
+      setUser(authService.getProfile());
+      return authService.getProfile();
+    });
   };
 
   const logout = () => authService.logout();

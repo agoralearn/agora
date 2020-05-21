@@ -1,24 +1,65 @@
 import React from 'react';
 import './Navbar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
 import { useAuth } from '../../utils/auth';
 import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
+import ProfileImage from '../ProfileImage/ProfileImage';
+import { Dropdown } from 'semantic-ui-react';
 
 function Navbar() {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, user } = useAuth();
+  const history = useHistory();
 
   function showLoginOrProfile() {
+    function navigateToProfile() {
+      history.push('/profile');
+    }
+    function navigateToBio() {
+      history.push('/tutorbio/' + user.id);
+    }
+
     if (isLoggedIn) {
       return (
-        <Button.Link className='color-white' onClick={logout}>
-          Logout
-        </Button.Link>
+        <span className='Navbar_profile'>
+          <ProfileImage
+            profileImg={user.image}
+            style={{
+              height: '25px',
+              width: '25px',
+              float: 'left'
+            }}
+          />
+
+          <Dropdown
+            item
+            simple
+            text=''
+            direction='left'
+            className='Navbar_profile-dropdown'
+          >
+            <Dropdown.Menu>
+              <Dropdown.Header content='Menu' />
+              <Dropdown.Divider />
+              <Dropdown.Item text='Profile' onClick={navigateToProfile} />
+              {user.role === 'tutor' ? (
+                <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
+              ) : null}
+              <Dropdown.Divider />
+              <Dropdown.Item
+                text='Logout'
+                onClick={() => {
+                  logout();
+                }}
+              />
+            </Dropdown.Menu>
+          </Dropdown>
+        </span>
       );
     } else {
       return (
-        <Link to='login'>
+        <Link to='/login'>
           <Button.Link className='color-white'>Login</Button.Link>
         </Link>
       );
