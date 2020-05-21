@@ -13,6 +13,8 @@ module.exports = {
         .then((user) => {
           user.verifyPassword(password, (err, isMatch) => {
             if (isMatch && !err) {
+              // remove password from user object
+              user.password = null;
               const token = jwt.sign(
                 {
                   id: user._id,
