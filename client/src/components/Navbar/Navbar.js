@@ -56,7 +56,7 @@ function Navbar() {
       );
     } else {
       return (
-        <Link to='login'>
+        <Link to='/login'>
           <Button.Link className='color-white'>Login</Button.Link>
         </Link>
       );
