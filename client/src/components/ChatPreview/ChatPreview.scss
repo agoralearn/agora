@@ -14,22 +14,27 @@
   // & h2 {
   //   font-weight: 600;
   // }
+  display: flex;
+  background-color: red;
 }
 
 .ChatPreview_profile-img-div {
   // max-height: 20px;
-  float: left;
   margin-right: 10px;
   position: relative;
+
+  background-color: hotpink;
+  display: inline-block;
 }
 .ChatPreview_user-preview-div {
-  & .ChatPreview_user-preview-div-users {
-    font-weight: 500;
-  }
   color: $color-gray-dark;
   margin-left: 45px;
-  max-width: 200px;
-  display: inline-block;
+
+  & .ChatPreview_user-preview-div-users {
+    font-weight: 500;
+    background-color: yellow;
+    width: 100%;
+  }
 }
 .ChatPreview_user-preview-div-message-preview {
   font-size: smaller;

@@ -4,12 +4,13 @@ import ProfileImage from '../ProfileImage/ProfileImage';
 import Modal from '../../components/Modal/Modal';
 import ReviewModal from '../../components/ReviewModal/ReviewModal';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../utils/auth';
+import { toTitleCase } from '../../utils/helpers';
 
 function ChatPreview({ users, message, chatId }) {
   // const currentUserName = users[0].firstName + users[0].lastName;
-
+  const { user } = useAuth();
   const currentUserImage = users[0].image;
-  const otherUserName = users[1].firstName + ' ' + users[1].lastName;
   const otherUserImage = users[1].image;
 
   function buildMessagePreview() {
@@ -29,54 +30,51 @@ function ChatPreview({ users, message, chatId }) {
     );
   }
 
+  let otherUsers = users.filter((person) => {
+    return person._id !== user.id;
+  });
+
+  otherUsers = [...otherUsers, ...otherUsers, ...otherUsers];
+
+  const renderOtherAvatars = () => {
+    return otherUsers.map((user, index) => (
+      <ProfileImage
+        profileImg={user.image}
+        height='45px'
+        width='45px'
+        className='bordered'
+        style={
+          {
+            // position: 'absolute',
+            // top: `${index * 4}px`,
+            // left: `${index * 4}px`,
+            // zIndex: `${index}`
+          }
+        }
+      />
+    ));
+  };
+
   return (
     <div className='ChatPreview_wrapper'>
       <Link to={`/chat/${chatId}`}>
         <div className='ChatPreview_profile-img-div'>
-          <ProfileImage
-            profileImg={otherUserImage}
-            height='25px'
-            width='25px'
-            style={{
-              position: 'absolute',
-              top: '5px',
-              left: '8px',
-              zIndex: '1'
-            }}
-          />
-          <ProfileImage
-            profileImg={currentUserImage}
-            height='25px'
-            width='25px'
-            style={{
-              position: 'absolute',
-              top: '0px',
-              left: '0px',
-              zIndex: '0'
-
-              // overflow: 'hidden',
-              // borderColor: 'green',
-              // borderWidth: '20'
-            }}
-          />
+          {renderOtherAvatars()}
         </div>
         <div className='ChatPreview_user-preview-div'>
           <p className='ChatPreview_user-preview-div-users'>
-            {otherUserName}, me
+            {otherUsers.map(
+              (user) =>
+                `${toTitleCase(user.firstName)} ${toTitleCase(user.lastName)}, `
+            )}
+            me
           </p>
           <div className='ChatPreview_user-preview-div-message-preview'>
             {message.length > 0 && buildMessagePreview()}
           </div>
         </div>
         <div className='ChatPreview_rate-tag'>
-          <Modal
-            trigger={
-              <button className='ChatPreview_Modal-rate-btn'>Rate </button>
-            }
-            header={`Rate ${otherUserName}`}
-          >
-            <ReviewModal />
-          </Modal>
+          <button className='ChatPreview_Modal-rate-btn'>Rate </button>
         </div>
       </Link>
     </div>
