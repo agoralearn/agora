@@ -8,7 +8,15 @@ import Badge from '../../components/Badge/Badge';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import { Dimmer, Loader, List, Container, Grid, Icon } from 'semantic-ui-react';
+import {
+  Dimmer,
+  Loader,
+  List,
+  Container,
+  Grid,
+  Icon,
+  Message
+} from 'semantic-ui-react';
 import './TutorBio.scss';
 
 function TutorBio({ match }) {
@@ -17,6 +25,7 @@ function TutorBio({ match }) {
     userIds: [match.params.userId],
     message: ''
   });
+  const [inputError, setInputError] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -52,10 +61,18 @@ function TutorBio({ match }) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    startChat();
-    setChatState({ ...chatState, message: '' });
+    if (chatState.message === '') {
+      setInputError(true);
+    } else {
+      startChat();
+      setChatState({ ...chatState, message: '' });
+      resetInputError();
+    }
   }
 
+  function resetInputError() {
+    setInputError(false);
+  }
   function renderLoader() {
     return (
       <Dimmer active inverted>
@@ -94,6 +111,7 @@ function TutorBio({ match }) {
             </Grid>
             {!(user.id === match.params.userId) ? (
               <Modal
+                onClose={resetInputError}
                 trigger={
                   <div className='bio-button-wrapper'>
                     <Button className='btn-primary' style={{ margin: '20px' }}>
@@ -103,6 +121,10 @@ function TutorBio({ match }) {
                 }
                 header={`Contact ${tutor.firstName} ${tutor.lastName}`}
               >
+                {inputError ? (
+                  <Message error header='You must provide a message' />
+                ) : null}
+
                 <MessageModal
                   onMessageChange={handleChange}
                   handleFormSubmit={handleFormSubmit}
