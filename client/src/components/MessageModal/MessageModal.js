@@ -5,7 +5,7 @@ import Button from '../Button/Button';
 export default function MessageModal({
   onMessageChange,
   handleFormSubmit,
-  handleModalOpen
+  handleModalToggle
 }) {
   return (
     <div>
@@ -22,7 +22,7 @@ export default function MessageModal({
         <Button
           className='btn-secondary u-m-r'
           style={{ marginTop: '20px' }}
-          onClick={handleModalOpen}
+          onClick={handleModalToggle}
         >
           Cancel
         </Button>

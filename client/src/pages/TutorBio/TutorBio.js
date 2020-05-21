@@ -45,23 +45,18 @@ function TutorBio({ match }) {
   }, [match.params.userId]);
 
   function startChat() {
-    console.log(chatState);
     if (chatState.message.trim() !== '') {
       API.startChat(chatState)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => console.log(err));
     }
     return;
   }
 
-  function handleModalOpen() {
+  function handleModalToggle() {
     setModalOpen(!modalOpen);
-  }
-  function handleModalClose() {
-    setModalOpen(false);
-    console.log('test');
   }
 
   const handleChange = (event) => {
@@ -81,7 +76,7 @@ function TutorBio({ match }) {
       startChat();
       setChatState({ ...chatState, message: '' });
       resetInputError();
-      handleModalClose();
+      handleModalToggle();
     }
   }
 
@@ -142,7 +137,7 @@ function TutorBio({ match }) {
                       <Button
                         className='btn-primary'
                         style={{ margin: '20px' }}
-                        onClick={handleModalOpen}
+                        onClick={handleModalToggle}
                       >
                         Book Now
                       </Button>
@@ -191,7 +186,7 @@ function TutorBio({ match }) {
                       <MessageModal
                         onMessageChange={handleChange}
                         handleFormSubmit={handleFormSubmit}
-                        handleModalOpen={handleModalOpen}
+                        handleModalToggle={handleModalToggle}
                       />
                     </div>
                   )}
