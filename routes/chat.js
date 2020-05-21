@@ -11,7 +11,17 @@ const router = express.Router();
 // before doing anything with these routes. We can set it up as middleware
 
 router.post('/', isAuthenticated, chatController.startChat);
-router.post('/message', isAuthenticated, chatController.addMessageToChat);
+router.post(
+  '/message',
+  isAuthenticated,
+  (req, res, next) => {
+    // console.log(socketMapping);
+    req.io.emit('news', { hello: 'Getting News' });
+
+    next();
+  },
+  chatController.addMessageToChat
+);
 router.get('/chats', isAuthenticated, chatController.getChatsByUserId);
 router.get('/:chatId', isAuthenticated, chatController.getChat);
 

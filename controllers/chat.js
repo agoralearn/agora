@@ -3,8 +3,6 @@ module.exports = {
   // Start a new chat
   // Pass two user ids in userIds in the body
   startChat: function (req, res) {
-    console.log('body' + req.body);
-    console.log('userIds' + req.body.userIds);
     const { message } = req.body;
     const userIds = [req.user.id, ...req.body.userIds];
     db.Message.create({

@@ -43,16 +43,7 @@ app.use(authRouter, errorMiddleware);
 app.use('/api/user', usersRouter); // Good
 
 // Search or viewing tutor profile
-app.use(
-  '/api/tutors',
-  (req, res, next) => {
-    console.log(socketMapping);
-    io.emit('news', { hello: 'Getting News' });
-
-    next();
-  },
-  searchRouter
-); // Good
+app.use('/api/tutors', searchRouter); // Good
 
 // Logged in user chat stuff
 app.use('/api/chat', chatRouter); // Good
