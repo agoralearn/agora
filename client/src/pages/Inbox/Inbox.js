@@ -25,7 +25,9 @@ export default function Inbox(props) {
 
   return (
     <div className='inbox-container'>
-      <GoBack />
+      <div className='u-m-l'>
+        <GoBack />
+      </div>
       <PageHeader>
         <h2 className='header-text'>Sessions</h2>
       </PageHeader>
