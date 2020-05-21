@@ -25,7 +25,7 @@ function TutorBio({ match }) {
     userIds: [match.params.userId],
     message: ''
   });
-  const [error, setError] = useState(false);
+  const [inputError, setInputError] = useState(false);
 
   useEffect(() => {
     API.getTutorById(match.params.userId)
@@ -62,14 +62,17 @@ function TutorBio({ match }) {
   function handleFormSubmit(event) {
     event.preventDefault();
     if (chatState.message === '') {
-      setError(true);
+      setInputError(true);
     } else {
       startChat();
       setChatState({ ...chatState, message: '' });
-      setError(false);
+      resetInputError();
     }
   }
 
+  function resetInputError() {
+    setInputError(false);
+  }
   function renderLoader() {
     return (
       <Dimmer active inverted>
@@ -107,6 +110,7 @@ function TutorBio({ match }) {
               </Grid.Row>
             </Grid>
             <Modal
+              onClose={resetInputError}
               trigger={
                 <div className='bio-button-wrapper'>
                   <Button className='btn-primary' style={{ margin: '20px' }}>
@@ -116,15 +120,9 @@ function TutorBio({ match }) {
               }
               header={`Contact ${tutor.firstName} ${tutor.lastName}`}
             >
-              {error ? (
-                <Message
-                  error
-                  header='You must provide a message'
-                  content={error}
-                />
-              ) : (
-                <p></p>
-              )}
+              {inputError ? (
+                <Message error header='You must provide a message' />
+              ) : null}
 
               <MessageModal
                 onMessageChange={handleChange}
