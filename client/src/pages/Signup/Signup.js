@@ -24,6 +24,7 @@ function Signup({ location }) {
     role: location.role || 'student',
     minGroupSize: '1',
     maxGroupSize: '1',
+    image: 'https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar.jpg',
     agree: false
   });
   const [error, setError] = useState('');
