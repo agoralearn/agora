@@ -343,7 +343,10 @@ function Profile() {
   }
 
   useEffect(() => {
+    // if (!editing) {
     renderComponents(editableFields, studentFields);
+    // }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
 
@@ -393,7 +396,11 @@ function Profile() {
           // onClick={(event) => console.log(event.target)}
           >
             <ProfileImage
-              profileImg={userInfo.image}
+              profileImg={
+                editing
+                  ? 'https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar.jpg'
+                  : userInfo.image
+              }
               style={{ marginBottom: '10px' }}
             />
             {!editing ? (
