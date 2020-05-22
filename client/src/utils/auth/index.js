@@ -59,7 +59,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, [isLoggedIn, user]);
+  }, [isLoggedIn, user, history]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
