@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './BottomNav.scss';
 import { Icon } from 'semantic-ui-react';
 import { useAuth } from '../../utils/auth';

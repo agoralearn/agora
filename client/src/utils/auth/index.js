@@ -24,14 +24,14 @@ export const AuthProvider = ({ value, ...rest }) => {
     // console.log(window.location.pathname);
 
     socket.on('message', (data) => {
-      let locationArr = window.location.pathname.split('/');
+      const locationArr = window.location.pathname.split('/');
 
       if (
         !locationArr.includes(data.chatId) &&
         !locationArr.includes('inbox')
       ) {
         toast.configure();
-        toast.success(`You have a new message`, {
+        toast.success('You have a new message', {
           position: toast.POSITION.TOP_CENTER
         });
       }
@@ -48,7 +48,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, []);
+  }, [isLoggedIn, state.unread, user.id]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {

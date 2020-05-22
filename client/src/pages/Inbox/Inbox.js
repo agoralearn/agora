@@ -24,7 +24,7 @@ export default function Inbox(props) {
     socket.on('message', (data) => {
       setChats((chats) => {
         return chats.map((chat) => {
-          if (chat._id == data.chatId) {
+          if (chat._id === data.chatId) {
             chat.messages = [data.message];
           }
           return chat;

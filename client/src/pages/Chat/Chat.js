@@ -27,7 +27,7 @@ export default function Chat({ match, ...props }) {
         setMessages((messages) => [...messages, data.message]);
       }
     });
-  }, []);
+  }, [match.params.chatId, socket]);
 
   useEffect(() => {
     function fetchUserMessages() {
