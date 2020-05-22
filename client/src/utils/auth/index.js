@@ -41,8 +41,8 @@ export const AuthProvider = ({ value, ...rest }) => {
       }
 
       if (locationArr.includes('inbox')) {
-        setState({
-          unread: [...state.unread, data.chatId]
+        setState((unread) => {
+          return { unread: [...unread, data.chatId] };
         });
       }
     });
@@ -52,7 +52,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, [isLoggedIn, state.unread, user]);
+  }, [isLoggedIn, user]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
