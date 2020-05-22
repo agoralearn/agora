@@ -40,9 +40,9 @@ export const AuthProvider = ({ value, ...rest }) => {
         });
       }
 
-      if (locationArr.includes('inbox')) {
-        setState({
-          unread: [...state.unread, data.chatId]
+      if (!locationArr.includes(data.chatId)) {
+        setState((state) => {
+          return { ...state, unread: [...state.unread, data.chatId] };
         });
       }
     });
@@ -52,7 +52,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, [isLoggedIn, state.unread, user]);
+  }, [isLoggedIn, user]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
