@@ -396,11 +396,7 @@ function Profile() {
           // onClick={(event) => console.log(event.target)}
           >
             <ProfileImage
-              profileImg={
-                editing
-                  ? 'https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar.jpg'
-                  : userInfo.image
-              }
+              profileImg={editing ? userInfoCopy.image : userInfo.image}
               style={{ marginBottom: '10px' }}
             />
             {!editing ? (
