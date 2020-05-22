@@ -72,14 +72,6 @@ function Profile() {
     return currentCopy;
   }
 
-  // function filterStudentEditFields(field) {
-  // const editableStudentFields = editableFields.filter((field) => {
-  //   if (studentFields.includes(field.name)) {
-  //     return field;
-  //   }
-  // });
-  // }
-
   function determineFieldType(field) {
     switch (field.type) {
       case 'dropdownSelect':
@@ -339,18 +331,6 @@ function Profile() {
     }
   }
 
-  function setEditableFields(editableFields, studentFields) {
-    let userEditableFields = [];
-    if (user.role === 'student') {
-      editableFields.filter((field) => {
-        if (studentFields.includes(field.name)) {
-          userEditableFields.push(field);
-        }
-      });
-    }
-    console.log('hello', userEditableFields);
-  }
-
   function renderComponents(editableFields, studentFields) {
     let userEditableFields = [];
     if (user.role === 'student') {
@@ -371,41 +351,8 @@ function Profile() {
             {determineFieldType(field)}
           </Form.Field>
         );
-      }
-      // });
-      // })
-      // const fields = editableFields.map((field, index) => {
-      //   if (editing) {
-      //     return (
-      //       <Form.Field key={index}>
-      //         <label>{field.label}</label>
-
-      //         {determineFieldType(field)}
-      //       </Form.Field>
-      //     );
-      //   }
-      else if (!editing && userInfo) {
-        return (
-          <>{displayOptions(field)}</>
-          // <div key={field.label} className='u-m-b'>
-          //   <div className='u-m-b-sm'>
-          //     <label>{field.label}</label>
-          //   </div>
-          //   <div>
-          //     {field.name === 'subjects' ? (
-          //       userInfo.subjects.map((subject) => (
-          //         <div key={subject} className='u-m-r disp-inline-b'>
-          //           <Badge>{subject}</Badge>
-          //         </div>
-          //       ))
-          //     ) : (
-          //       <p key={field.name} onClick={() => setEditing(true)}>
-          //         {userInfo[field.name]}
-          //       </p>
-          //     )}
-          //   </div>
-          // </div>
-        );
+      } else if (!editing && userInfo) {
+        return <span key={index + index}>{displayOptions(field)}</span>;
       }
     });
 
@@ -413,7 +360,7 @@ function Profile() {
   }
 
   useEffect(() => {
-    setEditableFields(editableFields, studentFields);
+    // setEditableFields(editableFields, studentFields);
     renderComponents(editableFields, studentFields);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
@@ -456,7 +403,6 @@ function Profile() {
             Edit
           </Button>
 
-          {/* <p>Email:</p> */}
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
               {fields}
