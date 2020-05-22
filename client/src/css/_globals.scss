@@ -1,4 +1,4 @@
-@import './colors';
+@import "./colors";
 
 $navbar-height: 60px;
 
@@ -24,6 +24,9 @@ $navbar-height: 60px;
   font-weight: 300;
 }
 
+.f-w-b {
+  font-weight: 600;
+}
 // Margin all sides 16px
 .u-m {
   margin: 16px;

@@ -1,52 +1,52 @@
-@import '../../css/globals';
+@import "../../css/globals";
 
 .ChatPreview_wrapper {
-  background: white;
-  // border-radius: 6px;
   padding: 10px;
   margin-bottom: 10px;
-  // width: 100%;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-  // display: grid;
-  // grid-gap: 10px;
-  // grid-template-columns: 1fr 3fr;
-
-  // & h2 {
-  //   font-weight: 600;
-  // }
   display: flex;
-  background-color: red;
+  flex-direction: row;
+  width: 100%;
+  color: $color-gray-dark;
 }
 
-.ChatPreview_profile-img-div {
-  // max-height: 20px;
+.ChatPreview_img-wrapper {
   margin-right: 10px;
   position: relative;
+  width: 100px;
+  display: flex;
+  margin-top: -5px;
 
-  background-color: hotpink;
-  display: inline-block;
+  & .Chat_profile-imgs:not(:first-child) {
+    position: absolute;
+  }
+
+  & .Chat_profile-imgs:hover {
+    transform: scale(2);
+    z-index: 100;
+  }
 }
+
+.ChatPreview_names-wrapper {
+  width: 100%;
+  font-weight: 600;
+
+  & span {
+    font-size: 1rem;
+  }
+
+  & p {
+    font-size: 1.2rem;
+  }
+
+  & p:hover {
+    cursor: pointer;
+    color: $color-primary;
+  }
+}
+
 .ChatPreview_user-preview-div {
   color: $color-gray-dark;
   margin-left: 45px;
-
-  & .ChatPreview_user-preview-div-users {
-    font-weight: 500;
-    background-color: yellow;
-    width: 100%;
-  }
-}
-.ChatPreview_user-preview-div-message-preview {
-  font-size: smaller;
-  color: $color-gray-dark;
-}
-
-.ChatPreview_rate-tag {
-  float: right;
-  align-content: center;
-  padding-top: 7px;
-}
-.ChatPreview_Modal-rate-btn {
-  color: $color-primary;
-  font-size: smaller;
+  display: flex;
 }

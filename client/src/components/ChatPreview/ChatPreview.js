@@ -1,20 +1,15 @@
 import React from 'react';
 import './ChatPreview.scss';
 import ProfileImage from '../ProfileImage/ProfileImage';
-import Modal from '../../components/Modal/Modal';
-import ReviewModal from '../../components/ReviewModal/ReviewModal';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { toTitleCase } from '../../utils/helpers';
 
-function ChatPreview({ users, message, chatId }) {
-  // const currentUserName = users[0].firstName + users[0].lastName;
+function ChatPreview({ users, messages, chatId }) {
   const { user } = useAuth();
-  const currentUserImage = users[0].image;
-  const otherUserImage = users[1].image;
 
   function buildMessagePreview() {
-    const preview = message[0].message;
+    const preview = messages[0].message;
     const MAX_PREVIEW = 22;
 
     let isOverLength = false;
@@ -23,10 +18,10 @@ function ChatPreview({ users, message, chatId }) {
     isOverLength = shortPrev.length > MAX_PREVIEW ? true : false;
 
     return (
-      <p>
+      <span>
         {shortPrev.slice(0, MAX_PREVIEW).join(' ')}
         {isOverLength ? <span>...</span> : null}
-      </p>
+      </span>
     );
   }
 
@@ -34,50 +29,46 @@ function ChatPreview({ users, message, chatId }) {
     return person._id !== user.id;
   });
 
-  otherUsers = [...otherUsers, ...otherUsers, ...otherUsers];
+  otherUsers = [...otherUsers, ...otherUsers, ...otherUsers, ...otherUsers];
 
   const renderOtherAvatars = () => {
-    return otherUsers.map((user, index) => (
+    return otherUsers.slice(0, 3).map((user, index) => (
       <ProfileImage
+        key={user._id}
         profileImg={user.image}
         height='45px'
         width='45px'
-        className='bordered'
-        style={
-          {
-            // position: 'absolute',
-            // top: `${index * 4}px`,
-            // left: `${index * 4}px`,
-            // zIndex: `${index}`
-          }
-        }
+        className='bordered Chat_profile-imgs'
+        style={{
+          top: `${index * 4}px`,
+          left: `${index * 10}px`,
+          zIndex: `${index}`
+        }}
       />
     ));
   };
 
   return (
-    <div className='ChatPreview_wrapper'>
-      <Link to={`/chat/${chatId}`}>
-        <div className='ChatPreview_profile-img-div'>
-          {renderOtherAvatars()}
-        </div>
-        <div className='ChatPreview_user-preview-div'>
-          <p className='ChatPreview_user-preview-div-users'>
+    <Link to={`/chat/${chatId}`}>
+      <div className='ChatPreview_wrapper'>
+        <div className='ChatPreview_img-wrapper'>{renderOtherAvatars()}</div>
+
+        <div className='ChatPreview_names-wrapper'>
+          <p>
             {otherUsers.map(
               (user) =>
-                `${toTitleCase(user.firstName)} ${toTitleCase(user.lastName)}, `
+                `${toTitleCase(user.firstName)} ${toTitleCase(
+                  user.lastName[0]
+                )}, `
             )}
             me
           </p>
-          <div className='ChatPreview_user-preview-div-message-preview'>
-            {message.length > 0 && buildMessagePreview()}
+          <div className='f-w-l'>
+            <i>{messages.length > 0 && buildMessagePreview()}</i>
           </div>
         </div>
-        <div className='ChatPreview_rate-tag'>
-          <button className='ChatPreview_Modal-rate-btn'>Rate </button>
-        </div>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
 export default ChatPreview;
