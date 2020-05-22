@@ -1,39 +1,89 @@
 import React from 'react';
-import { Form, TextArea } from 'semantic-ui-react';
+import { Form, TextArea, Modal, Message } from 'semantic-ui-react';
 import Button from '../Button/Button';
+import { Link } from 'react-router-dom';
+
+function SignUpErrorMessage(handleModalToggle) {
+  return (
+    <Message.Header>
+      Log in to book a tutor!
+      <div>
+        <Link to='/login'>
+          <Button.Link>
+            {' '}
+            Login{' '}
+            <i
+              className='fas fa-arrow-right'
+              style={{ marginRight: '4px' }}
+            ></i>
+          </Button.Link>
+        </Link>
+      </div>
+      <div>
+        <Link to='/signup'>
+          <Button.Link>
+            {' '}
+            Signup{' '}
+            <i
+              className='fas fa-arrow-right'
+              style={{ marginRight: '4px' }}
+            ></i>
+          </Button.Link>
+        </Link>
+      </div>
+      <Button
+        className='btn-secondary u-m-r'
+        style={{ marginTop: '20px' }}
+        onClick={handleModalToggle}
+      >
+        Cancel
+      </Button>
+    </Message.Header>
+  );
+}
 
 export default function MessageModal({
-  onMessageChange,
+  handleMessageChange,
   handleFormSubmit,
-  handleModalToggle
+  handleModalToggle,
+  modalError,
+  isOpen,
+  isLoggedIn
 }) {
   return (
-    <div>
-      <p style={{ paddingBottom: '20px' }}>
-        Write a short message on what you would like to get help with. Also tell
-        your tutor what days and times would work best to meet.
-      </p>
-      <Form>
-        <TextArea
-          name='message'
-          placeholder='I would like to receive tutoring on...'
-          onChange={onMessageChange}
-        />
-        <Button
-          className='btn-secondary u-m-r'
-          style={{ marginTop: '20px' }}
-          onClick={handleModalToggle}
-        >
-          Cancel
-        </Button>
-        <Button
-          className='btn-primary'
-          style={{ marginTop: '20px' }}
-          onClick={handleFormSubmit}
-        >
-          Send
-        </Button>
-      </Form>
-    </div>
+    <Modal open={isOpen}>
+      {isLoggedIn ? (
+        <div>
+          <p style={{ paddingBottom: '20px' }}>
+            Write a short message on what you would like to get help with. Also
+            tell your tutor what days and times would work best to meet.
+          </p>
+          {modalError && <Message error header={modalError} />}
+          <Form>
+            <TextArea
+              name='message'
+              placeholder='I would like to receive tutoring on...'
+              onChange={handleMessageChange}
+            />
+            <Button
+              className='btn-secondary u-m-r'
+              style={{ marginTop: '20px' }}
+              onClick={handleModalToggle}
+            >
+              Cancel
+            </Button>
+            <Button
+              className='btn-primary'
+              style={{ marginTop: '20px' }}
+              onClick={handleFormSubmit}
+            >
+              Send
+            </Button>
+          </Form>
+        </div>
+      ) : (
+        SignUpErrorMessage(handleModalToggle)
+      )}
+    </Modal>
   );
 }
