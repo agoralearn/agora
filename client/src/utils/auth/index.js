@@ -3,14 +3,17 @@ import AuthService from './AuthService';
 import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const socket = io(
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3001'
-    : 'https://agora-tutor.herokuapp.com'
-);
 
 const AuthContext = createContext();
 const authService = new AuthService();
+
+function newSocket() {
+  return io(
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3001'
+      : 'https://agora-tutor.herokuapp.com'
+  );
+}
 
 // Provides user (object || null), isLoggedIn (bool), login(): promise,
 // and logout(): void
@@ -19,6 +22,7 @@ export const AuthProvider = ({ value, ...rest }) => {
   const [user, setUser] = useState(
     isLoggedIn ? authService.getProfile() : null
   );
+  const [socket, setSocket] = useState(newSocket());
 
   const [state, setState] = useState({
     unread: []
@@ -26,31 +30,37 @@ export const AuthProvider = ({ value, ...rest }) => {
 
   useEffect(() => {
     // console.log(window.location.pathname);
+    setSocket((oldSocket) => {
+      oldSocket.disconnect();
 
-    socket.on('message', (data) => {
-      const locationArr = window.location.pathname.split('/');
+      const socket = newSocket();
+      socket.on('message', (data) => {
+        const locationArr = window.location.pathname.split('/');
 
-      if (
-        !locationArr.includes(data.chatId) &&
-        !locationArr.includes('inbox')
-      ) {
-        toast.configure();
-        toast.success('You have a new message', {
-          position: toast.POSITION.TOP_CENTER
-        });
-      }
+        if (
+          !locationArr.includes(data.chatId) &&
+          !locationArr.includes('inbox')
+        ) {
+          toast.configure();
+          toast.success('You have a new message', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
 
-      if (!locationArr.includes(data.chatId)) {
-        setState((state) => {
-          return { ...state, unread: [...state.unread, data.chatId] };
-        });
-      }
-    });
+        if (!locationArr.includes(data.chatId)) {
+          setState((state) => {
+            return { ...state, unread: [...state.unread, data.chatId] };
+          });
+        }
+      });
 
-    socket.on('connect', () => {
-      if (isLoggedIn) {
-        socket.emit('loggedIn', { userId: user.id });
-      }
+      socket.on('connect', () => {
+        if (isLoggedIn) {
+          socket.emit('loggedIn', { userId: user.id });
+        }
+      });
+
+      return socket;
     });
   }, [isLoggedIn, user]);
 
