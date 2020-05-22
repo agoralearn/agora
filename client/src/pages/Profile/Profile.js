@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 import './Profile.scss';
+import { toast } from 'react-toastify';
 import Badge from '../../components/Badge/Badge';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
@@ -22,6 +23,7 @@ const editableFields = [
   { name: 'firstName', label: 'First Name', required: true },
   { name: 'lastName', label: 'Last Name', required: true },
   { name: 'email', label: 'Email', required: true },
+  { name: 'image', label: 'Image URL' },
   {
     name: 'subjects',
     label: 'Subjects',
@@ -62,8 +64,10 @@ const studentFields = ['firstName', 'lastName', 'email', 'education', 'age'];
 function Profile() {
   const { user } = useAuth();
   const [userInfo, setUserInfo] = useState();
+  const [userInfoCopy, setUserInfoCopy] = useState();
   const [editing, setEditing] = useState(false);
   const [fields, setFields] = useState();
+  toast.configure();
 
   function checkboxFields(current, value, checked) {
     const currentCopy = [...current];
@@ -173,6 +177,21 @@ function Profile() {
           </div>
         );
       case 'email':
+        return (
+          <div key={field.label} className='u-m-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+      case 'image':
         return (
           <div key={field.label} className='u-m-b'>
             <div className='u-m-b-sm'>
@@ -324,8 +343,10 @@ function Profile() {
   }
 
   useEffect(() => {
-    // setEditableFields(editableFields, studentFields);
+    // if (!editing) {
     renderComponents(editableFields, studentFields);
+    // }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
 
@@ -333,6 +354,7 @@ function Profile() {
     API.getUser(user.id)
       .then((res) => {
         setUserInfo(res.data);
+        setUserInfoCopy(res.data);
       })
       .catch((err) => console.log(err));
   }, [user]);
@@ -342,13 +364,22 @@ function Profile() {
     setEditing(!editing);
     API.updateUser(userInfo)
       .then((res) => {
-        console.log(res);
+        toast.success(`New info saved!`, {
+          position: toast.POSITION.TOP_CENTER
+        });
       })
       .catch((err) => {
         console.log(err);
       });
+    setUserInfoCopy(userInfo);
   }
-
+  function cancel() {
+    setUserInfo(userInfoCopy);
+    setEditing(!editing);
+    toast.warn(`Edit cancelled!`, {
+      position: toast.POSITION.TOP_CENTER
+    });
+  }
   return (
     <div className='container Profile Profile_container'>
       <div className='u-m-l'>
@@ -359,13 +390,46 @@ function Profile() {
       </PageHeader>
       {userInfo && (
         <Container>
-          <ProfileImage
-            profileImg={userInfo.image}
-            style={{ marginBottom: '10px' }}
-          />
-          <Button className='btn-primary' onClick={() => setEditing(!editing)}>
-            Edit
-          </Button>
+          {/* <div className='Profile_container-image-div'> */}
+          <div
+          // style={{ position: 'absolute', top: '0', right: '0' }}
+          // onClick={(event) => console.log(event.target)}
+          >
+            <ProfileImage
+              profileImg={editing ? userInfoCopy.image : userInfo.image}
+              style={{ marginBottom: '10px' }}
+            />
+            {!editing ? (
+              <Button
+                className='btn-primary'
+                // onClick={() => setEditing(!editing)}
+                onClick={(event) => {
+                  setEditing(true);
+                }}
+              >
+                Edit
+              </Button>
+            ) : (
+              <div>
+                <Button
+                  className='btn-secondary disp-inline-b u-m-r'
+                  onClick={() => cancel()}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  className='btn-primary disp-inline-b u-m-l'
+                  // type='submit'
+                  // style={{ float: 'right' }}
+                  onClick={formSubmitHandler}
+                >
+                  Save
+                </Button>
+              </div>
+            )}
+          </div>
+          {/* </div> */}
 
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
