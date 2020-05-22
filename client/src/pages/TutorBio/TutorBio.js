@@ -182,7 +182,8 @@ function TutorBio({ match }) {
                       {inputError ? (
                         <Message
                           error
-                          header='You must provide a message to book this tutor!'
+                          header='Whoops!'
+                          content='You must provide a message.'
                         />
                       ) : null}
                       <MessageModal
