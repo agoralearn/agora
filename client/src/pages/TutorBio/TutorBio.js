@@ -104,8 +104,6 @@ function TutorBio({ match }) {
   return (
     <div className='bio-container'>
       {/* Modal */}
-
-      {console.log(isLoggedIn)}
       <MessageModal
         isOpen={modalOpen}
         handleFormSubmit={handleFormSubmit}

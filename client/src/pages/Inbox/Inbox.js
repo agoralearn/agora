@@ -3,21 +3,39 @@ import API from '../../utils/API';
 import ChatPreview from '../../components/ChatPreview/ChatPreview';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
-// import { Container } from 'semantic-ui-react';
+import { useAuth } from '../../utils/auth';
 
 import './Inbox.scss';
 
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
 
+  const { socket, state } = useAuth();
+
   useEffect(() => {
     getChats();
   }, []);
 
+  useEffect(() => {
+    // console.log(chats);
+  }, [chats]);
+
+  useEffect(() => {
+    socket.on('message', (data) => {
+      setChats((chats) => {
+        return chats.map((chat) => {
+          if (chat._id === data.chatId) {
+            chat.messages = [data.message];
+          }
+          return chat;
+        });
+      });
+    });
+  });
+
   const getChats = () => {
     API.getChatsByUserId()
       .then((res) => {
-        console.log(res.data);
         setChats(res.data);
       })
       .catch((err) => console.log(err));
@@ -35,11 +53,17 @@ export default function Inbox(props) {
         {chats.map((chat) => {
           return (
             <ChatPreview
+              style={
+                state.unread && state.unread.includes(chat._id)
+                  ? { fontWeight: 'bold' }
+                  : ''
+              }
               key={chat._id}
               users={chat.users}
-              message={chat.messages}
+              messages={chat.messages}
               chatId={chat._id}
               match={props.match}
+              date={chat.messages.length > 0 && chat.messages[0].createdAt}
             />
           );
         })}
