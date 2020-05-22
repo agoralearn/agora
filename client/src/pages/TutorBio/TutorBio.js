@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
-import { Link } from 'react-router-dom';
 import MessageModal from '../../components/MessageModal/MessageModal';
 import Button from '../../components/Button/Button';
 import Badge from '../../components/Badge/Badge';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import {
-  Dimmer,
-  Loader,
-  List,
-  Container,
-  Grid,
-  Icon,
-  Message
-} from 'semantic-ui-react';
+import { Dimmer, Loader, List, Container } from 'semantic-ui-react';
 import './TutorBio.scss';
 
 function TutorBio({ match }) {
