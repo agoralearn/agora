@@ -5,11 +5,12 @@ export default function ProfileImage({
   profileImg,
   style,
   height = '100px',
-  width = '100px'
+  width = '100px',
+  className
 }) {
   return (
     <div
-      className='image-cropper'
+      className={`image-cropper ${className}`}
       style={{ ...style, height: height, width: width }}
     >
       <img
