@@ -73,12 +73,10 @@ app.get('*', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('loggedIn', (data) => {
-    console.log('new socket connected');
     socketMap = addSocketToMap(socket.id, data.userId, socketMap);
   });
 
   socket.on('disconnect', () => {
-    console.log('socket disconnected');
     socketMap = removeSocketSession(socket.id, socketMap);
   });
 });
