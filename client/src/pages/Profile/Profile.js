@@ -369,8 +369,6 @@ function Profile() {
   }
   function cancel() {
     setUserInfo(userInfoCopy);
-    console.log(userInfoCopy);
-    console.log(userInfo);
     setEditing(!editing);
   }
   return (
