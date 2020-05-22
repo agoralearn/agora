@@ -1,9 +1,14 @@
+@import "../../css/colors";
 .image-cropper {
   width: 100px;
   height: 100px;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+
+  &.bordered {
+    border: 2px solid $color-white;
+  }
 }
 
 .profile-pic {

@@ -6,7 +6,7 @@ import { useAuth } from '../../utils/auth';
 import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
 import ProfileImage from '../ProfileImage/ProfileImage';
-import { Dropdown } from 'semantic-ui-react';
+import { Icon, Dropdown } from 'semantic-ui-react';
 
 function Navbar() {
   const { isLoggedIn, logout, user } = useAuth();
@@ -28,8 +28,8 @@ function Navbar() {
     const profileImage = user && (
       <ProfileImage
         profileImg={user.image}
-        height='30px'
-        width='30px'
+        height='40px'
+        width='40px'
         style={{ display: 'inline-block' }}
       />
     );
@@ -37,17 +37,19 @@ function Navbar() {
     if (isLoggedIn) {
       return (
         <div className='Navbar_profile'>
-          <Link to='/tutors'>
-            <Button.Link className='btn-link btn-link--white u-m-r'>
-              Tutors
-            </Button.Link>
-          </Link>
           <Dropdown
             trigger={profileImage}
             item
             simple
             direction='left'
             className='Navbar_profile-dropdown'
+            style={
+              {
+                // borderLeft: '1px solid white',
+                // paddingLeft: '30px',
+                // marginLeft: '20px'
+              }
+            }
           >
             <Dropdown.Menu>
               <Dropdown.Item text='Profile' onClick={navigateToProfile} />
@@ -69,7 +71,7 @@ function Navbar() {
     } else {
       return (
         <Link to='/login'>
-          <Button.Link className='color-white'>Login</Button.Link>
+          <Button.Link className='color-white f-w-b u-m-l'>Login</Button.Link>
         </Link>
       );
     }
@@ -83,7 +85,15 @@ function Navbar() {
           <LogoText className='u-m-l-sm' />
         </div>
       </Link>
-      <div>{showLoginOrProfile()}</div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Link to='/tutors'>
+          <Button.Link className='btn-link btn-link--white u-m-r'>
+            {/* Tutors */}
+            <Icon name='search'></Icon>Tutors
+          </Button.Link>
+        </Link>
+        {showLoginOrProfile()}
+      </div>
     </nav>
   );
 }
