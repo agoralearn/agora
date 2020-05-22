@@ -25,7 +25,7 @@ function ChatPreview({ users, messages, chatId }) {
     );
   }
 
-  let otherUsers = users.filter((person) => {
+  const otherUsers = users.filter((person) => {
     return person._id !== user.id;
   });
 
