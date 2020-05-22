@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 import './Profile.scss';
+import { toast } from 'react-toastify';
 import Badge from '../../components/Badge/Badge';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
@@ -66,6 +67,7 @@ function Profile() {
   const [userInfoCopy, setUserInfoCopy] = useState();
   const [editing, setEditing] = useState(false);
   const [fields, setFields] = useState();
+  toast.configure();
 
   function checkboxFields(current, value, checked) {
     const currentCopy = [...current];
@@ -361,6 +363,9 @@ function Profile() {
     API.updateUser(userInfo)
       .then((res) => {
         // console.log('updated');
+        toast.success(`New info saved!`, {
+          position: toast.POSITION.TOP_CENTER
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -370,6 +375,9 @@ function Profile() {
   function cancel() {
     setUserInfo(userInfoCopy);
     setEditing(!editing);
+    toast.warn(`Edit cancelled!`, {
+      position: toast.POSITION.TOP_CENTER
+    });
   }
   return (
     <div className='container Profile Profile_container'>
