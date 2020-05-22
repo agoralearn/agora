@@ -22,6 +22,7 @@ const editableFields = [
   { name: 'firstName', label: 'First Name', required: true },
   { name: 'lastName', label: 'Last Name', required: true },
   { name: 'email', label: 'Email', required: true },
+  { name: 'image', label: 'Image URL' },
   {
     name: 'subjects',
     label: 'Subjects',
@@ -145,7 +146,7 @@ function Profile() {
     switch (field.name) {
       case 'firstName':
         return (
-          <div key={field.label} className='u-m-b u-m-r '>
+          <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -160,7 +161,7 @@ function Profile() {
         );
       case 'lastName':
         return (
-          <div key={field.label} className='u-m-b  '>
+          <div key={field.label} className='u-m-b u-m-l disp-inline-b'>
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -174,6 +175,21 @@ function Profile() {
           </div>
         );
       case 'email':
+        return (
+          <div key={field.label} className='u-m-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+      case 'image':
         return (
           <div key={field.label} className='u-m-b'>
             <div className='u-m-b-sm'>
@@ -344,11 +360,12 @@ function Profile() {
     setEditing(!editing);
     API.updateUser(userInfo)
       .then((res) => {
-        console.log(res);
+        // console.log('updated');
       })
       .catch((err) => {
         console.log(err);
       });
+    setUserInfoCopy(userInfo);
   }
   function cancel() {
     setUserInfo(userInfoCopy);
@@ -366,9 +383,10 @@ function Profile() {
       </PageHeader>
       {userInfo && (
         <Container>
+          {/* <div className='Profile_container-image-div'> */}
           <div
-            // style={{ display: 'flex' }}
-            onClick={(event) => console.log(event.target)}
+          // style={{ position: 'absolute', top: '0', right: '0' }}
+          // onClick={(event) => console.log(event.target)}
           >
             <ProfileImage
               profileImg={userInfo.image}
@@ -380,30 +398,46 @@ function Profile() {
                 // onClick={() => setEditing(!editing)}
                 onClick={(event) => {
                   setEditing(true);
-                  console.log(event.target);
                 }}
               >
                 Edit
               </Button>
             ) : (
-              <Button
-                className='btn-secondary'
-                // onClick={() => setEditing(!editing)}
-                onClick={() => cancel()}
-              >
-                Cancel
-              </Button>
+              <div>
+                <Button
+                  className='btn-secondary disp-inline-b u-m-r'
+                  onClick={() => cancel()}
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  className='btn-primary disp-inline-b u-m-l'
+                  // type='submit'
+                  // style={{ float: 'right' }}
+                  onClick={formSubmitHandler}
+                >
+                  Save
+                </Button>
+              </div>
             )}
           </div>
+          {/* </div> */}
 
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
-              {editing && (
-                <Button className='btn-primary' type='submit'>
+              {/* {editing && (
+                <Button
+                  className='btn-primary'
+                  type='submit'
+                  style={{ float: 'right' }}
+                >
                   Save
                 </Button>
-              )}
+              )} */}
+              {/* <div style={{ marginTop: 150 }}> */}
               {fields}
+              {/* </div> */}
 
               {editing && (
                 <Button className='btn-primary' type='submit'>
