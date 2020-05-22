@@ -211,11 +211,11 @@ function Profile() {
                 <label>{field.label}</label>
               </div>
               <div>
-                {
-                  <p key={field.name} onClick={() => setEditing(true)}>
-                    {userInfo[field.name]}
-                  </p>
-                }
+                {userInfo.timeFrame.map((timeBlock) => (
+                  <div key={timeBlock} className='u-m-r disp-inline-b'>
+                    <Badge>{timeBlock}</Badge>
+                  </div>
+                ))}
               </div>
             </div>
           );
