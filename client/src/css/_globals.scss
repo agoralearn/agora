@@ -1,4 +1,4 @@
-@import './colors';
+@import "./colors";
 
 $navbar-height: 60px;
 
@@ -24,6 +24,9 @@ $navbar-height: 60px;
   font-weight: 300;
 }
 
+.f-w-b {
+  font-weight: 600;
+}
 // Margin all sides 16px
 .u-m {
   margin: 16px;
@@ -53,6 +56,10 @@ $navbar-height: 60px;
   margin-bottom: 16px;
 }
 
+.u-m-b-sm {
+  margin-bottom: 8px;
+}
+
 .u-m-t {
   margin-top: 16px;
 }
@@ -60,4 +67,10 @@ $navbar-height: 60px;
 // Center align text
 .text-center {
   text-align: center;
+}
+.disp-flex {
+  display: flex;
+}
+.disp-inline-b {
+  display: inline-block;
 }

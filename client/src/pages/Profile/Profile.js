@@ -19,6 +19,9 @@ import Button from '../../components/Button/Button';
 import GoBack from '../../components/GoBack/GoBack';
 
 const editableFields = [
+  { name: 'firstName', label: 'First Name', required: true },
+  { name: 'lastName', label: 'Last Name', required: true },
+  { name: 'email', label: 'Email', required: true },
   {
     name: 'subjects',
     label: 'Subjects',
@@ -37,10 +40,6 @@ const editableFields = [
     type: 'dropdownSelect',
     options: education
   },
-  { name: 'email', label: 'Email', required: true },
-  { name: 'firstName', label: 'First Name', required: true },
-  { name: 'lastName', label: 'Last Name', required: true },
-  { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' },
   {
     name: 'minGroupSize',
     label: 'Min Group Size',
@@ -54,8 +53,11 @@ const editableFields = [
     min: 1
   },
   { name: 'age', label: 'Age', inputType: 'number', required: true, min: 1 },
-  { name: 'price', label: 'Price', inputType: 'number' }
+  { name: 'price', label: 'Price ($/hr)', inputType: 'number' },
+  { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' }
 ];
+
+const studentFields = ['firstName', 'lastName', 'email', 'education', 'age'];
 
 function Profile() {
   const { user } = useAuth();
@@ -138,8 +140,173 @@ function Profile() {
     }
   }
 
-  function renderComponents(editableFields) {
-    const fields = editableFields.map((field, index) => {
+  function displayOptions(field) {
+    switch (field.name) {
+      case 'firstName':
+        return (
+          <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+      case 'lastName':
+        return (
+          <div key={field.label} className='u-m-b u-m-l disp-inline-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+      case 'email':
+        return (
+          <div key={field.label} className='u-m-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+      case 'subjects':
+        if (user.role === 'tutor') {
+          return (
+            <div key={field.label} className='u-m-b'>
+              <div className='u-m-b-sm'>
+                <h5>{field.label}</h5>
+              </div>
+              {userInfo.subjects.map((subject) => (
+                <div key={subject} className='u-m-r disp-inline-b'>
+                  <Badge>{subject}</Badge>
+                </div>
+              ))}
+            </div>
+          );
+        }
+        break;
+      case 'timeFrame':
+        if (user.role === 'tutor') {
+          return (
+            <div key={field.label} className='u-m-b'>
+              <div className='u-m-b-sm'>
+                <h5>{field.label}</h5>
+              </div>
+              <div>
+                {userInfo.timeFrame.map((timeBlock) => (
+                  <div key={timeBlock} className='u-m-r disp-inline-b'>
+                    <Badge>{timeBlock}</Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+        break;
+      case 'education':
+        return (
+          <div key={field.label} className='u-m-b'>
+            <div className='u-m-b-sm'>
+              <h5>{field.label}</h5>
+            </div>
+            <div>
+              {userInfo.education.map((level) => (
+                <div key={level} className='u-m-r disp-inline-b'>
+                  <Badge>{level}</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      case 'minGroupSize':
+      case 'maxGroupSize':
+      case 'price':
+        if (user.role === 'tutor') {
+          return (
+            <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
+              <div className='u-m-b-sm'>
+                <h5>{field.label}</h5>
+              </div>
+              <div>
+                {
+                  <p key={field.name} onClick={() => setEditing(true)}>
+                    {userInfo[field.name]}
+                  </p>
+                }
+              </div>
+            </div>
+          );
+        }
+        break;
+      case 'age':
+        return (
+          <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
+            <div className='u-m-b-sm'>
+              <h5>{user.role === 'tutor' ? 'Age of students' : 'Your Age'}</h5>
+            </div>
+            <div>
+              {
+                <p key={field.name} onClick={() => setEditing(true)}>
+                  {user.role === 'tutor'
+                    ? userInfo[field.name] + '+'
+                    : userInfo[field.name]}
+                </p>
+              }
+            </div>
+          </div>
+        );
+
+      case 'bio':
+        if (user.role === 'tutor') {
+          return (
+            <div key={field.label} className='u-m-b'>
+              <div className='u-m-b-sm'>
+                <h5>{field.label}</h5>
+              </div>
+              <div>
+                {
+                  <p key={field.name} onClick={() => setEditing(true)}>
+                    {userInfo[field.name]}
+                  </p>
+                }
+              </div>
+            </div>
+          );
+        }
+        break;
+    }
+  }
+
+  function renderComponents(editableFields, studentFields) {
+    let userEditableFields = [];
+    if (user.role === 'student') {
+      editableFields.filter((field) => {
+        if (studentFields.includes(field.name)) {
+          userEditableFields.push(field);
+        }
+      });
+    } else {
+      userEditableFields = editableFields;
+    }
+    const fields = userEditableFields.map((field, index) => {
       if (editing) {
         return (
           <Form.Field key={index}>
@@ -149,21 +316,7 @@ function Profile() {
           </Form.Field>
         );
       } else if (!editing && userInfo) {
-        console.log(userInfo.subjects);
-        return (
-          <>
-            <label>{field.label}</label>
-            {field.name === 'subjects' ? (
-              userInfo.subjects.map((subject) => (
-                <Badge className='u-w-r'>{subject}</Badge>
-              ))
-            ) : (
-              <p key={field.name} onClick={() => setEditing(true)}>
-                {userInfo[field.name]}
-              </p>
-            )}
-          </>
-        );
+        return <span key={index + index}>{displayOptions(field)}</span>;
       }
     });
 
@@ -171,7 +324,8 @@ function Profile() {
   }
 
   useEffect(() => {
-    renderComponents(editableFields);
+    // setEditableFields(editableFields, studentFields);
+    renderComponents(editableFields, studentFields);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
 
@@ -205,12 +359,14 @@ function Profile() {
       </PageHeader>
       {userInfo && (
         <Container>
-          <ProfileImage profileImg={userInfo.image} />
+          <ProfileImage
+            profileImg={userInfo.image}
+            style={{ marginBottom: '10px' }}
+          />
           <Button className='btn-primary' onClick={() => setEditing(!editing)}>
             Edit
           </Button>
 
-          {/* <p>Email:</p> */}
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
               {fields}

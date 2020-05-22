@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 import { Link } from 'react-router-dom';
@@ -57,6 +59,7 @@ function TutorBio({ match }) {
 
   function handleModalToggle() {
     setModalOpen(!modalOpen);
+    resetInputError();
   }
 
   const handleChange = (event) => {
@@ -70,15 +73,23 @@ function TutorBio({ match }) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (chatState.message === '') {
+    if (chatState.message.trim() === '') {
       setInputError(true);
     } else {
       startChat();
       setChatState({ ...chatState, message: '' });
       resetInputError();
       handleModalToggle();
+      sentNotification();
     }
   }
+
+  toast.configure();
+  const sentNotification = () => {
+    toast.success(`Message sent to ${tutor.firstName}!`, {
+      position: toast.POSITION.TOP_CENTER
+    });
+  };
 
   function resetInputError() {
     setInputError(false);
@@ -182,7 +193,8 @@ function TutorBio({ match }) {
                       {inputError ? (
                         <Message
                           error
-                          header='You must provide a message to book this tutor!'
+                          header='Whoops!'
+                          content='You must provide a message.'
                         />
                       ) : null}
                       <MessageModal
@@ -208,6 +220,14 @@ function TutorBio({ match }) {
                 {tutor.education.map((edu) => (
                   <List.Item className='color-secondary' key={edu}>
                     <Badge>{edu}</Badge>
+                  </List.Item>
+                ))}
+              </List>
+              <h3 className='u-m-t u-m-b'>Available for</h3>
+              <List horizontal>
+                {tutor.timeFrame.map((time) => (
+                  <List.Item className='color-secondary' key={time}>
+                    <Badge>{time}</Badge>
                   </List.Item>
                 ))}
               </List>

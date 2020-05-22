@@ -23,13 +23,8 @@ export default {
   startChat: (chatData) => {
     return axios.post('/api/chat', chatData);
   },
-  addMessageToChat: ({ chatId, message, sender, read }) => {
-    return axios.post('/api/chat/message', {
-      chatId: chatId,
-      message: message,
-      sender: sender,
-      read: read
-    });
+  addMessageToChat: (messageDetails) => {
+    return axios.post('/api/chat/message', messageDetails);
   },
   getChatsByUserId: () => {
     return axios.get('/api/chat/chats');

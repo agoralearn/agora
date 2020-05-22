@@ -3,10 +3,7 @@ import './BottomNav.scss';
 import { Icon } from 'semantic-ui-react';
 import { useAuth } from '../../utils/auth';
 import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
-
-const socket = io('http://localhost:3001');
 
 const pathsToHideButton = ['inbox', 'chat'];
 

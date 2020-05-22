@@ -15,9 +15,11 @@ router.post(
   '/message',
   isAuthenticated,
   (req, res, next) => {
-    // console.log(socketMapping);
-    req.io.emit('news', { hello: 'Getting News' });
-
+    req.body.receivers.forEach((userId) => {
+      if (req.socketMap[userId]) {
+        req.io.to(req.socketMap[userId]).emit('message', req.body);
+      }
+    });
     next();
   },
   chatController.addMessageToChat

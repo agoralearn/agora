@@ -20,13 +20,13 @@ import Search from './pages/Search/Search';
 import BottomNav from './components/BottomNav/BottomNav';
 
 // SOCKET IO
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+// const socket = io('http://localhost:3001');
 
-socket.on('news', (data) => {
-  console.log(data);
-});
+// socket.on('message', (data) => {
+//   console.log(data);
+// });
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -39,11 +39,6 @@ function ProtectedRoute({ children, ...rest }) {
 }
 
 function App() {
-  // useEffect(() => {
-  //   console.log(isLoggedIn);
-  //   socket.emit('my other event', { my: 'asdasf' });
-  // }, [isLoggedIn]);
-
   return (
     <AuthProvider>
       <Router>

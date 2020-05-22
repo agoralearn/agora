@@ -37,7 +37,7 @@ export default function Inbox(props) {
             <ChatPreview
               key={chat._id}
               users={chat.users}
-              message={chat.messages}
+              messages={chat.messages}
               chatId={chat._id}
               match={props.match}
             />

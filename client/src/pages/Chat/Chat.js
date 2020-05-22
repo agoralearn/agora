@@ -11,10 +11,28 @@ export default function Chat({ match, ...props }) {
   const [messages, setMessages] = useState([]);
   const [avatars, setAvatars] = useState('');
   const [otherUsers, setOtherUsers] = useState([]);
+  const [usersFullData, setUsersFullData] = useState([]);
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
-  const { user } = useAuth();
+  const { user, socket } = useAuth();
+
+  // socket.on('message', (data) => {
+  //   console.log('FROM SERVER', data);
+  //   alert(data);
+  // });
+
+  useEffect(() => {
+    console.log('render');
+    console.log(messages);
+    socket.on('message', (data) => {
+      console.log(data);
+      // console.log('FROM SERVER', data);
+      if (data.chatId === match.params.chatId) {
+        setMessages([...messages, data]);
+      }
+    });
+  }, [messages]);
 
   useEffect(() => {
     function fetchUserMessages() {
@@ -38,7 +56,10 @@ export default function Chat({ match, ...props }) {
       setOtherUsers(userNames);
     }
     fetchUserMessages().then(({ data }) => {
+      console.log(data.messages);
       mapUserstoImages(data);
+      setUsersFullData(data.users);
+      // setOtherUsers(data);
       setMessages(data.messages);
     });
   }, [match.params.chatId, user.id]);
@@ -55,7 +76,10 @@ export default function Chat({ match, ...props }) {
         read: [user.id],
         sender: user.id,
         message: messageInput,
-        chatId: match.params.chatId
+        chatId: match.params.chatId,
+        receivers: usersFullData
+          .filter((person) => person._id !== user.id)
+          .map((person) => person._id)
       };
 
       API.addMessageToChat(newMessage)
