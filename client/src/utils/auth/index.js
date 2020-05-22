@@ -40,9 +40,9 @@ export const AuthProvider = ({ value, ...rest }) => {
         });
       }
 
-      if (locationArr.includes('inbox')) {
-        setState((unread) => {
-          return { unread: [...unread, data.chatId] };
+      if (!locationArr.includes(data.chatId)) {
+        setState((state) => {
+          return { ...state, unread: [...state.unread, data.chatId] };
         });
       }
     });
