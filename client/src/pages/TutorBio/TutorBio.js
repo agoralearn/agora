@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import API from '../../utils/API';
 import { useAuth } from '../../utils/auth';
 import { Link } from 'react-router-dom';
@@ -78,8 +80,16 @@ function TutorBio({ match }) {
       setChatState({ ...chatState, message: '' });
       resetInputError();
       handleModalToggle();
+      sentNotification();
     }
   }
+
+  toast.configure();
+  const sentNotification = () => {
+    toast.success(`Message sent to ${tutor.firstName}!`, {
+      position: toast.POSITION.TOP_CENTER
+    });
+  };
 
   function resetInputError() {
     setInputError(false);

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const server = require('http').Server(app);
 const path = require('path');
 const morgan = require('morgan');
 const initDb = require('./config/initDb');
@@ -9,8 +10,34 @@ const usersRouter = require('./routes/users');
 const searchRouter = require('./routes/search');
 const errorMiddleware = require('./routes/errorMiddleware');
 const chatRouter = require('./routes/chat');
+const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3001;
+
+let socketMap = {};
+
+// setup socket.io middleware
+function socketConfig(req, res, next) {
+  req.io = io;
+  req.socketMap = socketMap;
+  next();
+}
+
+function removeSocketSession(socketId, socketMap) {
+  const socketMapClone = { ...socketMap };
+  const userId = socketMapClone[socketId];
+  delete socketMapClone[userId];
+  delete socketMapClone[socketId];
+
+  return socketMapClone;
+}
+
+function addSocketToMap(socketId, userId, socketMap) {
+  const socketMapClone = { ...socketMap };
+  socketMapClone[userId] = socketId;
+  socketMapClone[socketId] = userId;
+  return socketMapClone;
+}
 
 // log all requests to the console in development
 if (process.env.NODE_ENV !== 'production') {
@@ -28,28 +55,32 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-// app.use("/api/tutor", tutorRouter)
-
 app.use(authRouter, errorMiddleware);
 
-// Leave for reference incase I f'd something up
-// app.use('/api', searchRouter);
-// app.use(chatRouter);
-
 // The logged in user
-app.use('/api/user', usersRouter); // Good
+app.use('/api/user', usersRouter);
 
 // Search or viewing tutor profile
-app.use('/api/tutors', searchRouter); // Good
+app.use('/api/tutors', searchRouter);
 
 // Logged in user chat stuff
-app.use('/api/chat', chatRouter); // Good
+app.use('/api/chat', socketConfig, chatRouter);
 
 // Send all other requests to react app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
-app.listen(PORT, () => {
+io.on('connection', (socket) => {
+  socket.on('loggedIn', (data) => {
+    socketMap = addSocketToMap(socket.id, data.userId, socketMap);
+  });
+
+  socket.on('disconnect', () => {
+    socketMap = removeSocketSession(socket.id, socketMap);
+  });
+});
+
+server.listen(PORT, () => {
   console.log(`🌎 ==> Server now on port ${PORT}!`);
 });

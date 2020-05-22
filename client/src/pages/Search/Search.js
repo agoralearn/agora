@@ -3,7 +3,7 @@ import PageHeader from '../../components/PageHeader/PageHeader';
 import TutorCard from '../../components/TutorCard/TutorCard';
 import Button from '../../components/Button/Button';
 import API from '../../utils/API';
-import { Container, Form, Dropdown } from 'semantic-ui-react';
+import { Container, Form, Dropdown, Accordion, Icon } from 'semantic-ui-react';
 import './Search.scss';
 import { subjects, education } from '../../utils/categoryData';
 
@@ -36,6 +36,7 @@ const searchEducations = [
 function Search() {
   const [tutors, setTutors] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH_STATE);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const prices = [
     { key: 'Any', value: 'Any', text: 'Any Price' },
@@ -77,6 +78,10 @@ function Search() {
 
   const handleReset = (event) => {
     setSearch(INITIAL_SEARCH_STATE);
+  };
+
+  const handleFiltersOpen = () => {
+    setFiltersOpen(!filtersOpen);
   };
 
   const includeTutor = (tutor) => {
@@ -148,60 +153,68 @@ function Search() {
             onChange={handleChange}
           />
         </Form.Field>
-        <Form.Group widths='equal'>
-          <Form.Field>
-            <label htmlFor='education'>Education Level</label>
-            <Dropdown
-              id='education'
-              name='education'
-              placeholder='Select Education'
-              fluid
-              selection
-              value={search.education}
-              options={searchEducations}
-              onChange={handleChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor='price'>Max Price</label>
-            <Dropdown
-              id='price'
-              name='price'
-              placeholder='Select Price'
-              fluid
-              selection
-              value={search.price}
-              options={prices}
-              onChange={handleChange}
-            />
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths='4'>
-          <Form.Field>
-            <label htmlFor='group'>Group Size</label>
-            <Dropdown
-              id='group'
-              name='groupSize'
-              fluid
-              selection
-              value={search.groupSize}
-              options={groupSizes}
-              onChange={handleChange}
-            />
-          </Form.Field>
-          <Form.Field>
-            <label htmlFor='rating'>Rating</label>
-            <Dropdown
-              id='rating'
-              name='rating'
-              fluid
-              selection
-              value={search.rating}
-              options={ratings}
-              onChange={handleChange}
-            />
-          </Form.Field>
-        </Form.Group>
+        <Accordion as={Form.Field}>
+          <Accordion.Title active={filtersOpen} onClick={handleFiltersOpen}>
+            <Icon name='dropdown' />
+            More Filters
+          </Accordion.Title>
+          <Accordion.Content active={filtersOpen}>
+            <Form.Group widths='equal'>
+              <Form.Field>
+                <label htmlFor='education'>Education Level</label>
+                <Dropdown
+                  id='education'
+                  name='education'
+                  placeholder='Select Education'
+                  fluid
+                  selection
+                  value={search.education}
+                  options={searchEducations}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor='price'>Max Price</label>
+                <Dropdown
+                  id='price'
+                  name='price'
+                  placeholder='Select Price'
+                  fluid
+                  selection
+                  value={search.price}
+                  options={prices}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+            </Form.Group>
+            <Form.Group widths={2} unstackable>
+              <Form.Field>
+                <label htmlFor='group'>Group Size</label>
+                <Dropdown
+                  id='group'
+                  name='groupSize'
+                  fluid
+                  selection
+                  value={search.groupSize}
+                  options={groupSizes}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor='rating'>Rating</label>
+                <Dropdown
+                  id='rating'
+                  name='rating'
+                  fluid
+                  selection
+                  value={search.rating}
+                  options={ratings}
+                  onChange={handleChange}
+                />
+              </Form.Field>
+            </Form.Group>
+          </Accordion.Content>
+        </Accordion>
         <Button type='reset' className='btn btn-primary' onClick={handleReset}>
           Reset
         </Button>

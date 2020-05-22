@@ -3,8 +3,6 @@ module.exports = {
   // Start a new chat
   // Pass two user ids in userIds in the body
   startChat: function (req, res) {
-    console.log('body' + req.body);
-    console.log('userIds' + req.body.userIds);
     const { message } = req.body;
     const userIds = [req.user.id, ...req.body.userIds];
     db.Message.create({
@@ -66,7 +64,16 @@ module.exports = {
       // Send the sent message back to the client so it can use
       // it for UI updates
       .then(() => {
-        // console.log(something);
+        // Emit message with socket.io
+        req.body.receivers.forEach((userId) => {
+          if (req.socketMap[userId]) {
+            req.io.to(req.socketMap[userId]).emit('message', {
+              message: messageToReturn,
+              chatId: req.body.chatId
+            });
+          }
+        });
+
         res.json(messageToReturn);
       })
       .catch((err) => {
@@ -76,16 +83,12 @@ module.exports = {
     // Add the message's ID to the associated chat
   },
   getChat: function (req, res) {
-    console.log(req.params.chatId);
-    console.log(db.Chat);
     db.Chat.findById(req.params.chatId)
       .populate({
         path: 'users',
         select: 'firstName lastName image '
       })
       .populate('messages')
-      // .populate('messages')
-      // .populate('users')
       .then((data) => {
         if (data) {
           res.json(data);
@@ -101,7 +104,6 @@ module.exports = {
   getChatsByUserId: function (req, res) {
     // all user's chats, users in the chats by name + image, last message in chat,
     const userId = req.user.id;
-    console.log(userId);
     db.Chat.find({
       users: userId
     })
@@ -115,9 +117,9 @@ module.exports = {
         options: {
           sort: {
             createdAt: 'desc'
-          },
-          limit: 1
-        }
+          }
+        },
+        perDocumentLimit: 1
       })
       .then((data) => {
         if (data) {
