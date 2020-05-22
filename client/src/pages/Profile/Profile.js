@@ -146,7 +146,7 @@ function Profile() {
         return (
           <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
             <div className='u-m-b-sm'>
-              <label>{field.label}</label>
+              <h5>{field.label}</h5>
             </div>
             <div>
               {
@@ -161,7 +161,7 @@ function Profile() {
         return (
           <div key={field.label} className='u-m-b u-m-l disp-inline-b'>
             <div className='u-m-b-sm'>
-              <label>{field.label}</label>
+              <h5>{field.label}</h5>
             </div>
             <div>
               {
@@ -176,7 +176,7 @@ function Profile() {
         return (
           <div key={field.label} className='u-m-b'>
             <div className='u-m-b-sm'>
-              <label>{field.label}</label>
+              <h5>{field.label}</h5>
             </div>
             <div>
               {
@@ -192,7 +192,7 @@ function Profile() {
           return (
             <div key={field.label} className='u-m-b'>
               <div className='u-m-b-sm'>
-                <label>{field.label}</label>
+                <h5>{field.label}</h5>
               </div>
               {userInfo.subjects.map((subject) => (
                 <div key={subject} className='u-m-r disp-inline-b'>
@@ -208,7 +208,7 @@ function Profile() {
           return (
             <div key={field.label} className='u-m-b'>
               <div className='u-m-b-sm'>
-                <label>{field.label}</label>
+                <h5>{field.label}</h5>
               </div>
               <div>
                 {userInfo.timeFrame.map((timeBlock) => (
@@ -225,7 +225,7 @@ function Profile() {
         return (
           <div key={field.label} className='u-m-b'>
             <div className='u-m-b-sm'>
-              <label>{field.label}</label>
+              <h5>{field.label}</h5>
             </div>
             <div>
               {userInfo.education.map((level) => (
@@ -237,29 +237,13 @@ function Profile() {
           </div>
         );
       case 'minGroupSize':
-        if (user.role === 'tutor') {
-          return (
-            <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
-              <div className='u-m-b-sm'>
-                <label>{field.label}</label>
-              </div>
-              <div>
-                {
-                  <p key={field.name} onClick={() => setEditing(true)}>
-                    {userInfo[field.name]}
-                  </p>
-                }
-              </div>
-            </div>
-          );
-        }
-        break;
       case 'maxGroupSize':
+      case 'price':
         if (user.role === 'tutor') {
           return (
             <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
               <div className='u-m-b-sm'>
-                <label>{field.label}</label>
+                <h5>{field.label}</h5>
               </div>
               <div>
                 {
@@ -276,9 +260,7 @@ function Profile() {
         return (
           <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
             <div className='u-m-b-sm'>
-              <label>
-                {user.role === 'tutor' ? 'Age of students' : 'Your Age'}
-              </label>
+              <h5>{user.role === 'tutor' ? 'Age of students' : 'Your Age'}</h5>
             </div>
             <div>
               {
@@ -292,30 +274,12 @@ function Profile() {
           </div>
         );
 
-      case 'price':
-        if (user.role === 'tutor') {
-          return (
-            <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
-              <div className='u-m-b-sm'>
-                <label>{field.label}</label>
-              </div>
-              <div>
-                {
-                  <p key={field.name} onClick={() => setEditing(true)}>
-                    {userInfo[field.name]}
-                  </p>
-                }
-              </div>
-            </div>
-          );
-        }
-        break;
       case 'bio':
         if (user.role === 'tutor') {
           return (
             <div key={field.label} className='u-m-b'>
               <div className='u-m-b-sm'>
-                <label>{field.label}</label>
+                <h5>{field.label}</h5>
               </div>
               <div>
                 {
