@@ -343,7 +343,6 @@ function Profile() {
   }
 
   useEffect(() => {
-    // setEditableFields(editableFields, studentFields);
     renderComponents(editableFields, studentFields);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editing, userInfo]);
@@ -362,7 +361,6 @@ function Profile() {
     setEditing(!editing);
     API.updateUser(userInfo)
       .then((res) => {
-        // console.log('updated');
         toast.success(`New info saved!`, {
           position: toast.POSITION.TOP_CENTER
         });
@@ -432,18 +430,7 @@ function Profile() {
 
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
-              {/* {editing && (
-                <Button
-                  className='btn-primary'
-                  type='submit'
-                  style={{ float: 'right' }}
-                >
-                  Save
-                </Button>
-              )} */}
-              {/* <div style={{ marginTop: 150 }}> */}
               {fields}
-              {/* </div> */}
 
               {editing && (
                 <Button className='btn-primary' type='submit'>
