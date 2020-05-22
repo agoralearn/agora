@@ -19,6 +19,8 @@ import TutorBio from './pages/TutorBio/TutorBio';
 import Search from './pages/Search/Search';
 import BottomNav from './components/BottomNav/BottomNav';
 
+// SOCKET IO
+
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
   // Render children depending on how the component is
@@ -43,9 +45,11 @@ function App() {
           <Route exact path='/login'>
             <Login />
           </Route>
+
           <Route exact path='/tutors'>
             <Search />
           </Route>
+
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>

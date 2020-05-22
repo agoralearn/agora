@@ -1,4 +1,4 @@
-@import '../../../css/globals';
+@import "../../../css/globals";
 
 .Chat-message {
   display: flex;
@@ -12,8 +12,8 @@
     flex-direction: row-reverse;
 
     .chat-message__text {
-      background: dodgerblue;
-      color: black;
+      background: $color-primary;
+      color: $color-white;
     }
 
     .chat-message__avatar-frame {
@@ -30,6 +30,13 @@
 
 .Chat-message--right .Chat-message__text {
   background: $color-primary;
+}
+
+.Chat-message--date {
+  color: $color-gray;
+  font-size: 12px;
+  align-self: flex-end;
+  padding: 0px 5px 5px 5px;
 }
 
 // Add a corner on first message for user

@@ -1,12 +1,14 @@
 import React from 'react';
 import './ChatPreview.scss';
 import ProfileImage from '../ProfileImage/ProfileImage';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import { toTitleCase } from '../../utils/helpers';
+import moment from 'moment';
 
-function ChatPreview({ users, messages, chatId }) {
-  const { user } = useAuth();
+function ChatPreview({ users, messages, chatId, date, style }) {
+  const { user, state = { unread: [] }, setState } = useAuth();
+  const history = useHistory();
 
   function buildMessagePreview() {
     const preview = messages[0].message;
@@ -23,6 +25,15 @@ function ChatPreview({ users, messages, chatId }) {
         {isOverLength ? <span>...</span> : null}
       </span>
     );
+  }
+
+  function openChatHandler() {
+    setState({
+      unread: state.unread.filter((id) => {
+        return id !== chatId;
+      })
+    });
+    history.push(`/chat/${chatId}`);
   }
 
   const otherUsers = users.filter((person) => {
@@ -47,26 +58,27 @@ function ChatPreview({ users, messages, chatId }) {
   };
 
   return (
-    <Link to={`/chat/${chatId}`}>
-      <div className='ChatPreview_wrapper'>
-        <div className='ChatPreview_img-wrapper'>{renderOtherAvatars()}</div>
+    <div className='ChatPreview_wrapper' onClick={openChatHandler}>
+      <div className='ChatPreview_img-wrapper'>{renderOtherAvatars()}</div>
 
-        <div className='ChatPreview_names-wrapper'>
-          <p>
-            {otherUsers.map(
-              (user) =>
-                `${toTitleCase(user.firstName)} ${toTitleCase(
-                  user.lastName[0]
-                )}, `
-            )}
-            me
-          </p>
-          <div className='f-w-l'>
-            <i>{messages.length > 0 && buildMessagePreview()}</i>
+      <div className='ChatPreview_names-wrapper' style={{ ...style }}>
+        <p>
+          {otherUsers.map(
+            (user) =>
+              `${toTitleCase(user.firstName)} ${toTitleCase(
+                user.lastName[0]
+              )}, `
+          )}
+          me
+        </p>
+        <div className='f-w-l'>
+          <div>
+            <i>{moment(date).format('LT')}</i>
           </div>
+          {messages.length > 0 && buildMessagePreview()}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 export default ChatPreview;

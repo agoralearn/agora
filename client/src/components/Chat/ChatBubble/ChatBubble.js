@@ -1,8 +1,9 @@
 import React from 'react';
 import { useAuth } from '../../../utils/auth';
+import moment from 'moment';
 import './ChatBubble.scss';
 
-export default function ChatBubble({ text, sender, thumbnail }) {
+export default function ChatBubble({ text, sender, thumbnail, date }) {
   const { user } = useAuth();
   return (
     <div
@@ -18,6 +19,7 @@ export default function ChatBubble({ text, sender, thumbnail }) {
         ></img>
       </span>
       <p className='Chat-message__text'>{text}</p>
+      <div className='Chat-message--date'>{moment(date).format('LT')}</div>
     </div>
   );
 }

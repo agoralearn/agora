@@ -1,5 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import AuthService from './AuthService';
+import io from 'socket.io-client';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const socket = io('http://localhost:3001');
 
 const AuthContext = createContext();
 const authService = new AuthService();
@@ -11,6 +15,40 @@ export const AuthProvider = ({ value, ...rest }) => {
   const [user, setUser] = useState(
     isLoggedIn ? authService.getProfile() : null
   );
+
+  const [state, setState] = useState({
+    unread: []
+  });
+
+  useEffect(() => {
+    // console.log(window.location.pathname);
+
+    socket.on('message', (data) => {
+      const locationArr = window.location.pathname.split('/');
+
+      if (
+        !locationArr.includes(data.chatId) &&
+        !locationArr.includes('inbox')
+      ) {
+        toast.configure();
+        toast.success('You have a new message', {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+
+      if (locationArr.includes('inbox')) {
+        setState({
+          unread: [...state.unread, data.chatId]
+        });
+      }
+    });
+
+    socket.on('connect', () => {
+      if (isLoggedIn) {
+        socket.emit('loggedIn', { userId: user.id });
+      }
+    });
+  }, [isLoggedIn, state.unread, user]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
@@ -27,7 +65,10 @@ export const AuthProvider = ({ value, ...rest }) => {
         user,
         isLoggedIn,
         login,
-        logout
+        logout,
+        socket,
+        state,
+        setState
       }}
       {...rest}
     />
