@@ -75,7 +75,7 @@ function Login() {
               onChange={({ target }) => setPassword(target.value)}
             />
           </Form.Field>
-          <Message error header='Authentication Error' content={error} />
+          <Message error header='Whoops!' content={error} />
           <Button type='submit' className='btn btn-primary'>
             Submit
           </Button>
