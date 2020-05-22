@@ -3,6 +3,7 @@ import AuthService from './AuthService';
 import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from 'react-router-dom';
 const socket = io(
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3001'
@@ -24,19 +25,25 @@ export const AuthProvider = ({ value, ...rest }) => {
     unread: []
   });
 
+  const history = useHistory();
+
   useEffect(() => {
     // console.log(window.location.pathname);
 
     socket.on('message', (data) => {
-      const locationArr = window.location.pathname.split('/');
+      const locationArr = history.location.pathname.split('/');
 
       if (
         !locationArr.includes(data.chatId) &&
         !locationArr.includes('inbox')
       ) {
         toast.configure();
-        toast.success('You have a new message', {
-          position: toast.POSITION.TOP_CENTER
+        toast.success('You have a new message!', {
+          position: toast.POSITION.TOP_RIGHT,
+          onClick: () => {
+            history.push(`/chat/${data.chatId}`);
+          },
+          pauseOnHover: false
         });
       }
 
@@ -52,7 +59,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, [isLoggedIn, user]);
+  }, [isLoggedIn, user, history]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
