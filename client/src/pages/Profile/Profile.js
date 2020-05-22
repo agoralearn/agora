@@ -59,7 +59,14 @@ const editableFields = [
   { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' }
 ];
 
-const studentFields = ['firstName', 'lastName', 'email', 'education', 'age'];
+const studentFields = [
+  'firstName',
+  'lastName',
+  'email',
+  'image',
+  'education',
+  'age'
+];
 
 function Profile() {
   const { user } = useAuth();
