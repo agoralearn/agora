@@ -1,13 +1,14 @@
 import React from 'react';
 import { useAuth } from '../../../utils/auth';
 import moment from 'moment';
+import './ChatBubble.scss';
 
 export default function ChatBubble({ text, sender, thumbnail, date }) {
   const { user } = useAuth();
   return (
     <div
       className={`Chat-message Chat-message${
-        sender !== user.id ? '' : '--right'
+        sender !== user.id ? '--left' : '--right'
       }`}
     >
       <span className='Chat-message__avatar-frame'>
