@@ -33,8 +33,8 @@ function ProtectedRoute({ children, ...rest }) {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <NavBar />
         <Switch>
           <Route exact path='/'>
@@ -66,8 +66,8 @@ function App() {
         </Switch>
 
         <BottomNav />
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 export default App;
