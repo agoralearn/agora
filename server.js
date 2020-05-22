@@ -14,12 +14,29 @@ const io = require('socket.io')(server);
 
 const PORT = process.env.PORT || 3001;
 
-const socketMap = {};
+let socketMap = {};
 
+// setup socket.io middleware
 function socketConfig(req, res, next) {
   req.io = io;
   req.socketMap = socketMap;
   next();
+}
+
+function removeSocketSession(socketId, socketMap) {
+  const socketMapClone = { ...socketMap };
+  const userId = socketMapClone[socketId];
+  delete socketMapClone[userId];
+  delete socketMapClone[socketId];
+
+  return socketMapClone;
+}
+
+function addSocketToMap(socketId, userId, socketMap) {
+  const socketMapClone = { ...socketMap };
+  socketMapClone[userId] = socketId;
+  socketMapClone[socketId] = userId;
+  return socketMapClone;
 }
 
 // log all requests to the console in development
@@ -56,14 +73,11 @@ app.get('*', (req, res) => {
 
 io.on('connection', (socket) => {
   socket.on('loggedIn', (data) => {
-    socketMap[data.userId] = socket.id;
-    socketMap[socket.id] = data.userId;
+    socketMap = addSocketToMap(socket.id, data.userId, socketMap);
   });
 
   socket.on('disconnect', () => {
-    const userId = socketMap[socket.id];
-    delete socketMap[userId];
-    delete socketMap[socket.id];
+    socketMap = removeSocketSession(socket.id, socketMap);
   });
 });
 

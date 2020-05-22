@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AuthService from './AuthService';
 import io from 'socket.io-client';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const socket = io('http://localhost:3001');
 
 const AuthContext = createContext();
@@ -13,12 +15,32 @@ export const AuthProvider = ({ value, ...rest }) => {
   const [user, setUser] = useState(
     isLoggedIn ? authService.getProfile() : null
   );
-  const [ioSocket, setIoSocket] = useState();
+
+  const [state, setState] = useState({
+    unread: []
+  });
 
   useEffect(() => {
+    // console.log(window.location.pathname);
+
     socket.on('message', (data) => {
-      console.log('FROM SERVER', data);
-      // alert(data);
+      let locationArr = window.location.pathname.split('/');
+
+      if (
+        !locationArr.includes(data.chatId) &&
+        !locationArr.includes('inbox')
+      ) {
+        toast.configure();
+        toast.success(`You have a new message`, {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+
+      if (locationArr.includes('inbox')) {
+        setState({
+          unread: [...state.unread, data.chatId]
+        });
+      }
     });
 
     socket.on('connect', () => {
@@ -44,7 +66,9 @@ export const AuthProvider = ({ value, ...rest }) => {
         isLoggedIn,
         login,
         logout,
-        socket
+        socket,
+        state,
+        setState
       }}
       {...rest}
     />

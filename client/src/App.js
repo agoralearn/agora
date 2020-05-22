@@ -20,13 +20,6 @@ import Search from './pages/Search/Search';
 import BottomNav from './components/BottomNav/BottomNav';
 
 // SOCKET IO
-// import io from 'socket.io-client';
-
-// const socket = io('http://localhost:3001');
-
-// socket.on('message', (data) => {
-//   console.log(data);
-// });
 
 function ProtectedRoute({ children, ...rest }) {
   const { isLoggedIn } = useAuth();
@@ -52,9 +45,11 @@ function App() {
           <Route exact path='/login'>
             <Login />
           </Route>
+
           <Route exact path='/tutors'>
             <Search />
           </Route>
+
           <ProtectedRoute exact path='/profile'>
             <Profile />
           </ProtectedRoute>

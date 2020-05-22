@@ -48,6 +48,13 @@
   overflow-y: auto;
 }
 
+.Chat-message--date {
+  color: $color-gray;
+  font-size: 12px;
+  align-self: flex-end;
+  padding: 0px 5px 5px 5px;
+}
+
 .Chat-message {
   display: flex;
   align-items: center;
@@ -59,12 +66,12 @@
   &--right {
     flex-direction: row-reverse;
 
-    .chat-message__text {
+    .Chat-message__text {
       background: dodgerblue;
-      color: black;
+      color: white;
     }
 
-    .chat-message__avatar-frame {
+    .Chat-message__avatar-frame {
       margin-left: 16px;
       margin-right: 0;
     }
