@@ -3,7 +3,11 @@ import AuthService from './AuthService';
 import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-const socket = io('http://localhost:3001');
+const socket = io(
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3001'
+    : 'https://agora-tutor.herokuapp.com'
+);
 
 const AuthContext = createContext();
 const authService = new AuthService();
