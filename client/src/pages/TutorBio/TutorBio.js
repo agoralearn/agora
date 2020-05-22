@@ -71,7 +71,7 @@ function TutorBio({ match }) {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    if (chatState.message === '') {
+    if (chatState.message.trim() === '') {
       setInputError(true);
     } else {
       startChat();

@@ -62,6 +62,7 @@ const studentFields = ['firstName', 'lastName', 'email', 'education', 'age'];
 function Profile() {
   const { user } = useAuth();
   const [userInfo, setUserInfo] = useState();
+  const [userInfoCopy, setUserInfoCopy] = useState();
   const [editing, setEditing] = useState(false);
   const [fields, setFields] = useState();
 
@@ -144,7 +145,7 @@ function Profile() {
     switch (field.name) {
       case 'firstName':
         return (
-          <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
+          <div key={field.label} className='u-m-b u-m-r '>
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -159,7 +160,7 @@ function Profile() {
         );
       case 'lastName':
         return (
-          <div key={field.label} className='u-m-b u-m-l disp-inline-b'>
+          <div key={field.label} className='u-m-b  '>
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -333,6 +334,7 @@ function Profile() {
     API.getUser(user.id)
       .then((res) => {
         setUserInfo(res.data);
+        setUserInfoCopy(res.data);
       })
       .catch((err) => console.log(err));
   }, [user]);
@@ -348,7 +350,12 @@ function Profile() {
         console.log(err);
       });
   }
-
+  function cancel() {
+    setUserInfo(userInfoCopy);
+    console.log(userInfoCopy);
+    console.log(userInfo);
+    setEditing(!editing);
+  }
   return (
     <div className='container Profile Profile_container'>
       <div className='u-m-l'>
@@ -359,16 +366,43 @@ function Profile() {
       </PageHeader>
       {userInfo && (
         <Container>
-          <ProfileImage
-            profileImg={userInfo.image}
-            style={{ marginBottom: '10px' }}
-          />
-          <Button className='btn-primary' onClick={() => setEditing(!editing)}>
-            Edit
-          </Button>
+          <div
+            // style={{ display: 'flex' }}
+            onClick={(event) => console.log(event.target)}
+          >
+            <ProfileImage
+              profileImg={userInfo.image}
+              style={{ marginBottom: '10px' }}
+            />
+            {!editing ? (
+              <Button
+                className='btn-primary'
+                // onClick={() => setEditing(!editing)}
+                onClick={(event) => {
+                  setEditing(true);
+                  console.log(event.target);
+                }}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button
+                className='btn-secondary'
+                // onClick={() => setEditing(!editing)}
+                onClick={() => cancel()}
+              >
+                Cancel
+              </Button>
+            )}
+          </div>
 
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
+              {editing && (
+                <Button className='btn-primary' type='submit'>
+                  Save
+                </Button>
+              )}
               {fields}
 
               {editing && (
