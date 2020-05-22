@@ -29,8 +29,6 @@ function ChatPreview({ users, messages, chatId }) {
     return person._id !== user.id;
   });
 
-  otherUsers = [...otherUsers, ...otherUsers, ...otherUsers, ...otherUsers];
-
   const renderOtherAvatars = () => {
     return otherUsers.slice(0, 3).map((user, index) => (
       <ProfileImage
