@@ -57,6 +57,7 @@ function TutorBio({ match }) {
 
   function handleModalToggle() {
     setModalOpen(!modalOpen);
+    resetInputError();
   }
 
   const handleChange = (event) => {
@@ -182,7 +183,8 @@ function TutorBio({ match }) {
                       {inputError ? (
                         <Message
                           error
-                          header='You must provide a message to book this tutor!'
+                          header='Whoops!'
+                          content='You must provide a message.'
                         />
                       ) : null}
                       <MessageModal
@@ -208,6 +210,14 @@ function TutorBio({ match }) {
                 {tutor.education.map((edu) => (
                   <List.Item className='color-secondary' key={edu}>
                     <Badge>{edu}</Badge>
+                  </List.Item>
+                ))}
+              </List>
+              <h3 className='u-m-t u-m-b'>Available for</h3>
+              <List horizontal>
+                {tutor.timeFrame.map((time) => (
+                  <List.Item className='color-secondary' key={time}>
+                    <Badge>{time}</Badge>
                   </List.Item>
                 ))}
               </List>
