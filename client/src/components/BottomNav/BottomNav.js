@@ -24,45 +24,37 @@ export default function BottomNav(props) {
   const location = useLocation();
   const { isLoggedIn, state } = useAuth();
 
-  if (state.unread.length > 0) {
+  function renderMailIcon() {
+    return <Icon name='mail outline' />;
+  }
+
+  function renderIconGroup() {
     return (
-      <>
-        {checkIfShouldRender(location.pathname) && (
-          <div>
-            {isLoggedIn && (
-              <Link to='/inbox'>
-                <div className='BottomNav_wrapper'>
-                  <Icon.Group>
-                    <Icon name='mail outline'></Icon>
-                    <Icon
-                      name='exclamation circle'
-                      color='red'
-                      corner='top right'
-                      size='large'
-                    ></Icon>
-                  </Icon.Group>
-                </div>
-              </Link>
-            )}
-          </div>
-        )}
-      </>
-    );
-  } else {
-    return (
-      <>
-        {checkIfShouldRender(location.pathname) && (
-          <div>
-            {isLoggedIn && (
-              <Link to='/inbox'>
-                <div className='BottomNav_wrapper'>
-                  <Icon name='mail outline'></Icon>
-                </div>
-              </Link>
-            )}
-          </div>
-        )}
-      </>
+      <Icon.Group>
+        {renderMailIcon()}
+        <Icon
+          name='exclamation circle'
+          color='red'
+          corner='top right'
+          size='large'
+        />
+      </Icon.Group>
     );
   }
+
+  return (
+    <>
+      {checkIfShouldRender(location.pathname) && (
+        <div>
+          {isLoggedIn && (
+            <Link to='/inbox'>
+              <div className='BottomNav_wrapper'>
+                {state.unread.length > 0 ? renderIconGroup() : renderMailIcon()}
+              </div>
+            </Link>
+          )}
+        </div>
+      )}
+    </>
+  );
 }
