@@ -1,7 +1,8 @@
-import React from 'react';
-import { Form, TextArea, Modal, Message } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Form, TextArea, Modal, Message, Checkbox } from 'semantic-ui-react';
 import Button from '../Button/Button';
 import { Link } from 'react-router-dom';
+import MultiAdd from '../MultiAdd/MultiAdd';
 
 function SignUpErrorMessage(handleModalToggle) {
   return (
@@ -50,10 +51,43 @@ export default function MessageModal({
   isOpen,
   isLoggedIn
 }) {
+  const [isGroup, setIsGroup] = useState(false);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   return (
     <Modal open={isOpen}>
       {isLoggedIn ? (
         <div>
+          {' '}
+          <Form.Field>
+            <Checkbox
+              radio
+              label='One on One'
+              name='checkboxRadioGroup'
+              value='this'
+              checked={!isGroup}
+              onChange={() => {
+                setIsGroup(false);
+              }}
+            />
+          </Form.Field>
+          <Form.Field>
+            <Checkbox
+              radio
+              label='Group'
+              name='checkboxRadioGroup'
+              value='that'
+              checked={isGroup}
+              onChange={() => {
+                setIsGroup(true);
+              }}
+            />
+          </Form.Field>
+          {isGroup && (
+            <MultiAdd
+              selectedStudents={selectedStudents}
+              setSelectedStudents={setSelectedStudents}
+            />
+          )}
           <p style={{ paddingBottom: '20px' }}>
             Write a short message on what you would like to get help with. Also
             tell your tutor what days and times would work best to meet.
@@ -75,7 +109,7 @@ export default function MessageModal({
             <Button
               className='btn-primary'
               style={{ marginTop: '20px' }}
-              onClick={handleFormSubmit}
+              onClick={(event) => handleFormSubmit(event, selectedStudents)}
             >
               Send
             </Button>

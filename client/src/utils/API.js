@@ -31,5 +31,8 @@ export default {
   },
   getUsersNameById: (id) => {
     return axios.get(`/api/user/${id}`);
+  },
+  getStudentByName: (student) => {
+    return axios.get('/api/user/student', { params: student });
   }
 };

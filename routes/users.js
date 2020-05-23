@@ -19,4 +19,5 @@ router.post('/', userController.signUpUser);
 // Get user's info by ID
 router.get('/:id', isAuthenticated, userController.getUsersNameById);
 
+router.get('/student', userController.getStudentByName);
 module.exports = router;

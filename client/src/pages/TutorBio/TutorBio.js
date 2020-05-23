@@ -34,9 +34,9 @@ function TutorBio({ match }) {
       });
   }, [match.params.userId]);
 
-  function startChat() {
+  function startChat(userIds) {
     if (chatState.message.trim() !== '') {
-      API.startChat(chatState)
+      API.startChat({ userIds: userIds, message: chatState.message })
         .then((res) => {
           // console.log(res.data);
         })
@@ -59,13 +59,15 @@ function TutorBio({ match }) {
     });
   };
 
-  function handleFormSubmit(event) {
+  function handleFormSubmit(event, selectedStudents) {
     event.preventDefault();
-
+    const userIds = selectedStudents
+      ? [match.params.userId, ...selectedStudents.map((student) => student._id)]
+      : chatState.userIds;
     if (chatState.message.trim() < 5) {
       setInputError('Please enter at least 5 characters to your tutor.');
     } else {
-      startChat();
+      startChat(userIds);
       setChatState({ ...chatState, message: '' });
       handleModalToggle();
     }

@@ -13,7 +13,8 @@ import {
   Dropdown,
   TextArea,
   Checkbox,
-  Container
+  Container,
+  Grid
 } from 'semantic-ui-react';
 import { subjects, education } from '../../utils/categoryData';
 import Button from '../../components/Button/Button';
@@ -155,7 +156,11 @@ function Profile() {
     switch (field.name) {
       case 'firstName':
         return (
-          <div key={field.label} className='u-m-b u-m-r disp-inline-b'>
+          <div
+            key={field.label}
+            className='u-m-b u-m-r disp-inline-b'
+            // style={{ maxWidth: '200px', marginRight: '0px !important' }}
+          >
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -170,7 +175,11 @@ function Profile() {
         );
       case 'lastName':
         return (
-          <div key={field.label} className='u-m-b u-m-l disp-inline-b'>
+          <div
+            key={field.label}
+            className='u-m-b u-m-l disp-inline-b'
+            // style={{ maxWidth: '80px' }}
+          >
             <div className='u-m-b-sm'>
               <h5>{field.label}</h5>
             </div>
@@ -206,7 +215,13 @@ function Profile() {
             </div>
             <div>
               {
-                <p key={field.name} onClick={() => setEditing(true)}>
+                <p
+                  key={field.name}
+                  onClick={() => setEditing(true)}
+                  style={{
+                    wordWrap: 'break-word'
+                  }}
+                >
                   {userInfo[field.name]}
                 </p>
               }
@@ -397,11 +412,7 @@ function Profile() {
       </PageHeader>
       {userInfo && (
         <Container>
-          {/* <div className='Profile_container-image-div'> */}
-          <div
-          // style={{ position: 'absolute', top: '0', right: '0' }}
-          // onClick={(event) => console.log(event.target)}
-          >
+          <div>
             <ProfileImage
               profileImg={editing ? userInfoCopy.image : userInfo.image}
               style={{ marginBottom: '10px' }}
@@ -436,7 +447,6 @@ function Profile() {
               </div>
             )}
           </div>
-          {/* </div> */}
 
           <div className='Profile_Form-div'>
             <Form onSubmit={formSubmitHandler}>
