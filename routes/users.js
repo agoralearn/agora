@@ -15,4 +15,6 @@ router.patch('/', isAuthenticated, userController.updateUser);
 
 // Signing up a user
 router.post('/', userController.signUpUser);
+
+router.get('/student', userController.getStudentByName);
 module.exports = router;
