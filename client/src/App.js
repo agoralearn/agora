@@ -18,6 +18,7 @@ import NavBar from './components/Navbar/Navbar';
 import TutorBio from './pages/TutorBio/TutorBio';
 import Search from './pages/Search/Search';
 import BottomNav from './components/BottomNav/BottomNav';
+import Onboarding from './pages/Onboarding/Onboarding';
 
 // SOCKET IO
 
@@ -52,6 +53,10 @@ function App() {
 
           <ProtectedRoute exact path='/profile'>
             <Profile />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path='/onboarding'>
+            <Onboarding />
           </ProtectedRoute>
 
           <Route exact path='/tutorbio/:userId' component={TutorBio} />
