@@ -1,7 +1,7 @@
 const db = require('../models');
 
 module.exports = {
-  getUserById: function (req, res) {
+  getCurrentUser: function (req, res) {
     db.User.findById(req.user.id)
       .then((data) => {
         if (data) {
@@ -13,7 +13,6 @@ module.exports = {
       .catch((err) => res.status(400).send(err));
   },
   updateUser: function (req, res) {
-    console.log(req.body);
     db.User.findByIdAndUpdate(req.user.id, req.body, { returnOriginal: false })
       .then((data) => {
         res.json(data);
@@ -33,5 +32,38 @@ module.exports = {
           res.status(400).json({ message: 'Internal Server Error.' });
         }
       });
+  },
+  getUsersNameById: function (req, res) {
+    db.User.findById(req.params.id)
+      .select('firstName lastName')
+      .then((data) => {
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).send({ success: false, message: 'No user found' });
+        }
+      })
+      .catch((err) => res.status(400).send(err));
+  },
+  getStudentByName: function (req, res) {
+    if (req.query.name.length > 0) {
+      const expression = new RegExp(req.query.name, 'i');
+      db.User.aggregate([
+        { $project: { name: { $concat: ['$firstName', ' ', '$lastName'] } } },
+        { $match: { name: expression } }
+      ])
+        // .select('firstName lastName image')
+        .exec((err, data) => {
+          if (err) {
+            res.sendStatus(500);
+          } else {
+            res.json(data);
+          }
+          // console.log(data);
+        });
+    } else {
+      res.status(500).json('min 4 characters');
+    }
+    // .catch((err) => res.status(400).send(err));
   }
 };
