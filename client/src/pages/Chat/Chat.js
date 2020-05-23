@@ -4,8 +4,9 @@ import { useAuth } from '../../utils/auth';
 import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
-import { toTitleCase } from '../../utils/helpers';
+// import { toTitleCase } from '../../utils/helpers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { Button, Header, Image, Modal, List } from 'semantic-ui-react';
 
 export default function Chat({ match, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -14,6 +15,7 @@ export default function Chat({ match, ...props }) {
   const [otherUsers, setOtherUsers] = useState([]);
   const [usersFullData, setUsersFullData] = useState([]);
   const { trueWindowHeight, trueWindowWidth } = useWindowDimensions();
+  const [userModalIsOpen, setUserModalIsOpen] = useState(false);
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
@@ -42,16 +44,12 @@ export default function Chat({ match, ...props }) {
     function mapUserstoImages({ users }) {
       const avatarMap = {};
       const userNames = [];
-      users.forEach((person) => {
-        avatarMap[person._id] = person.image;
-        if (person._id !== user.id) {
-          userNames.push(
-            <h2 className='f-w-l u-m-l' key={person._id}>
-              {toTitleCase(person.firstName)} {toTitleCase(person.lastName)}
-            </h2>
-          );
-        }
-      });
+
+      const otherUsers = users.filter((person) => person._id !== user.id);
+
+      limitNameChars(users.filter((person) => person._id !== user.id));
+
+      userNames.push(limitNameChars(otherUsers));
       setAvatars(avatarMap);
       setOtherUsers(userNames);
     }
@@ -62,6 +60,58 @@ export default function Chat({ match, ...props }) {
       setMessages(data.messages);
     });
   }, [match.params.chatId, user.id]);
+
+  function renderUserListModal(users) {
+    return (
+      <Modal
+        open={userModalIsOpen}
+        onClose={() => setUserModalIsOpen(false)}
+        closeIcon
+      >
+        <Modal.Header>Participants</Modal.Header>
+        <Modal.Content image>
+          {users.map((person) => {
+            return (
+              <List.Item style={{ marginBottom: '5px' }}>
+                <Image avatar src={person.image} />
+                {person.firstName}
+              </List.Item>
+            );
+          })}
+        </Modal.Content>
+      </Modal>
+    );
+  }
+
+  function limitNameChars(users) {
+    const names = [];
+    const MAX_STRING_LENGTH = 30;
+
+    users.forEach((user) => {
+      names.push(user.firstName);
+    });
+
+    let usersJoined = names.join(', ');
+
+    let returnString =
+      usersJoined.length > MAX_STRING_LENGTH
+        ? usersJoined.slice(0, MAX_STRING_LENGTH) + '... '
+        : usersJoined;
+
+    return (
+      <p className='u-m-l' style={{ fontSize: '14px' }}>
+        {returnString}
+        {usersJoined.length > MAX_STRING_LENGTH && (
+          <span
+            style={{ color: '#3d348b' }}
+            onClick={() => setUserModalIsOpen(true)}
+          >
+            View All
+          </span>
+        )}
+      </p>
+    );
+  }
 
   function messageInputSubmitHandler(event) {
     event.stopPropagation();
@@ -112,12 +162,14 @@ export default function Chat({ match, ...props }) {
         display: 'fixed'
       }}
     >
+      <List>{userModalIsOpen && renderUserListModal(usersFullData)}</List>
       <div className='Chat-users-names'>
-        <GoBack />
+        <GoBack className='u-m-r' />
         {otherUsers}
       </div>
       <div className='Chat-log'>
         {messages.map((message, index) => {
+          // console.log('Rendering CHat Bubble');
           return (
             <ChatBubble
               key={message._id}

@@ -17,6 +17,10 @@ export default function Inbox(props) {
   }, []);
 
   useEffect(() => {
+    console.log('INBOX RENDER');
+  }, []);
+
+  useEffect(() => {
     // console.log(chats);
   }, [chats]);
 
@@ -47,7 +51,7 @@ export default function Inbox(props) {
         <GoBack />
       </div>
       <PageHeader>
-        <h2 className='header-text'>Sessions</h2>
+        <h2 className='header-text'>Inbox</h2>
       </PageHeader>
       <div className='chats-div'>
         {chats.map((chat) => {
