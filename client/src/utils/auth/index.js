@@ -48,6 +48,12 @@ export const AuthProvider = ({ value, ...rest }) => {
           toast.success('You have a new message!', {
             position: toast.POSITION.TOP_RIGHT,
             onClick: () => {
+              setState((state) => ({
+                ...state,
+                unread: state.unread.filter((id) => {
+                  return id !== data.chatId;
+                })
+              }));
               history.push(`/chat/${data.chatId}`);
             },
             pauseOnHover: false
