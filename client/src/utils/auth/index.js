@@ -41,6 +41,11 @@ export const AuthProvider = ({ value, ...rest }) => {
         toast.success('You have a new message!', {
           position: toast.POSITION.TOP_RIGHT,
           onClick: () => {
+            setState({
+              unread: state.unread.filter((id) => {
+                return id !== data.chatId;
+              })
+            });
             history.push(`/chat/${data.chatId}`);
           },
           pauseOnHover: false
@@ -59,7 +64,7 @@ export const AuthProvider = ({ value, ...rest }) => {
         socket.emit('loggedIn', { userId: user.id });
       }
     });
-  }, [isLoggedIn, user, history]);
+  }, [isLoggedIn, user, history, state.unread]);
 
   const login = (email, password) => {
     return authService.login(email, password).then(() => {
