@@ -45,7 +45,7 @@ export const AuthProvider = ({ value, ...rest }) => {
           !locationArr.includes(data.chatId) &&
           !locationArr.includes('inbox')
         ) {
-          API.getUser(data.message.sender).then((res) => {
+          API.getUsersNameById(data.message.sender).then((res) => {
             const senderName = res.data.firstName;
             toast.configure();
             toast.success(`You have a new message from ${senderName}!`, {
