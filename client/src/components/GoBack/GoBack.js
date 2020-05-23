@@ -14,7 +14,7 @@ export default function GoBack() {
 
   return (
     <div onClick={goBackHandler} className='GoBack_wrapper'>
-      <i className='fas fa-arrow-left' style={{ marginRight: '4px' }}></i>Back
+      <i className='fas fa-arrow-left' style={{ marginRight: '4px' }}></i>
     </div>
   );
 }
