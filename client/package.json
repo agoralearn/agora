@@ -10,6 +10,7 @@
     "moment": "^2.26.0",
     "node-sass": "^4.14.1",
     "react": "^16.8.6",
+    "react-div-100vh": "^0.3.8",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^3.3.0",

@@ -5,6 +5,7 @@ import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 import { toTitleCase } from '../../utils/helpers';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 export default function Chat({ match, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -12,9 +13,12 @@ export default function Chat({ match, ...props }) {
   const [avatars, setAvatars] = useState('');
   const [otherUsers, setOtherUsers] = useState([]);
   const [usersFullData, setUsersFullData] = useState([]);
+  const { trueWindowHeight, trueWindowWidth } = useWindowDimensions();
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
+  // const hiddenInput = useRef(null);
+  const inputRef = useRef(null);
   const { user, socket } = useAuth();
 
   useEffect(() => {
@@ -60,7 +64,21 @@ export default function Chat({ match, ...props }) {
   }, [match.params.chatId, user.id]);
 
   function messageInputSubmitHandler(event) {
+    event.stopPropagation();
     event.preventDefault();
+
+    /* For future work on mobile soft keyboard shnizzle */
+
+    // hiddenInput.current.focus();
+
+    // setTimeout(() => {
+    //   hiddenInput.current.focus();
+    //   setTimeout(() => {
+    //     hiddenInput.current.style.display = 'none';
+    //   }, 50);
+    //     hiddenInput.current.style.display = 'block';
+    // }, 50);
+
     if (messageInput.trim()) {
       const newMessage = {
         read: [user.id],
@@ -86,12 +104,18 @@ export default function Chat({ match, ...props }) {
   }
 
   return (
-    <section className='Chat-container'>
+    <section
+      className='Chat-container'
+      style={{
+        height: trueWindowHeight - 60,
+        maxWidth: trueWindowWidth,
+        display: 'fixed'
+      }}
+    >
       <div className='Chat-users-names'>
         <GoBack />
         {otherUsers}
       </div>
-
       <div className='Chat-log'>
         {messages.map((message, index) => {
           return (
@@ -108,18 +132,29 @@ export default function Chat({ match, ...props }) {
         <div ref={chatLogRef}></div>
       </div>
 
-      <form className='Chat-input-area' onSubmit={messageInputSubmitHandler}>
+      <form
+        className='Chat-input-area'
+        action=''
+        onSubmit={messageInputSubmitHandler}
+      >
         <input
+          ref={inputRef}
           type='text'
           placeholder='Write something...'
           className='Chat-input-area__input'
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
         ></input>
-        <button type='submit' className='Chat-input-area__submit-button'>
+        <button
+          type='submit'
+          className='Chat-input-area__submit-button'
+          onClick={messageInputSubmitHandler}
+        >
           <i className='fas fa-paper-plane'></i>
         </button>
       </form>
+      {/* For future work on mobile soft keyboard shnizzle */}
+      {/* <input ref={hiddenInput} type='text' ref={hiddenInput}></input> */}
     </section>
   );
 }
