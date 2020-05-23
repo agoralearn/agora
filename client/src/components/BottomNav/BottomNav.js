@@ -22,21 +22,47 @@ function checkIfShouldRender(path) {
 
 export default function BottomNav(props) {
   const location = useLocation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, state } = useAuth();
 
-  return (
-    <>
-      {checkIfShouldRender(location.pathname) && (
-        <div>
-          {isLoggedIn && (
-            <Link to='/inbox'>
-              <div className='BottomNav_wrapper'>
-                <Icon name='mail outline'></Icon>
-              </div>
-            </Link>
-          )}
-        </div>
-      )}
-    </>
-  );
+  if (state.unread.length === 0) {
+    return (
+      <>
+        {checkIfShouldRender(location.pathname) && (
+          <div>
+            {isLoggedIn && (
+              <Link to='/inbox'>
+                <div className='BottomNav_wrapper'>
+                  <Icon name='mail outline'></Icon>
+                </div>
+              </Link>
+            )}
+          </div>
+        )}
+      </>
+    );
+  } else if (state.unread.length > 0) {
+    return (
+      <>
+        {checkIfShouldRender(location.pathname) && (
+          <div>
+            {isLoggedIn && (
+              <Link to='/inbox'>
+                <div className='BottomNav_wrapper'>
+                  <Icon.Group>
+                    <Icon name='mail outline'></Icon>
+                    <Icon
+                      name='exclamation circle'
+                      color='red'
+                      corner='top right'
+                      size='large'
+                    ></Icon>
+                  </Icon.Group>
+                </div>
+              </Link>
+            )}
+          </div>
+        )}
+      </>
+    );
+  }
 }
