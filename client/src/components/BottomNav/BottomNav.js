@@ -24,23 +24,7 @@ export default function BottomNav(props) {
   const location = useLocation();
   const { isLoggedIn, state } = useAuth();
 
-  if (state.unread.length === 0) {
-    return (
-      <>
-        {checkIfShouldRender(location.pathname) && (
-          <div>
-            {isLoggedIn && (
-              <Link to='/inbox'>
-                <div className='BottomNav_wrapper'>
-                  <Icon name='mail outline'></Icon>
-                </div>
-              </Link>
-            )}
-          </div>
-        )}
-      </>
-    );
-  } else if (state.unread.length > 0) {
+  if (state.unread.length > 0) {
     return (
       <>
         {checkIfShouldRender(location.pathname) && (
@@ -57,6 +41,22 @@ export default function BottomNav(props) {
                       size='large'
                     ></Icon>
                   </Icon.Group>
+                </div>
+              </Link>
+            )}
+          </div>
+        )}
+      </>
+    );
+  } else {
+    return (
+      <>
+        {checkIfShouldRender(location.pathname) && (
+          <div>
+            {isLoggedIn && (
+              <Link to='/inbox'>
+                <div className='BottomNav_wrapper'>
+                  <Icon name='mail outline'></Icon>
                 </div>
               </Link>
             )}
