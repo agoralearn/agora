@@ -6,7 +6,7 @@ import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 // import { toTitleCase } from '../../utils/helpers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
-import { Button, Header, Image, Modal, List } from 'semantic-ui-react';
+import { Image, Modal, List } from 'semantic-ui-react';
 
 export default function Chat({ match, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -91,9 +91,9 @@ export default function Chat({ match, ...props }) {
       names.push(user.firstName);
     });
 
-    let usersJoined = names.join(', ');
+    const usersJoined = names.join(', ');
 
-    let returnString =
+    const returnString =
       usersJoined.length > MAX_STRING_LENGTH
         ? usersJoined.slice(0, MAX_STRING_LENGTH) + '... '
         : usersJoined;
