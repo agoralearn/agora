@@ -33,5 +33,26 @@ module.exports = {
           res.status(400).json({ message: 'Internal Server Error.' });
         }
       });
+  },
+  getStudentByName: function (req, res) {
+    if (req.query.name.length > 0) {
+      const expression = new RegExp(req.query.name, 'i');
+      db.User.aggregate([
+        { $project: { name: { $concat: ['$firstName', ' ', '$lastName'] } } },
+        { $match: { name: expression } }
+      ])
+        // .select('firstName lastName image')
+        .exec((err, data) => {
+          if (err) {
+            res.sendStatus(500);
+          } else {
+            res.json(data);
+          }
+          // console.log(data);
+        });
+    } else {
+      res.status(500).json('min 4 characters');
+    }
+    // .catch((err) => res.status(400).send(err));
   }
 };

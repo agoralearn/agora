@@ -28,5 +28,8 @@ export default {
   },
   getChatsByUserId: () => {
     return axios.get('/api/chat/chats');
+  },
+  getStudentByName: (student) => {
+    return axios.get('/api/user/student', { params: student });
   }
 };
