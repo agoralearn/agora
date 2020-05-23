@@ -31,7 +31,7 @@ export default function Inbox(props) {
         });
       });
     });
-  });
+  }, [socket]);
 
   const getChats = () => {
     API.getChatsByUserId()
