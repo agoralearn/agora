@@ -1,7 +1,7 @@
 const db = require('../models');
 
 module.exports = {
-  getUserById: function (req, res) {
+  getCurrentUser: function (req, res) {
     db.User.findById(req.user.id)
       .then((data) => {
         if (data) {
@@ -32,6 +32,18 @@ module.exports = {
           res.status(400).json({ message: 'Internal Server Error.' });
         }
       });
+  },
+  getUsersNameById: function (req, res) {
+    db.User.findById(req.params.id)
+      .select('firstName lastName')
+      .then((data) => {
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).send({ success: false, message: 'No user found' });
+        }
+      })
+      .catch((err) => res.status(400).send(err));
   },
   getStudentByName: function (req, res) {
     if (req.query.name.length > 0) {

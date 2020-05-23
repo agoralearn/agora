@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from 'react-router-dom';
+import API from '../API';
 
 const AuthContext = createContext();
 const authService = new AuthService();
@@ -44,19 +45,22 @@ export const AuthProvider = ({ value, ...rest }) => {
           !locationArr.includes(data.chatId) &&
           !locationArr.includes('inbox')
         ) {
-          toast.configure();
-          toast.success('You have a new message!', {
-            position: toast.POSITION.TOP_RIGHT,
-            onClick: () => {
-              setState((state) => ({
-                ...state,
-                unread: state.unread.filter((id) => {
-                  return id !== data.chatId;
-                })
-              }));
-              history.push(`/chat/${data.chatId}`);
-            },
-            pauseOnHover: false
+          API.getUsersNameById(data.message.sender).then((res) => {
+            const senderName = res.data.firstName;
+            toast.configure();
+            toast.success(`You have a new message from ${senderName}!`, {
+              position: toast.POSITION.TOP_RIGHT,
+              onClick: () => {
+                setState((state) => ({
+                  ...state,
+                  unread: state.unread.filter((id) => {
+                    return id !== data.chatId;
+                  })
+                }));
+                history.push(`/chat/${data.chatId}`);
+              },
+              pauseOnHover: false
+            });
           });
         }
 
