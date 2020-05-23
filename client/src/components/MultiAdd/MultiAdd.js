@@ -13,11 +13,10 @@ import API from '../../utils/API';
 import { unionWith } from 'lodash/array';
 // match max number of students to add to max number of students tutor will take
 
-export default function MultiAdd() {
+export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
   const [searchResults, setSearchResults] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [formError, setFormError] = useState(false);
-  const [selectedStudents, setSelectedStudents] = useState([]);
 
   function inputSubmitHandler() {
     if (inputValue.trim().length > 0) {

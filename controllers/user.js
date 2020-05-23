@@ -13,7 +13,6 @@ module.exports = {
       .catch((err) => res.status(400).send(err));
   },
   updateUser: function (req, res) {
-    console.log(req.body);
     db.User.findByIdAndUpdate(req.user.id, req.body, { returnOriginal: false })
       .then((data) => {
         res.json(data);

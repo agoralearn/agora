@@ -52,7 +52,7 @@ export default function MessageModal({
   isLoggedIn
 }) {
   const [isGroup, setIsGroup] = useState(false);
-
+  const [selectedStudents, setSelectedStudents] = useState([]);
   return (
     <Modal open={isOpen}>
       {isLoggedIn ? (
@@ -82,7 +82,12 @@ export default function MessageModal({
               }}
             />
           </Form.Field>
-          {isGroup && <MultiAdd />}
+          {isGroup && (
+            <MultiAdd
+              selectedStudents={selectedStudents}
+              setSelectedStudents={setSelectedStudents}
+            />
+          )}
           <p style={{ paddingBottom: '20px' }}>
             Write a short message on what you would like to get help with. Also
             tell your tutor what days and times would work best to meet.
@@ -104,7 +109,7 @@ export default function MessageModal({
             <Button
               className='btn-primary'
               style={{ marginTop: '20px' }}
-              onClick={handleFormSubmit}
+              onClick={(event) => handleFormSubmit(event, selectedStudents)}
             >
               Send
             </Button>
