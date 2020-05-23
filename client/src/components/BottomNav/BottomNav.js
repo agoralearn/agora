@@ -22,7 +22,25 @@ function checkIfShouldRender(path) {
 
 export default function BottomNav(props) {
   const location = useLocation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, state } = useAuth();
+
+  function renderMailIcon() {
+    return <Icon name='mail outline' />;
+  }
+
+  function renderIconGroup() {
+    return (
+      <Icon.Group>
+        {renderMailIcon()}
+        <Icon
+          name='exclamation circle'
+          color='red'
+          corner='top right'
+          size='large'
+        />
+      </Icon.Group>
+    );
+  }
 
   return (
     <>
@@ -31,7 +49,7 @@ export default function BottomNav(props) {
           {isLoggedIn && (
             <Link to='/inbox'>
               <div className='BottomNav_wrapper'>
-                <Icon name='mail outline'></Icon>
+                {state.unread.length > 0 ? renderIconGroup() : renderMailIcon()}
               </div>
             </Link>
           )}
