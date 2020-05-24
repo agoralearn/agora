@@ -6,6 +6,7 @@ import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
+import Button from '../../components/Button/Button';
 
 export default function Chat({ match, height, width, miniChat, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -70,6 +71,7 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         closeIcon
       >
         <Modal.Header>Participants</Modal.Header>
+        <Button className='btn-primary'>Start Session</Button>
         <Modal.Content image>
           {users.map((person) => {
             return (

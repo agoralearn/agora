@@ -135,5 +135,10 @@ module.exports = {
         }
       })
       .catch((err) => res.status(400).send(err));
+  },
+
+  startStopSession: function (req, res) {
+    console.log('Patch route');
+    res.sendStatus(200);
   }
 };
