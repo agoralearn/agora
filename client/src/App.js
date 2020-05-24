@@ -12,6 +12,7 @@ import Profile from './pages/Profile/Profile';
 import Signup from './pages/Signup/Signup';
 import Inbox from './pages/Inbox/Inbox';
 import Chat from './pages/Chat/Chat';
+import WhiteBoard from './pages/WhiteBoard/WhiteBoard';
 // import ProtectedRouteComp from './pages/ProtectedRoute';
 import Home from './pages/Home/Home';
 import NavBar from './components/Navbar/Navbar';
@@ -39,6 +40,10 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <Home />
+          </Route>
+
+          <Route exact path='/whiteboard'>
+            <WhiteBoard />
           </Route>
           <Route component={Signup} exact path='/signup' />
 
