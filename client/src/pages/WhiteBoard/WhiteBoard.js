@@ -8,7 +8,7 @@ import Chat from '../Chat/Chat';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { useHistory, useParams } from 'react-router-dom';
 
-export default function WhiteBoard(props) {
+export default function WhiteBoard() {
   const [fillColor, setFillColor] = useState('black');
   const { socket } = useAuth();
   const { trueWindowHeight } = useWindowDimensions();
