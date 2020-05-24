@@ -4,7 +4,6 @@ import { useAuth } from '../../utils/auth';
 import ChatBubble from '../../components/Chat/ChatBubble/ChatBubble';
 import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
-// import { toTitleCase } from '../../utils/helpers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
 
@@ -46,6 +45,8 @@ export default function Chat({ match, ...props }) {
       const userNames = [];
 
       const otherUsers = users.filter((person) => person._id !== user.id);
+
+      otherUsers.forEach((user) => (avatarMap[user._id] = user.image));
 
       limitNameChars(users.filter((person) => person._id !== user.id));
 
@@ -99,17 +100,21 @@ export default function Chat({ match, ...props }) {
         : usersJoined;
 
     return (
-      <p className='u-m-l' style={{ fontSize: '14px' }}>
-        {returnString}
-        {usersJoined.length > MAX_STRING_LENGTH && (
-          <span
-            style={{ color: '#3d348b' }}
-            onClick={() => setUserModalIsOpen(true)}
-          >
-            View All
-          </span>
-        )}
-      </p>
+      <>
+        <p className='u-m-l' style={{ fontSize: '16px' }}>
+          {returnString}
+        </p>{' '}
+        <span
+          style={{
+            color: '#3d348b',
+            fontWeight: 'bold',
+            marginLeft: '6px'
+          }}
+          onClick={() => setUserModalIsOpen(true)}
+        >
+          More
+        </span>
+      </>
     );
   }
 
@@ -169,14 +174,17 @@ export default function Chat({ match, ...props }) {
       </div>
       <div className='Chat-log'>
         {messages.map((message, index) => {
-          // console.log('Rendering CHat Bubble');
           return (
             <ChatBubble
               key={message._id}
               text={message.message}
               recieved={message.read}
               sender={message.sender}
-              thumbnail={avatars[message.sender]}
+              thumbnail={
+                message.sender === user.id
+                  ? user.image
+                  : avatars[message.sender]
+              }
               date={message.createdAt}
             />
           );
