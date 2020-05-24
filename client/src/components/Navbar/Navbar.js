@@ -43,21 +43,15 @@ function Navbar() {
             simple
             direction='left'
             className='Navbar_profile-dropdown'
-            style={
-              {
-                // borderLeft: '1px solid white',
-                // paddingLeft: '30px',
-                // marginLeft: '20px'
-              }
-            }
           >
             <Dropdown.Menu>
-              <Dropdown.Item text='Profile' onClick={navigateToProfile} />
-              <Dropdown.Item text='Inbox' onClick={navigateToInbox} />
+              <Dropdown.Item text='Messages' onClick={navigateToInbox} />
               {user.role === 'tutor' ? (
-                <Dropdown.Item text='Bio Page' onClick={navigateToBio} />
+                <Dropdown.Item text='My Bio' onClick={navigateToBio} />
               ) : null}
               <Dropdown.Divider />
+              <Dropdown.Item text='Settings' onClick={navigateToProfile} />
+
               <Dropdown.Item
                 text='Logout'
                 onClick={() => {

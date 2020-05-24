@@ -1,0 +1,34 @@
+import React from 'react';
+import { Icon } from 'semantic-ui-react';
+
+export default function CheckInbox({ setHelperVisible }) {
+  document.body.style.overflow = 'hidden';
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'rgba(0,0,0,.9)',
+        zIndex: 10
+      }}
+      onClick={() => setHelperVisible(false)}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '40px',
+          fontWeight: 'bold',
+          fontSize: '24px',
+          right: '90px',
+          color: 'white',
+          zIndex: '11'
+        }}
+      >
+        Keep an eye our for a response here <Icon name='arrow right' />
+      </div>
+    </div>
+  );
+}

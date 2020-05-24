@@ -16,8 +16,10 @@ router.patch('/', isAuthenticated, userController.updateUser);
 // Signing up a user
 router.post('/', userController.signUpUser);
 
+// Getting students by name
+router.get('/student', userController.getStudentByName);
+
 // Get user's info by ID
 router.get('/:id', isAuthenticated, userController.getUsersNameById);
 
-router.get('/student', userController.getStudentByName);
 module.exports = router;

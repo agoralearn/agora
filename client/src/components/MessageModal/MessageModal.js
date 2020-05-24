@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './MessageModal.scss';
 import { Form, TextArea, Modal, Message, Checkbox } from 'semantic-ui-react';
 import Button from '../Button/Button';
 import { Link } from 'react-router-dom';
@@ -54,67 +55,76 @@ export default function MessageModal({
   const [isGroup, setIsGroup] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
   return (
-    <Modal open={isOpen}>
+    <Modal className='MessageModal_wrapper' open={isOpen}>
       {isLoggedIn ? (
-        <div>
-          {' '}
-          <Form.Field>
-            <Checkbox
-              radio
-              label='One on One'
-              name='checkboxRadioGroup'
-              value='this'
-              checked={!isGroup}
-              onChange={() => {
-                setIsGroup(false);
-              }}
-            />
-          </Form.Field>
-          <Form.Field>
-            <Checkbox
-              radio
-              label='Group'
-              name='checkboxRadioGroup'
-              value='that'
-              checked={isGroup}
-              onChange={() => {
-                setIsGroup(true);
-              }}
-            />
-          </Form.Field>
-          {isGroup && (
-            <MultiAdd
-              selectedStudents={selectedStudents}
-              setSelectedStudents={setSelectedStudents}
-            />
-          )}
-          <p style={{ paddingBottom: '20px' }}>
-            Write a short message on what you would like to get help with. Also
-            tell your tutor what days and times would work best to meet.
-          </p>
-          {modalError && <Message error header={modalError} />}
-          <Form>
-            <TextArea
-              name='message'
-              placeholder='I would like to receive tutoring on...'
-              onChange={handleMessageChange}
-            />
-            <Button
-              className='btn-secondary u-m-r'
-              style={{ marginTop: '20px' }}
-              onClick={handleModalToggle}
-            >
-              Cancel
-            </Button>
-            <Button
-              className='btn-primary'
-              style={{ marginTop: '20px' }}
-              onClick={(event) => handleFormSubmit(event, selectedStudents)}
-            >
-              Send
-            </Button>
-          </Form>
-        </div>
+        <>
+          <Modal.Header>Request Tutor Session</Modal.Header>{' '}
+          <Modal.Content>
+            <h4>I am requesting a...</h4>
+            <Form.Field>
+              <Checkbox
+                radio
+                label='One on One Session'
+                name='checkboxRadioGroup'
+                value='this'
+                checked={!isGroup}
+                onChange={() => {
+                  setIsGroup(false);
+                }}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Checkbox
+                radio
+                label='Group Session'
+                name='checkboxRadioGroup'
+                value='that'
+                checked={isGroup}
+                onChange={() => {
+                  setIsGroup(true);
+                }}
+              />
+            </Form.Field>
+            {isGroup && (
+              <>
+                <h4>Search for students to add to your group</h4>
+
+                <MultiAdd
+                  selectedStudents={selectedStudents}
+                  setSelectedStudents={setSelectedStudents}
+                />
+              </>
+            )}
+            <h4>Talk to your tutor</h4>
+
+            <p style={{ paddingBottom: '20px' }}>
+              Write a descriptive message on what you would like to get help
+              with.
+            </p>
+            {modalError && <Message error header={modalError} />}
+            <Form>
+              <TextArea
+                name='message'
+                placeholder='I would like to receive tutoring on...'
+                onChange={handleMessageChange}
+              />
+              <Button
+                className='btn-secondary u-m-r'
+                style={{ marginTop: '20px' }}
+                onClick={handleModalToggle}
+              >
+                Cancel
+              </Button>
+              <Button
+                className='btn-primary'
+                style={{ marginTop: '20px' }}
+                onClick={(event) => handleFormSubmit(event, selectedStudents)}
+              >
+                Send
+              </Button>
+            </Form>
+          </Modal.Content>
+        </>
       ) : (
         SignUpErrorMessage(handleModalToggle)
       )}

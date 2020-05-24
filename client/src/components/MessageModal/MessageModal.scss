@@ -1,0 +1,9 @@
+.MessageModal_wrapper {
+  & h4:not(:first-child) {
+    margin-top: 20px;
+  }
+
+  & h4 {
+    margin-bottom: 10px;
+  }
+}
