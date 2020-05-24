@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import API from '../../utils/API';
 // import { useAuth } from '../../utils/auth';
 import Badge from '../../components/Badge/Badge';
@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import {
   Input,
   Form,
-  // Dropdown,
-  // TextArea,
+  Dropdown,
+  TextArea,
   Checkbox,
   Container,
   // Grid,
@@ -15,7 +15,7 @@ import {
   Icon,
   Button
 } from 'semantic-ui-react';
-// import { education } from '../../utils/categoryData';
+import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
 // import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
@@ -43,14 +43,22 @@ const tutoringInfoFields = [
     min: 1
   },
   { name: 'age', label: 'Age', inputType: 'number', required: true, min: 1 },
-  { name: 'price', label: 'Price ($/hr)', inputType: 'number' }
+  { name: 'price', label: 'Price ($/hr)', inputType: 'number' },
+  { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' },
+  { name: 'image', label: 'Image URL' },
+  {
+    name: 'education',
+    label: 'Education',
+    type: 'dropdownSelect',
+    options: education
+  }
 ];
 
 function Onboarding() {
   toast.configure();
   const [step, setStep] = useState({
     currentStep: 1,
-    progressPercent: 25
+    progressPercent: 0
   });
   // const { user } = useAuth();
   const [subjectNames, setSubjectNames] = useState([]);
@@ -65,25 +73,25 @@ function Onboarding() {
   //   price: price,
   //   age: age
   // });
-  // const [bio, setBio] = useState();
+  const [bio, setBio] = useState();
   const [timeFrame, setTimeFrame] = useState([]);
   // const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
   // const [price, setPrice] = useState();
   const [age, setAge] = useState();
-  // const [education, setEducation] = useState();
+  const [savedEducation, setSavedEducation] = useState([]);
 
   const userInfo = {
     subjects: subjectNames,
-    // bio: bio,
+    bio: bio,
     timeFrame: timeFrame,
     // image: image,
     minGroupSize: minGroupSize,
     maxGroupSize: maxGroupSize,
     // price: price,
-    age: age
-    // education: education
+    age: age,
+    education: savedEducation
   };
 
   function toggleSelected(e, cat, subcat) {
@@ -118,10 +126,6 @@ function Onboarding() {
     }
   }
 
-  useEffect(() => {
-    console.log(subjectNames);
-  }, [subjectNames]);
-
   function renderSubjects() {
     return categories.map((cat) => {
       return (
@@ -153,9 +157,6 @@ function Onboarding() {
     e.persist();
     API.updateUser(userInfo)
       .then((res) => {
-        toast.success('New info saved!', {
-          position: toast.POSITION.TOP_CENTER
-        });
         if (e.target.id === 'next') {
           setStep({
             currentStep: step.currentStep + 1,
@@ -163,13 +164,12 @@ function Onboarding() {
           });
         }
       })
-
       .catch((err) => {
         console.log(err);
       });
   }
 
-  function renderTutoringInfo(tutoringInfoFields) {
+  function renderTutoringInfo() {
     return (
       <Form>
         {tutoringInfoFields.map((field) => {
@@ -178,6 +178,45 @@ function Onboarding() {
       </Form>
     );
   }
+
+  function renderTutorBio() {
+    return (
+      <Form>
+        <div>
+          <h2 className='u-m-b'>My Bio</h2>
+          <div className='u-m-b-sm'>
+            <p>
+              This is your opportunity to tell prospective students about
+              yourself. In addition to your background and experience, feel free
+              to showcase some of your personality!
+            </p>
+          </div>
+        </div>
+        <TextArea
+          placeholder='About Me...'
+          onChange={(event, { value }) => setBio(value)}
+          style={{ minHeight: 200 }}
+        />
+        <div className='u-m-t'>
+          <div className='u-m-b-sm'>
+            <label>Education:</label>
+          </div>
+          <Dropdown
+            placeholder='Select all that apply'
+            fluid
+            multiple
+            selection
+            defaultValue=''
+            options={education}
+            onChange={(event, { value }) => {
+              setSavedEducation(value);
+            }}
+          />
+        </div>
+      </Form>
+    );
+  }
+
   function checkboxFields(value) {
     const timeFrameCopy = [...timeFrame];
     const index = timeFrame.indexOf(value);
@@ -269,9 +308,9 @@ function Onboarding() {
       case 1:
         return renderSubjects();
       case 2:
-        return renderTutoringInfo(tutoringInfoFields);
+        return renderTutoringInfo();
       case 3:
-        return;
+        return renderTutorBio();
       case 4:
         return;
       default:
@@ -287,11 +326,11 @@ function Onboarding() {
       <Container>
         {selectCurrentStep()}
         <Progress percent={step.progressPercent} progress />
-        <Button animated>
-          <Button.Content id='next' onClick={(e) => saveSubjects(e)} visible>
+        <Button animated onClick={(e) => saveSubjects(e)} id='next'>
+          <Button.Content visible id='next'>
             Next
           </Button.Content>
-          <Button.Content hidden>
+          <Button.Content hidden id='next'>
             <Icon name='arrow right' />
           </Button.Content>
         </Button>
