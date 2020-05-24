@@ -6,12 +6,22 @@ import Button from '../../components/Button/Button';
 import Badge from '../../components/Badge/Badge';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
-import ProfileImage from '../../components/ProfileImage/ProfileImage';
-import { Dimmer, Loader, List, Container } from 'semantic-ui-react';
+import CheckInboxHelper from '../../components/Helpers/CheckInbox';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+  Dimmer,
+  Loader,
+  Grid,
+  Image,
+  Container,
+  Statistic,
+  Icon
+} from 'semantic-ui-react';
 import './TutorBio.scss';
 
 function TutorBio({ match }) {
-  const [tutor, setTutor] = useState(null);
+  const [tutor, setTutor] = useState({});
   const [loading, setLoading] = useState(true);
   const [chatState, setChatState] = useState({
     userIds: [match.params.userId],
@@ -19,15 +29,21 @@ function TutorBio({ match }) {
   });
   const [modalOpen, setModalOpen] = useState(false);
   const [inputError, setInputError] = useState(false);
-  const { user, isLoggedIn } = useAuth();
+  const [helperVisible, setHelperVisible] = useState(false);
+  const [tutorError, setTutorError] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     API.getTutorById(match.params.userId)
       .then((res) => {
-        setTutor(res.data);
+        if (!res.data) {
+          setTutorError(true);
+        } else {
+          setTutor(res.data);
+        }
       })
       .catch((err) => {
-        console.log(err);
+        setTutorError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -38,9 +54,12 @@ function TutorBio({ match }) {
     if (chatState.message.trim() !== '') {
       API.startChat({ userIds: userIds, message: chatState.message })
         .then((res) => {
-          // console.log(res.data);
+          toast.success('Your request was sent!');
+          setHelperVisible(true);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          toast.error('There was an issues sending your request. ');
+        });
     }
     return;
   }
@@ -81,22 +100,37 @@ function TutorBio({ match }) {
     );
   }
 
-  function renderPageHeader() {
-    return !tutor ? (
-      <PageHeader hr={false}>
-        <h2>Whoops!</h2>
-        <h2>Tutor Not Found</h2>
-      </PageHeader>
-    ) : (
-      <PageHeader>
-        <h2>{`${tutor.firstName} ${tutor.lastName}`}</h2>
-      </PageHeader>
+  function renderTutorError() {
+    return (
+      <div>
+        {tutorError ? (
+          <PageHeader hr={false}>
+            <h2>Whoops!</h2>
+            <h2>Tutor Not Found</h2>
+          </PageHeader>
+        ) : null}
+      </div>
     );
   }
 
   return (
-    <div className='bio-container'>
-      {/* Modal */}
+    <Container className='TutorBio_wrapper'>
+      <div
+        style={{
+          position: 'absolute',
+          top: '80px',
+          left: '20px',
+          zIndex: 1
+        }}
+      >
+        <GoBack />
+      </div>
+      {helperVisible && (
+        <CheckInboxHelper
+          setHelperVisible={(option) => setHelperVisible(option)}
+        />
+      )}
+
       <MessageModal
         isOpen={modalOpen}
         handleFormSubmit={handleFormSubmit}
@@ -106,63 +140,115 @@ function TutorBio({ match }) {
         isLoggedIn={isLoggedIn}
       />
 
-      <div>
-        {/* GO BACK */}
-        <div className='u-m-l'>
-          <GoBack />
-        </div>
+      <ToastContainer />
 
-        {/* PAGE HEADER */}
-        {renderPageHeader()}
+      {loading || tutorError ? (
+        tutorError ? (
+          renderTutorError()
+        ) : (
+          renderLoader()
+        )
+      ) : (
+        <Grid>
+          <Grid.Row
+            className='background-primary'
+            style={{
+              textAlign: 'center'
+            }}
+          >
+            <Grid.Column style={{ paddingTop: '20px' }}>
+              <h1 className='color-white' style={{ letterSpacing: '1px' }}>
+                {tutor.firstName} {tutor.lastName}
+              </h1>
+              <div style={{ paddingTop: '20px' }}>
+                <Image
+                  src={tutor.image}
+                  circular
+                  centered
+                  className='u-m-b'
+                  fluid
+                  style={{ height: 'auto', width: '30%' }}
+                />
+              </div>
 
-        {loading && renderLoader()}
+              <Grid.Row className='u-m-b'></Grid.Row>
+              <Grid.Row style={{ padding: '20px 0px 20px 0px' }}>
+                <Button onClick={handleModalToggle} className='btn-primary'>
+                  Book Now
+                </Button>
+              </Grid.Row>
+            </Grid.Column>
+          </Grid.Row>
 
-        {tutor && !loading && (
-          // TUTOR INFO
-          <Container>
-            <ProfileImage
-              profileImg={tutor.image}
-              style={{ margin: '0 auto 30px' }}
-              className='u-m-b'
-              height='200px'
-              width='200px'
-            />
-
-            {/* BOOK NOW BUTTON */}
-            {!(user && user.id === match.params.userId) && (
-              <Button
-                className='btn-primary'
-                style={{ margin: '20px' }}
-                onClick={handleModalToggle}
-              >
-                Book Now
-              </Button>
-            )}
-
-            <h3 className='u-m-t u-m-b'>Subjects</h3>
-            <List horizontal>
-              {tutor.subjects.map((subject) => (
-                <List.Item className='color-secondary' key={subject}>
-                  <Badge>{subject}</Badge>
-                </List.Item>
-              ))}
-            </List>
-            <h3 className='u-m-t u-m-b'>Education</h3>
-
-            <List horizontal>
-              {tutor.education.map((edu) => (
-                <List.Item className='color-secondary' key={edu}>
-                  <Badge>{edu}</Badge>
-                </List.Item>
-              ))}
-            </List>
-
-            <h3 className='u-m-t u-m-b'>About Me</h3>
+          <Grid.Row style={{ padding: '0px' }}>
+            <Grid
+              style={{
+                width: '100%',
+                padding: '20px',
+                margin: '0px'
+              }}
+            >
+              <Grid.Row>
+                <Grid.Column style={{ maxWidth: '300px', margin: '0 auto' }}>
+                  <Statistic.Group widths='two' size='mini'>
+                    <Statistic>
+                      <Statistic.Value>
+                        <div>
+                          <Icon name='star' color='yellow' />
+                          {tutor.rating}
+                        </div>
+                      </Statistic.Value>
+                    </Statistic>
+                    <Statistic>
+                      <Statistic.Value>${tutor.price}</Statistic.Value>
+                    </Statistic>
+                  </Statistic.Group>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row columns={2} centered style={{ textAlign: 'center' }}>
+                <Grid.Column
+                  style={{
+                    minWidth: '100%',
+                    textAlign: 'center',
+                    marginTop: '20px'
+                  }}
+                >
+                  <div>
+                    <h2>Education</h2>
+                    <div style={{ textAlign: 'center', padding: '10px' }}>
+                      {tutor.education &&
+                        tutor.education.map((ed) => (
+                          <span key={ed} style={{ fontSize: '18px' }}>
+                            {ed}{' '}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                  <div style={{ paddingTop: '20px' }}>
+                    <h2>Subjects</h2>
+                    <div style={{ padding: '20px' }}>
+                      {tutor.subjects ? (
+                        tutor.subjects.map((subject) => {
+                          return <Badge key={subject}>{subject}</Badge>;
+                        })
+                      ) : (
+                        <p>No Subjects</p>
+                      )}
+                    </div>
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Grid.Row>
+          <Grid.Row style={{ padding: '0px 20px', marginBottom: '200px' }}>
+            <h2 style={{ margin: '0 auto', paddingBottom: '10px' }}>
+              About Me
+            </h2>
             <p>{tutor.bio}</p>
-          </Container>
-        )}
-      </div>
-    </div>
+          </Grid.Row>
+        </Grid>
+      )}
+    </Container>
   );
 }
 

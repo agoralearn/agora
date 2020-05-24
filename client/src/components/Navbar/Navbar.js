@@ -43,13 +43,6 @@ function Navbar() {
             simple
             direction='left'
             className='Navbar_profile-dropdown'
-            style={
-              {
-                // borderLeft: '1px solid white',
-                // paddingLeft: '30px',
-                // marginLeft: '20px'
-              }
-            }
           >
             <Dropdown.Menu>
               <Dropdown.Item text='Messages' onClick={navigateToInbox} />

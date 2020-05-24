@@ -74,3 +74,10 @@ $navbar-height: 60px;
 .disp-inline-b {
   display: inline-block;
 }
+
+// Gradients
+.background-primary {
+  background: $color-secondary;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  background-image: url("../Assets/images/PATTERN_diamonds.png");
+}

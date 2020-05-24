@@ -22,14 +22,15 @@ export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
     if (inputValue.trim().length > 0) {
       API.getStudentByName({ name: inputValue })
         .then((res) => {
-          setSearchResults(res.data);
+          if (res.data.length < 1) {
+            setFormError('No students found...');
+          } else {
+            setSearchResults(res.data);
+          }
         })
-        .catch((err) => console.log(err))
-        .finally(() => {
-          setFormError(false);
-        });
+        .catch((err) => console.log(err));
     } else {
-      setFormError('Minimum of 1 characters');
+      setFormError('Please Enter at least 2 characters');
     }
   }
   function selectStudentHandler(event, student) {
@@ -59,19 +60,28 @@ export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
           key={student._id}
           onClick={(event) => selectStudentHandler(event, student)}
         >
-          <Image
-            avatar
-            src='https://react.semantic-ui.com/images/avatar/small/rachel.png'
-          />
           <List.Content>
+            <Image
+              avatar
+              src='https://react.semantic-ui.com/images/avatar/small/rachel.png'
+            />
+
             {student.name}
-            {student.selected && (
+            {student.selected ? (
               <Icon
                 className='u-m-l'
                 name='remove circle'
+                color='red'
                 onClick={(event) => {
                   removeHandler(event, student);
                 }}
+              />
+            ) : (
+              <Icon
+                className='u-m-l'
+                name='add circle'
+                color='green'
+                onClick={(event) => selectStudentHandler(event, student)}
               />
             )}
           </List.Content>
@@ -79,23 +89,35 @@ export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
       );
     });
   }
+
+  function inputChangeHandler(event) {
+    setFormError(false);
+    setInputValue(event.target.value);
+  }
   return (
     <Container>
       <Form error={formError}>
+        <Message error header='Whoops!' content={formError} />
+
         <Form.Group>
-          <Input
-            placeholder='Search for students...'
-            onChange={(event) => setInputValue(event.target.value)}
-          />
-          <Button icon='search' onClick={inputSubmitHandler} />
+          <div style={{ width: '100%', display: 'flex' }}>
+            <Input
+              placeholder='Search for students...'
+              onChange={inputChangeHandler}
+              style={{ flex: 1 }}
+            />
+            <Button icon='search' onClick={inputSubmitHandler} />
+          </div>
         </Form.Group>
         {searchResults.length > 0 && (
-          <p>Select the students you want to invite</p>
+          <>
+            <h4>Select participants you want to invite</h4>
+            <p>You can select from the list and then search again.</p>
+          </>
         )}
         <Form.Field>
           <List>{renderListItems(selectedStudents, searchResults)}</List>
         </Form.Field>
-        <Message error header='Whoops!' content={formError} />
       </Form>
     </Container>
   );
