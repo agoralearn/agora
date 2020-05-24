@@ -6,12 +6,17 @@ import { Icon } from 'semantic-ui-react';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import Chat from '../Chat/Chat';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { useHistory, useParams } from 'react-router-dom';
 
-export default function WhiteBoard() {
+export default function WhiteBoard(props) {
   const [fillColor, setFillColor] = useState('black');
   const { socket } = useAuth();
   const { trueWindowHeight } = useWindowDimensions();
   const canvasRef = useRef(null);
+
+  const history = useHistory();
+  const { chatId } = useParams();
+  const { participants } = history.location.state;
 
   useEffect(() => {
     socket.on('newDraw', (data) => {
@@ -25,18 +30,27 @@ export default function WhiteBoard() {
         canvasRef.current.clear();
       }
     });
-  });
 
-  function transferCtx(e, myData) {
+    socket.on('join', (data) => console.log('someone joined', data));
+
+    socket.emit('join', { chatId, participants });
+
+    return () => {
+      socket.emit('leave', { chatId });
+    };
+  }, [socket]);
+
+  function transferCtx() {
     socket.emit('draw', {
       points: canvasRef.current.getSaveData(),
-      drawer: socket.id
+      drawer: socket.id,
+      room: chatId
     });
   }
 
   function clearCanvashandler() {
     canvasRef.current.clear();
-    socket.emit('deleteDraw', { drawer: socket.id });
+    socket.emit('deleteDraw', { drawer: socket.id, room: chatId });
   }
 
   function chooseColorHandler(e, color) {
@@ -119,7 +133,7 @@ export default function WhiteBoard() {
         }}
       >
         <Chat
-          match={{ params: { chatId: '5ec978967197916b83d27b75' } }}
+          match={{ params: { chatId: chatId } }}
           width='300px'
           height='400px'
           miniChat

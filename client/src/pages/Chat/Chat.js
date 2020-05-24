@@ -7,6 +7,7 @@ import API from '../../utils/API';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
 import Button from '../../components/Button/Button';
+import { useHistory } from 'react-router-dom';
 
 export default function Chat({ match, height, width, miniChat, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -16,6 +17,8 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   const [usersFullData, setUsersFullData] = useState([]);
   const { trueWindowHeight, trueWindowWidth } = useWindowDimensions();
   const [userModalIsOpen, setUserModalIsOpen] = useState(false);
+
+  const history = useHistory();
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
@@ -63,6 +66,12 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
     });
   }, [match.params.chatId, user.id]);
 
+  function joinSessionHandler() {
+    history.push(`/whiteboard/${match.params.chatId}`, {
+      participants: usersFullData
+    });
+  }
+
   function renderUserListModal(users) {
     return (
       <Modal
@@ -71,8 +80,12 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         closeIcon
       >
         <Modal.Header>Participants</Modal.Header>
-        <Button className='btn-primary'>Start Session</Button>
-        <Modal.Content image>
+        <Modal.Content>
+          <Button className='btn-primary' onClick={joinSessionHandler}>
+            Start Session
+          </Button>
+        </Modal.Content>
+        <Modal.Content>
           {users.map((person) => {
             return (
               <List.Item style={{ marginBottom: '5px' }}>

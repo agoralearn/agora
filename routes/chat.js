@@ -7,11 +7,6 @@ const router = express.Router();
 router.post('/', isAuthenticated, chatController.startChat);
 router.post('/message', isAuthenticated, chatController.addMessageToChat);
 router.get('/chats', isAuthenticated, chatController.getChatsByUserId);
-router.patch(
-  '/session/:chatId',
-  isAuthenticated,
-  chatController.startStopSession
-);
 router.get('/:chatId', isAuthenticated, chatController.getChat);
 
 module.exports = router;

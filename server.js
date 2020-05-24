@@ -15,6 +15,7 @@ const io = require('socket.io')(server);
 const PORT = process.env.PORT || 3001;
 
 let socketMap = {};
+let whiteBoardMap = {};
 
 // setup socket.io middleware
 function socketConfig(req, res, next) {
@@ -36,6 +37,7 @@ function addSocketToMap(socketId, userId, socketMap) {
   const socketMapClone = { ...socketMap };
   socketMapClone[userId] = socketId;
   socketMapClone[socketId] = userId;
+
   return socketMapClone;
 }
 
@@ -77,15 +79,27 @@ io.on('connection', (socket) => {
   });
 
   socket.on('draw', (data) => {
-    io.emit('newDraw', data);
+    io.to(data.room).emit('newDraw', data);
   });
 
   socket.on('deleteDraw', (data) => {
-    io.emit('delete', data);
+    io.to(data.room).emit('delete', data);
   });
 
   socket.on('disconnect', () => {
     socketMap = removeSocketSession(socket.id, socketMap);
+  });
+
+  socket.on('leave', ({ chatId }) => {
+    socket.leave(chatId);
+  });
+
+  // On connection to whiteboard
+  // TODO: On join send this user the current board
+  socket.on('join', (data) => {
+    socket.join(data.chatId, () => {
+      io.to(data.chatId).emit('join', '');
+    });
   });
 });
 
