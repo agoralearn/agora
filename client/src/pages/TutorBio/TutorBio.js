@@ -114,7 +114,7 @@ function TutorBio({ match }) {
   }
 
   return (
-    <Container className='TutorBio_wrapper'>
+    <Container className='TutorBio_wrapper' style={{ minWidth: '100vw' }}>
       <div
         style={{
           position: 'absolute',
@@ -123,7 +123,7 @@ function TutorBio({ match }) {
           zIndex: 1
         }}
       >
-        <GoBack />
+        <GoBack className='color-white' />
       </div>
       {helperVisible && (
         <CheckInboxHelper
@@ -162,7 +162,9 @@ function TutorBio({ match }) {
               </h1>
               <div style={{ paddingTop: '20px' }}>
                 <Image
-                  src={tutor.image}
+                  src={
+                    'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80'
+                  }
                   circular
                   centered
                   className='u-m-b'
@@ -171,7 +173,28 @@ function TutorBio({ match }) {
                 />
               </div>
 
-              <Grid.Row className='u-m-b'></Grid.Row>
+              <Grid.Row style={{ marginBottom: '30px' }}>
+                <Grid.Column style={{ maxWidth: '300px', margin: '0 auto' }}>
+                  <Statistic.Group widths='two' size='mini'>
+                    <Statistic inverted>
+                      <Statistic.Value>
+                        <div>
+                          <Icon
+                            name='star'
+                            color='yellow'
+                            inverted
+                            className='u-m-r'
+                          />
+                          {tutor.rating}
+                        </div>
+                      </Statistic.Value>
+                    </Statistic>
+                    <Statistic inverted>
+                      <Statistic.Value>${tutor.price}</Statistic.Value>
+                    </Statistic>
+                  </Statistic.Group>
+                </Grid.Column>
+              </Grid.Row>
               <Grid.Row style={{ padding: '20px 0px 20px 0px' }}>
                 <Button onClick={handleModalToggle} className='btn-primary'>
                   Book Now
@@ -188,23 +211,6 @@ function TutorBio({ match }) {
                 margin: '0px'
               }}
             >
-              <Grid.Row>
-                <Grid.Column style={{ maxWidth: '300px', margin: '0 auto' }}>
-                  <Statistic.Group widths='two' size='mini'>
-                    <Statistic>
-                      <Statistic.Value>
-                        <div>
-                          <Icon name='star' color='yellow' />
-                          {tutor.rating}
-                        </div>
-                      </Statistic.Value>
-                    </Statistic>
-                    <Statistic>
-                      <Statistic.Value>${tutor.price}</Statistic.Value>
-                    </Statistic>
-                  </Statistic.Group>
-                </Grid.Column>
-              </Grid.Row>
               <Grid.Row columns={2} centered style={{ textAlign: 'center' }}>
                 <Grid.Column
                   style={{

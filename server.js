@@ -76,6 +76,14 @@ io.on('connection', (socket) => {
     socketMap = addSocketToMap(socket.id, data.userId, socketMap);
   });
 
+  socket.on('draw', (data) => {
+    io.emit('newDraw', data);
+  });
+
+  socket.on('deleteDraw', (data) => {
+    io.emit('delete', data);
+  });
+
   socket.on('disconnect', () => {
     socketMap = removeSocketSession(socket.id, socketMap);
   });

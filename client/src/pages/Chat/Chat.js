@@ -7,7 +7,7 @@ import API from '../../utils/API';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
 
-export default function Chat({ match, ...props }) {
+export default function Chat({ match, height, width, miniChat, ...props }) {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [avatars, setAvatars] = useState('');
@@ -162,14 +162,15 @@ export default function Chat({ match, ...props }) {
     <section
       className='Chat-container'
       style={{
-        height: trueWindowHeight - 60,
-        maxWidth: trueWindowWidth,
-        display: 'fixed'
+        height: height ? height : trueWindowHeight - 60,
+        maxWidth: width ? width : trueWindowWidth,
+        display: 'fixed',
+        paddingTop: miniChat && '0px'
       }}
     >
       <List>{userModalIsOpen && renderUserListModal(usersFullData)}</List>
-      <div className='Chat-users-names'>
-        <GoBack className='u-m-r' />
+      <div className='Chat-users-names' style={miniChat && { top: 0 }}>
+        {!miniChat && <GoBack className='u-m-r' />}
         {otherUsers}
       </div>
       <div className='Chat-log'>

@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
 
 export default function CheckInbox({ setHelperVisible }) {
-  document.body.style.overflow = 'hidden';
+  useEffect(() => {
+    if (setHelperVisible) {
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [setHelperVisible]);
+
   return (
     <div
       style={{

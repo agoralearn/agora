@@ -77,7 +77,10 @@ $navbar-height: 60px;
 
 // Gradients
 .background-primary {
-  background: $color-secondary;
+  // background: $color-secondary;
+  // box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  // background-image: url("../Assets/images/PATTERN_asphalt.png");
+  background: rgb(118, 120, 237);
+  background: linear-gradient(0deg, rgba(118, 120, 237, 1) 0%, rgba(61, 52, 139, 1) 67%);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  background-image: url("../Assets/images/PATTERN_diamonds.png");
 }
