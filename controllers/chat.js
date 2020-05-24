@@ -4,40 +4,46 @@ module.exports = {
   // Pass two user ids in userIds in the body
   startChat: function (req, res) {
     const { message } = req.body;
-    const userIds = [req.user.id, ...req.body.userIds];
-    db.Message.create({
-      message: message,
-      read: [req.user.id],
-      sender: req.user.id
-    }).then((message) => {
-      db.Chat.create({
-        users: userIds,
-        messages: [message._id]
-      }).then((chat) => {
-        const chatsToUser = userIds.map((userId) => {
-          return db.User.findByIdAndUpdate(
-            userId,
-            {
-              $push: { chats: chat._id }
-            },
-            { returnOriginal: false }
-          ).populate({
-            path: 'chats',
-            populate: {
-              path: 'users messages',
-              select: 'firstName lastName image message sender read'
-            }
+    const userIds = [
+      req.user.id,
+      ...req.body.userIds.filter((id) => id !== req.user.id)
+    ];
+
+    if (userIds.length > 1) {
+      db.Message.create({
+        message: message,
+        read: [req.user.id],
+        sender: req.user.id
+      }).then((message) => {
+        db.Chat.create({
+          users: userIds,
+          messages: [message._id]
+        }).then((chat) => {
+          const chatsToUser = userIds.map((userId) => {
+            return db.User.findByIdAndUpdate(
+              userId,
+              {
+                $push: { chats: chat._id }
+              },
+              { returnOriginal: false }
+            ).populate({
+              path: 'chats',
+              populate: {
+                path: 'users messages',
+                select: 'firstName lastName image message sender read'
+              }
+            });
+          });
+          Promise.all(chatsToUser).then((users) => {
+            res.json(
+              users[0].chats.filter((lastChat) => {
+                return lastChat._id.toString() === chat._id.toString();
+              })[0]
+            );
           });
         });
-        Promise.all(chatsToUser).then((users) => {
-          res.json(
-            users[0].chats.filter((lastChat) => {
-              return lastChat._id.toString() === chat._id.toString();
-            })[0]
-          );
-        });
       });
-    });
+    }
   },
   addMessageToChat: function (req, res) {
     // Check if the user belongs to the chat first

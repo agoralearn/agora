@@ -2,7 +2,7 @@ import React from 'react';
 import './GoBack.scss';
 import { useHistory } from 'react-router-dom';
 
-export default function GoBack() {
+export default function GoBack({ className }) {
   const history = useHistory();
   function goBackHandler() {
     history.goBack();
@@ -13,8 +13,8 @@ export default function GoBack() {
   // component has history in its context
 
   return (
-    <div onClick={goBackHandler} className='GoBack_wrapper'>
-      <i className='fas fa-arrow-left' style={{ marginRight: '4px' }}></i>Back
+    <div onClick={goBackHandler} className={`GoBack_wrapper ${className}`}>
+      <i className='fas fa-arrow-left' style={{ marginRight: '4px' }}></i>
     </div>
   );
 }

@@ -1,12 +1,11 @@
 @import "../../css/globals";
 
 .Chat-container {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-  height: calc(100vh - 60px);
+  // height: calc(100vh - 60px);
   background: rgba(#fff, 0.1);
   box-shadow: 2px 1px 10px rgba(#a9a6a6, 0.4);
   margin: 0 auto;
