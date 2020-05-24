@@ -20,6 +20,32 @@ import { categories } from '../../utils/subjectData';
 // import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 
+const tutoringInfoFields = [
+  {
+    name: 'timeFrame',
+    label: 'Time Frame',
+    type: 'select',
+    options: [
+      { key: 'on-going', label: 'on-going' },
+      { key: 'one-time', label: 'one-time' }
+    ]
+  },
+  {
+    name: 'minGroupSize',
+    label: 'Min Group Size',
+    inputType: 'number',
+    min: 1
+  },
+  {
+    name: 'maxGroupSize',
+    label: 'Max Group Size',
+    inputType: 'number',
+    min: 1
+  },
+  { name: 'age', label: 'Age', inputType: 'number', required: true, min: 1 },
+  { name: 'price', label: 'Price ($/hr)', inputType: 'number' }
+];
+
 function Onboarding() {
   toast.configure();
   const [step, setStep] = useState({
@@ -40,7 +66,7 @@ function Onboarding() {
   //   age: age
   // });
   const [bio, setBio] = useState();
-  const [timeFrame, setTimeFrame] = useState();
+  const [timeFrame, setTimeFrame] = useState([]);
   const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
@@ -101,7 +127,7 @@ function Onboarding() {
       case 1:
         return renderSubjects();
       case 2:
-        return renderTutoringInfo();
+        return renderTutoringInfo(tutoringInfoFields);
       case 3:
         return;
       case 4:
@@ -156,8 +182,91 @@ function Onboarding() {
       });
   }
 
-  function renderTutoringInfo() {}
-
+  function renderTutoringInfo(tutoringInfoFields) {
+    return (
+      <Form>
+        {tutoringInfoFields.map((field) => {
+          return determineFieldType(field);
+        })}
+      </Form>
+    );
+  }
+  function checkboxFields(value) {
+    const timeFrameCopy = [...timeFrame];
+    const index = timeFrame.indexOf(value);
+    index < 0 ? timeFrameCopy.push(value) : timeFrameCopy.splice(index, 1);
+    return timeFrameCopy;
+  }
+  function determineFieldType(field) {
+    switch (field.name) {
+      case 'timeFrame':
+        return field.options.map((option) => {
+          return (
+            <Checkbox
+              className='u-m-r'
+              key={option.label}
+              label={option.label}
+              control='input'
+              name={field.name}
+              checked={timeFrame.includes(option.label)}
+              onChange={(event, data) =>
+                setTimeFrame(checkboxFields(option.label))
+              }
+            />
+          );
+        });
+      case 'minGroupSize':
+        return (
+          <div key={field.name}>
+            <label>{field.label}</label>
+            <div>
+              <Input
+                name={field.name}
+                onChange={(event) => {
+                  setMinGroupSize(event.target.value);
+                }}
+                type='number'
+                min={field.min}
+                defaultValue={1}
+                required={field.required}
+              ></Input>
+            </div>
+          </div>
+        );
+      case 'maxGroupSize':
+        return (
+          <div key={field.name}>
+            <label>{field.label}</label>
+            <div>
+              <Input
+                name={field.name}
+                defaultValue={1}
+                onChange={(event) => setMaxGroupSize(event.target.value)}
+                type={field.inputType}
+                min={field.min}
+                // required={field.required}
+              ></Input>
+            </div>
+          </div>
+        );
+      case 'age':
+        return (
+          <div key={field.name}>
+            <label>{field.label}</label>
+            <div>
+              <Input
+                name={field.name}
+                defaultValue={1}
+                onChange={(event) => setAge(event.target.value)}
+                type={field.inputType}
+                min={field.min}
+                // required={field.required}
+              ></Input>
+            </div>
+          </div>
+        );
+    }
+  }
   return (
     <div>
       <PageHeader>
