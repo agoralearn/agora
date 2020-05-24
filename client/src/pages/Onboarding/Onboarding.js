@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../utils/API';
-import { useAuth } from '../../utils/auth';
+// import { useAuth } from '../../utils/auth';
 import Badge from '../../components/Badge/Badge';
 import { toast } from 'react-toastify';
 import {
   Input,
   Form,
-  Dropdown,
-  TextArea,
+  // Dropdown,
+  // TextArea,
   Checkbox,
   Container,
-  Grid,
+  // Grid,
   Progress,
   Icon,
   Button
 } from 'semantic-ui-react';
-import { education } from '../../utils/categoryData';
+// import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
 // import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
@@ -52,7 +52,7 @@ function Onboarding() {
     currentStep: 1,
     progressPercent: 25
   });
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [subjectNames, setSubjectNames] = useState([]);
   const [subjects, setSubjects] = useState(categories);
   // const [userInfo, setUserInfo] = useState({
@@ -65,25 +65,25 @@ function Onboarding() {
   //   price: price,
   //   age: age
   // });
-  const [bio, setBio] = useState();
+  // const [bio, setBio] = useState();
   const [timeFrame, setTimeFrame] = useState([]);
-  const [image, setImage] = useState();
+  // const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
-  const [price, setPrice] = useState();
+  // const [price, setPrice] = useState();
   const [age, setAge] = useState();
-  const [education, setEducation] = useState();
+  // const [education, setEducation] = useState();
 
   const userInfo = {
     subjects: subjectNames,
-    bio: bio,
+    // bio: bio,
     timeFrame: timeFrame,
-    image: image,
+    // image: image,
     minGroupSize: minGroupSize,
     maxGroupSize: maxGroupSize,
-    price: price,
-    age: age,
-    education: education
+    // price: price,
+    age: age
+    // education: education
   };
 
   function toggleSelected(e, cat, subcat) {
@@ -153,7 +153,7 @@ function Onboarding() {
     e.persist();
     API.updateUser(userInfo)
       .then((res) => {
-        toast.success(`New info saved!`, {
+        toast.success('New info saved!', {
           position: toast.POSITION.TOP_CENTER
         });
         if (e.target.id === 'next') {
@@ -259,6 +259,8 @@ function Onboarding() {
             </div>
           </div>
         );
+      default:
+        return null;
     }
   }
 
@@ -272,6 +274,8 @@ function Onboarding() {
         return;
       case 4:
         return;
+      default:
+        return renderSubjects();
     }
   }
 
