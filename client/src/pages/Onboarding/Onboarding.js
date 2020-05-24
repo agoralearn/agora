@@ -122,19 +122,6 @@ function Onboarding() {
     console.log(subjectNames);
   }, [subjectNames]);
 
-  function selectCurrentStep() {
-    switch (step.currentStep) {
-      case 1:
-        return renderSubjects();
-      case 2:
-        return renderTutoringInfo(tutoringInfoFields);
-      case 3:
-        return;
-      case 4:
-        return;
-    }
-  }
-
   function renderSubjects() {
     return categories.map((cat) => {
       return (
@@ -200,24 +187,31 @@ function Onboarding() {
   function determineFieldType(field) {
     switch (field.name) {
       case 'timeFrame':
-        return field.options.map((option) => {
-          return (
-            <Checkbox
-              className='u-m-r'
-              key={option.label}
-              label={option.label}
-              control='input'
-              name={field.name}
-              checked={timeFrame.includes(option.label)}
-              onChange={(event, data) =>
-                setTimeFrame(checkboxFields(option.label))
-              }
-            />
-          );
-        });
+        return (
+          <div key={field.name} className='u-m-b'>
+            <label>{field.label}</label>
+            <div className='u-m-b'>
+              {field.options.map((option) => {
+                return (
+                  <Checkbox
+                    className='u-m-r'
+                    key={option.label}
+                    label={option.label}
+                    control='input'
+                    name={field.name}
+                    checked={timeFrame.includes(option.label)}
+                    onChange={(event, data) =>
+                      setTimeFrame(checkboxFields(option.label))
+                    }
+                  />
+                );
+              })}
+            </div>
+          </div>
+        );
       case 'minGroupSize':
         return (
-          <div key={field.name}>
+          <div key={field.name} className='u-m-b'>
             <label>{field.label}</label>
             <div>
               <Input
@@ -235,7 +229,7 @@ function Onboarding() {
         );
       case 'maxGroupSize':
         return (
-          <div key={field.name}>
+          <div key={field.name} className='u-m-b'>
             <label>{field.label}</label>
             <div>
               <Input
@@ -251,7 +245,7 @@ function Onboarding() {
         );
       case 'age':
         return (
-          <div key={field.name}>
+          <div key={field.name} className='u-m-b'>
             <label>{field.label}</label>
             <div>
               <Input
@@ -267,6 +261,20 @@ function Onboarding() {
         );
     }
   }
+
+  function selectCurrentStep() {
+    switch (step.currentStep) {
+      case 1:
+        return renderSubjects();
+      case 2:
+        return renderTutoringInfo(tutoringInfoFields);
+      case 3:
+        return;
+      case 4:
+        return;
+    }
+  }
+
   return (
     <div>
       <PageHeader>
