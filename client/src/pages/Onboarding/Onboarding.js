@@ -67,7 +67,7 @@ function Onboarding() {
   const [modalOpen, setModalOpen] = useState(false);
   const [subjects, setSubjects] = useState(categories);
   const [bio, setBio] = useState();
-  const [timeFrame, setTimeFrame] = useState([]);
+  const [timeFrame, setTimeFrame] = useState(['one-time', 'on-going']);
   const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
