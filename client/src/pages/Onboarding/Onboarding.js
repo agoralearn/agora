@@ -10,10 +10,8 @@ import {
   TextArea,
   Checkbox,
   Container,
-  // Grid,
   Progress,
-  Icon,
-  Button as SemanticButton
+  Icon
 } from 'semantic-ui-react';
 import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
@@ -60,7 +58,7 @@ function Onboarding() {
   const history = useHistory();
 
   const [step, setStep] = useState({
-    currentStep: 5,
+    currentStep: 1,
     progressPercent: 0
   });
   const [subjectNames, setSubjectNames] = useState([]);
@@ -147,11 +145,17 @@ function Onboarding() {
   }
   function saveSubjects(e) {
     e.persist();
+    console.log(e.target.id);
     API.updateUser(userInfo)
       .then((res) => {
         if (e.target.id === 'next') {
           setStep({
             currentStep: step.currentStep + 1,
+            progressPercent: step.progressPercent + 25
+          });
+        } else if (e.target.id === 'save') {
+          setStep({
+            currentStep: 5,
             progressPercent: step.progressPercent + 25
           });
         }
@@ -408,18 +412,22 @@ function Onboarding() {
         <Progress percent={step.progressPercent} progress />
         {step.currentStep !== 5 && (
           <>
-            <SemanticButton animated onClick={(e) => saveSubjects(e)} id='next'>
-              <SemanticButton.Content visible id='next'>
-                Next
-              </SemanticButton.Content>
-              <SemanticButton.Content hidden id='next'>
-                <Icon name='arrow right' />
-              </SemanticButton.Content>
-            </SemanticButton>
-            <SemanticButton icon labelPosition='left'>
-              <Icon name='save outline' />
-              Pause
-            </SemanticButton>
+            <Button
+              className='btn-secondary u-m-r'
+              id='save'
+              onClick={(e) => saveSubjects(e)}
+            >
+              <Icon name='save outline' id='save' />
+              Save & Finish Later
+            </Button>
+
+            <Button
+              className='u-m-l btn-primary'
+              onClick={(e) => saveSubjects(e)}
+              id='next'
+            >
+              Next
+            </Button>
           </>
         )}
       </Container>
@@ -434,7 +442,6 @@ Step 0 page "set up profile" or "save for later" options
 add instructions to first pick subjects page 
 Make a modal for the save changes and finish later button that offers a tutorial, bio, browse
 Make funcitonality so that save and finish still does the API call
-Redirect link from signup needs to point to onboarding
 Makes our own styling for the progress bar, improve next and finish buttons
 -MAYBE animate progress bar
 */
