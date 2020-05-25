@@ -43,7 +43,7 @@ function App() {
             <Home />
           </Route>
 
-          <Route exact path='/whiteboard'>
+          <Route path='/whiteboard/:chatId'>
             <WhiteBoard />
           </Route>
           <Route component={Signup} exact path='/signup' />

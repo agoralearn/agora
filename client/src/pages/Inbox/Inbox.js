@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import './Inbox.scss';
+
 import API from '../../utils/API';
 import ChatPreview from '../../components/ChatPreview/ChatPreview';
 import GoBack from '../../components/GoBack/GoBack';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import { useAuth } from '../../utils/auth';
-
-import './Inbox.scss';
 
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
@@ -14,10 +14,6 @@ export default function Inbox(props) {
 
   useEffect(() => {
     getChats();
-  }, []);
-
-  useEffect(() => {
-    console.log('INBOX RENDER');
   }, []);
 
   useEffect(() => {

@@ -6,6 +6,9 @@ import GoBack from '../../components/GoBack/GoBack';
 import API from '../../utils/API';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
+import Button from '../../components/Button/Button';
+import { useHistory } from 'react-router-dom';
+import TruncatedUserNames from '../../components/TruncatedUserNames/TruncatedUserNames';
 
 export default function Chat({ match, height, width, miniChat, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -15,6 +18,8 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   const [usersFullData, setUsersFullData] = useState([]);
   const { trueWindowHeight, trueWindowWidth } = useWindowDimensions();
   const [userModalIsOpen, setUserModalIsOpen] = useState(false);
+
+  const history = useHistory();
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
@@ -42,17 +47,14 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
 
     function mapUserstoImages({ users }) {
       const avatarMap = {};
-      const userNames = [];
 
       const otherUsers = users.filter((person) => person._id !== user.id);
 
       otherUsers.forEach((user) => (avatarMap[user._id] = user.image));
 
-      limitNameChars(users.filter((person) => person._id !== user.id));
-
-      userNames.push(limitNameChars(otherUsers));
       setAvatars(avatarMap);
-      setOtherUsers(userNames);
+
+      setOtherUsers(otherUsers);
     }
 
     fetchUserMessages().then(({ data }) => {
@@ -62,6 +64,12 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
     });
   }, [match.params.chatId, user.id]);
 
+  function joinSessionHandler() {
+    history.push(`/whiteboard/${match.params.chatId}`, {
+      participants: usersFullData
+    });
+  }
+
   function renderUserListModal(users) {
     return (
       <Modal
@@ -70,10 +78,18 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         closeIcon
       >
         <Modal.Header>Participants</Modal.Header>
-        <Modal.Content image>
+        <Modal.Content>
+          <Button className='btn-primary' onClick={joinSessionHandler}>
+            Start Session
+          </Button>
+        </Modal.Content>
+        <Modal.Content>
           {users.map((person) => {
             return (
-              <List.Item style={{ marginBottom: '5px' }}>
+              <List.Item
+                key={'list_' + person._id}
+                style={{ marginBottom: '5px' }}
+              >
                 <Image avatar src={person.image} />
                 {person.firstName}
               </List.Item>
@@ -81,40 +97,6 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
           })}
         </Modal.Content>
       </Modal>
-    );
-  }
-
-  function limitNameChars(users) {
-    const names = [];
-    const MAX_STRING_LENGTH = 30;
-
-    users.forEach((user) => {
-      names.push(user.firstName);
-    });
-
-    const usersJoined = names.join(', ');
-
-    const returnString =
-      usersJoined.length > MAX_STRING_LENGTH
-        ? usersJoined.slice(0, MAX_STRING_LENGTH) + '... '
-        : usersJoined;
-
-    return (
-      <>
-        <p className='u-m-l' style={{ fontSize: '16px' }}>
-          {returnString}
-        </p>{' '}
-        <span
-          style={{
-            color: '#3d348b',
-            fontWeight: 'bold',
-            marginLeft: '6px'
-          }}
-          onClick={() => setUserModalIsOpen(true)}
-        >
-          More
-        </span>
-      </>
     );
   }
 
@@ -171,7 +153,13 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
       <List>{userModalIsOpen && renderUserListModal(usersFullData)}</List>
       <div className='Chat-users-names' style={miniChat && { top: 0 }}>
         {!miniChat && <GoBack className='u-m-r' />}
-        {otherUsers}
+
+        {/* The users names truncated */}
+        <TruncatedUserNames
+          users={otherUsers}
+          handleModalOpen={setUserModalIsOpen}
+          modal
+        />
       </div>
       <div className='Chat-log'>
         {messages.map((message, index) => {

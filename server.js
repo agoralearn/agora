@@ -16,11 +16,26 @@ const PORT = process.env.PORT || 3001;
 
 let socketMap = {};
 
+const whiteBoardData = {};
+
 // setup socket.io middleware
 function socketConfig(req, res, next) {
   req.io = io;
   req.socketMap = socketMap;
   next();
+}
+
+function getUserIdsInRoom(roomId) {
+  const room = io.sockets.adapter.rooms[roomId];
+  if (!room) {
+    return [];
+  }
+
+  const userIds = Object.keys(room.sockets).map(
+    (socketId) => socketMap[socketId]
+  );
+
+  return userIds;
 }
 
 function removeSocketSession(socketId, socketMap) {
@@ -36,6 +51,7 @@ function addSocketToMap(socketId, userId, socketMap) {
   const socketMapClone = { ...socketMap };
   socketMapClone[userId] = socketId;
   socketMapClone[socketId] = userId;
+
   return socketMapClone;
 }
 
@@ -77,15 +93,40 @@ io.on('connection', (socket) => {
   });
 
   socket.on('draw', (data) => {
-    io.emit('newDraw', data);
+    io.to(data.room).emit('newDraw', data);
+    whiteBoardData[data.room] = data.points;
   });
 
   socket.on('deleteDraw', (data) => {
-    io.emit('delete', data);
+    io.to(data.room).emit('delete', data);
+    whiteBoardData[data.room] = '';
   });
 
   socket.on('disconnect', () => {
     socketMap = removeSocketSession(socket.id, socketMap);
+  });
+
+  // TODO: remove canvas data from memory when everyone leaves
+  socket.on('leave', ({ chatId }) => {
+    socket.leave(chatId);
+    const users = getUserIdsInRoom(chatId);
+    if (users.length === 0) {
+      delete whiteBoardData[chatId];
+    } else {
+      io.to(chatId).emit('userLeft', {
+        userIds: getUserIdsInRoom(chatId)
+      });
+    }
+  });
+
+  // On connection to whiteboard
+  socket.on('join', (data) => {
+    socket.join(data.chatId);
+    socket.emit('joinData', whiteBoardData[data.chatId]);
+
+    io.to(data.chatId).emit('userJoined', {
+      userIds: getUserIdsInRoom(data.chatId)
+    });
   });
 });
 

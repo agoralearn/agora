@@ -3,8 +3,8 @@ import './ChatPreview.scss';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
-import { toTitleCase } from '../../utils/helpers';
 import moment from 'moment';
+import TruncatedUserNames from '../../components/TruncatedUserNames/TruncatedUserNames';
 
 function ChatPreview({ users, messages, chatId, date, style }) {
   const { user, state = { unread: [] }, setState } = useAuth();
@@ -62,7 +62,8 @@ function ChatPreview({ users, messages, chatId, date, style }) {
       <div className='ChatPreview_img-wrapper'>{renderOtherAvatars()}</div>
 
       <div className='ChatPreview_names-wrapper' style={{ ...style }}>
-        <p>
+        <TruncatedUserNames users={otherUsers} />
+        {/* <p>
           {otherUsers.map(
             (user) =>
               `${toTitleCase(user.firstName)} ${toTitleCase(
@@ -70,7 +71,7 @@ function ChatPreview({ users, messages, chatId, date, style }) {
               )}, `
           )}
           me
-        </p>
+        </p> */}
         <div className='f-w-l'>
           <div>
             <i>{moment(date).format('LT')}</i>
