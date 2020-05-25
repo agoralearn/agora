@@ -229,6 +229,7 @@ function TutorBio({ match }) {
                         ))}
                     </div>
                   </div>
+
                   <div style={{ paddingTop: '20px' }}>
                     <h2>Subjects</h2>
                     <div style={{ padding: '20px' }}>
@@ -239,6 +240,17 @@ function TutorBio({ match }) {
                       ) : (
                         <p>No Subjects</p>
                       )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h2>Available For</h2>
+                    <div style={{ textAlign: 'center', padding: '10px' }}>
+                      {tutor.timeFrame.map((timeframe) => {
+                        return (
+                          <Badge key={tutor.timeFrame}>{tutor.timeFrame}</Badge>
+                        );
+                      })}
                     </div>
                   </div>
                 </Grid.Column>
