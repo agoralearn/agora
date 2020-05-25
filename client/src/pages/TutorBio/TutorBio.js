@@ -261,7 +261,9 @@ function TutorBio({ match }) {
             <h2 style={{ margin: '0 auto', paddingBottom: '10px' }}>
               About Me
             </h2>
-            <p>{tutor.bio}</p>
+            <div style={{ padding: '20px' }}>
+              <p>{tutor.bio}</p>
+            </div>
           </Grid.Row>
         </Grid>
       )}
