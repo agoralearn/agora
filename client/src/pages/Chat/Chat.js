@@ -32,6 +32,10 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   }, [messages]);
 
   useEffect(() => {
+    console.log('avatars', avatars);
+  }, [avatars]);
+
+  useEffect(() => {
     socket.on('message', (data) => {
       if (data.chatId === match.params.chatId) {
         setMessages((messages) => [...messages, data.message]);
@@ -47,6 +51,8 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
 
     function mapUserstoImages({ users }) {
       const avatarMap = {};
+
+      console.log(users);
 
       const otherUsers = users.filter((person) => person._id !== user.id);
 
@@ -162,13 +168,14 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         />
       </div>
       <div className='Chat-log'>
-        {messages.map((message, index) => {
+        {messages.map((message, index, array) => {
           return (
             <ChatBubble
               key={message._id}
               text={message.message}
               recieved={message.read}
               sender={message.sender}
+              previous={index > 0 ? array[index - 1].sender : ''}
               thumbnail={
                 message.sender === user.id
                   ? user.image

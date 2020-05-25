@@ -43,7 +43,13 @@ const tutoringInfoFields = [
     inputType: 'number',
     min: 1
   },
-  { name: 'age', label: 'Age', inputType: 'number', required: true, min: 1 },
+  {
+    name: 'age',
+    label: 'Min Student Age',
+    inputType: 'number',
+    required: true,
+    min: 1
+  },
   { name: 'price', label: 'Price ($/hr)', inputType: 'number' },
   { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' },
   { name: 'image', label: 'Image URL' },
@@ -200,12 +206,17 @@ function Onboarding() {
     return (
       <>
         <div className='u-m-b-sm'>
-          <p>Select the subjects you offer</p>
+          <h2 className='u-m-b'>Subjects</h2>
+          <p>
+            <i>Select the subjects you offer</i>
+          </p>
         </div>
         {categories.map((cat) => {
           return (
-            <div key={cat.type}>
-              <h2>{cat.header}</h2>
+            <div key={cat.type} className='u-m-b-sm'>
+              <div className='u-m-b-sm'>
+                <label style={{ fontWeight: 'bold' }}>{cat.header}</label>
+              </div>
               {cat.subcat.map((subcat) => {
                 return (
                   <div
@@ -254,6 +265,13 @@ function Onboarding() {
   function renderTutoringInfo() {
     return (
       <Form style={{ maxWidth: '500px' }}>
+        <h2 className='u-m-b'>Tutoring Info</h2>
+        <p>
+          <i>
+            Fill in the fields to specify the type of sessions you're willing to
+            host
+          </i>
+        </p>
         {tutoringInfoFields.map((field) => {
           return determineFieldType(field);
         })}
@@ -303,6 +321,7 @@ function Onboarding() {
     return (
       <div>
         <div style={{ marginBottom: '10px' }}>
+          <h2 className='u-m-b'>Profile Image</h2>
           <ProfileImage
             profileImg={
               image
@@ -312,9 +331,9 @@ function Onboarding() {
             style={{ margin: '0 auto' }}
           />
         </div>
-        <div className='u-m-b-sm'>
-          <label>Profile Image</label>
-        </div>
+        {/* <div className='u-m-b-sm'> */}
+        {/* <label>Profile Image</label> */}
+        {/* </div> */}
         <div className='u-m-b-sm'>
           <Input
             placeholder='Image url...'
@@ -387,7 +406,9 @@ function Onboarding() {
       case 'timeFrame':
         return (
           <div key={field.name} className='u-m-b'>
-            <label>{field.label}</label>
+            <div className='u-m-b-sm'>
+              <label style={{ fontWeight: 'bold' }}>{field.label}</label>
+            </div>
             <div className='u-m-b'>
               {field.options.map((option) => {
                 return (
@@ -410,7 +431,9 @@ function Onboarding() {
       case 'minGroupSize':
         return (
           <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
-            <label>{field.label}</label>
+            <div className='u-m-b-sm'>
+              <label style={{ fontWeight: 'bold' }}>{field.label}</label>
+            </div>
             <div>
               <Input
                 name={field.name}
@@ -428,7 +451,9 @@ function Onboarding() {
       case 'maxGroupSize':
         return (
           <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
-            <label>{field.label}</label>
+            <div className='u-m-b-sm'>
+              <label style={{ fontWeight: 'bold' }}>{field.label}</label>
+            </div>
             <div>
               <Input
                 name={field.name}
@@ -444,7 +469,9 @@ function Onboarding() {
       case 'age':
         return (
           <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
-            <label>{field.label}</label>
+            <div className='u-m-b-sm'>
+              <label style={{ fontWeight: 'bold' }}>{field.label}</label>
+            </div>
             <div>
               <Input
                 name={field.name}
@@ -460,7 +487,9 @@ function Onboarding() {
       case 'price':
         return (
           <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
-            <label>{field.label}</label>
+            <div className='u-m-b-sm'>
+              <label style={{ fontWeight: 'bold' }}>{field.label}</label>
+            </div>
             <div>
               <Input
                 name={field.name}
@@ -502,6 +531,14 @@ function Onboarding() {
       <PageHeader>
         <h2>Profile Setup</h2>
       </PageHeader>
+      {step.currentStep !== 0 && (
+        <Progress
+          color='green'
+          style={{ margin: '30px' }}
+          percent={step.progressPercent}
+          progress
+        />
+      )}
       <Container>
         {helperVisible && (
           <Tutorial
@@ -512,16 +549,9 @@ function Onboarding() {
           />
         )}
         {selectCurrentStep()}
-        {step.currentStep !== 0 && (
-          <Progress
-            color='green'
-            style={{ margin: '30px' }}
-            percent={step.progressPercent}
-            progress
-          />
-        )}
+
         {step.currentStep !== 5 && (
-          <>
+          <div className='u-m-t'>
             {step.currentStep !== 0 && (
               <Button
                 className='btn-secondary u-m-r'
@@ -540,7 +570,7 @@ function Onboarding() {
             >
               Next
             </Button>
-          </>
+          </div>
         )}
       </Container>
     </div>

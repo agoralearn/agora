@@ -22,7 +22,7 @@ export default function ProfileImage({
     >
       <img
         src={profileImg}
-        alt='avater'
+        alt='avatar'
         className='profile-pic'
         style={{ height: height, width: width }}
       ></img>

@@ -189,7 +189,13 @@ function TutorBio({ match }) {
                       </Statistic.Value>
                     </Statistic>
                     <Statistic inverted>
-                      <Statistic.Value>${tutor.price}</Statistic.Value>
+                      <Statistic.Value>
+                        ${tutor.price}
+                        <span style={{ textTransform: 'lowercase' }}>
+                          {' '}
+                          / hr
+                        </span>
+                      </Statistic.Value>
                     </Statistic>
                   </Statistic.Group>
                 </Grid.Column>
