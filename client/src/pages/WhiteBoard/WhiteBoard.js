@@ -16,7 +16,7 @@ export default function WhiteBoard() {
   );
 
   const { socket, user } = useAuth();
-  const { trueWindowHeight } = useWindowDimensions();
+  const { trueWindowWidth, trueWindowHeight } = useWindowDimensions();
   const canvasRef = useRef(null);
   const canvasWrapperRef = useRef(null);
   const { chatId } = useParams();
@@ -89,6 +89,7 @@ export default function WhiteBoard() {
     e.stopPropagation();
     setFillColor(color);
   }
+
   return (
     <div className='Whiteboard-wrapper'>
       <div className='WhiteBoard-participants'>
@@ -141,13 +142,17 @@ export default function WhiteBoard() {
         ></div>
       </div>
 
-      <div onMouseUp={() => transferCtx()} ref={canvasWrapperRef}>
+      <div
+        onMouseUp={() => transferCtx()}
+        onTouchEnd={() => transferCtx()}
+        ref={canvasWrapperRef}
+      >
         <CanvasDraw
           ref={canvasRef}
           brushRadius={1}
           lazyRadius={0}
           loadTimeOffset={0}
-          canvasWidth={'100%'}
+          canvasWidth={trueWindowWidth}
           canvasHeight={trueWindowHeight - 60}
           brushColor={fillColor}
           catenaryColor={fillColor}
