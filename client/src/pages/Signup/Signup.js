@@ -67,9 +67,9 @@ function Signup({ location }) {
       })
       .catch((err) => {
         setLoading(false);
-        setError('error');
+        // setError('error');
         // this error message was erroring out - look into it
-        // setError(err.response.data.message);
+        setError(err.response.data.message);
       });
   };
 

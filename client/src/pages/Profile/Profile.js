@@ -6,7 +6,7 @@ import './Profile.scss';
 import { toast } from 'react-toastify';
 import Badge from '../../components/Badge/Badge';
 import PageHeader from '../../components/PageHeader/PageHeader';
-import ProfileImage from '../../components/ProfileImage/ProfileImage';
+// import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import {
   Input,
   Form,
@@ -14,7 +14,7 @@ import {
   TextArea,
   Checkbox,
   Container,
-  Grid
+  Image
 } from 'semantic-ui-react';
 import { subjects, education } from '../../utils/categoryData';
 import Button from '../../components/Button/Button';
@@ -403,7 +403,10 @@ function Profile() {
     });
   }
   return (
-    <div className='container Profile Profile_container'>
+    <div
+      className='container Profile Profile_container'
+      style={{ marginBottom: '400px' }}
+    >
       <div className='u-m-l'>
         <GoBack />
       </div>
@@ -413,12 +416,20 @@ function Profile() {
       {userInfo && (
         <Container>
           <div>
-            <ProfileImage
-              profileImg={editing ? userInfoCopy.image : userInfo.image}
-              style={{ marginBottom: '10px' }}
+            <Image
+              src={editing ? userInfoCopy.image : userInfo.image}
+              circular
+              wrapped
+              style={{
+                width: '200px',
+                height: '200px',
+                backgroundPosition: 'center',
+                marginBottom: '10px'
+              }}
             />
             {!editing ? (
               <Button
+                style={{ display: 'block' }}
                 className='btn-primary'
                 // onClick={() => setEditing(!editing)}
                 onClick={(event) => {
@@ -435,7 +446,6 @@ function Profile() {
                 >
                   Cancel
                 </Button>
-
                 <Button
                   className='btn-primary disp-inline-b u-m-l'
                   // type='submit'
