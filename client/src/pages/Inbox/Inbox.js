@@ -10,15 +10,11 @@ import { useAuth } from '../../utils/auth';
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
 
-  const { socket, state } = useAuth();
+  const { socket, state, user } = useAuth();
 
   useEffect(() => {
     getChats();
   }, []);
-
-  useEffect(() => {
-    // console.log(chats);
-  }, [chats]);
 
   useEffect(() => {
     socket.on('message', (data) => {
@@ -41,6 +37,28 @@ export default function Inbox(props) {
       .catch((err) => console.log(err));
   };
 
+  const getSortedChats = () => {
+    const sortChats = [...chats];
+    sortChats.sort((a, b) => {
+      a = new Date(a.messages[0].createdAt);
+      b = new Date(b.messages[0].createdAt);
+      return a < b ? 1 : a > b ? -1 : 0;
+    });
+    return sortChats;
+  };
+
+  // TODO need to send to server that we read message if unread is from there
+  const isChatUnread = (chat) => {
+    if (state.unread && state.unread.includes(chat._id)) {
+      return true;
+    }
+    if (!chat.messages[0].read.includes(user.id)) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <div className='inbox-container'>
       <div className='u-m-l'>
@@ -50,7 +68,7 @@ export default function Inbox(props) {
         <h2 className='header-text'>Inbox</h2>
       </PageHeader>
       <div className='chats-div'>
-        {chats.map((chat) => {
+        {getSortedChats().map((chat) => {
           return (
             <ChatPreview
               style={
