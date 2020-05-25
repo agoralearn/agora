@@ -11,7 +11,8 @@ import {
   Checkbox,
   Container,
   Progress,
-  Icon
+  Modal
+  // Icon
 } from 'semantic-ui-react';
 import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
@@ -58,8 +59,8 @@ function Onboarding() {
   const history = useHistory();
 
   const [step, setStep] = useState({
-    currentStep: 1,
-    progressPercent: 0
+    currentStep: 0,
+    progressPercent: -25
   });
   const [subjectNames, setSubjectNames] = useState([]);
   const [subjects, setSubjects] = useState(categories);
@@ -114,6 +115,70 @@ function Onboarding() {
         categories[categoryIndex].subcat[subCatIndex].text
       ]);
     }
+  }
+
+  function renderIntro() {
+    return (
+      <>
+        <h1 className='u-m-b'>Welcome!</h1>
+        <div className='u-m-b'>
+          <div className='u-m-b-sm'>
+            <p>
+              Set up your profile now by pressing 'Next' below and following the
+              prompts. You can always add to or update your profile by clicking
+              your profile icon in the top right corner of your screen and
+              choosing settings.
+            </p>
+          </div>
+          <div className='u-m-b'>
+            <p>
+              If you'd like to save this for later, click 'Skip for now' and
+              choose where you want to go!
+            </p>
+          </div>
+          <div>
+            <Modal
+              trigger={
+                <Button
+                  className='btn-secondary'
+                  style={{ marginBottom: '60px' }}
+                >
+                  Skip for now
+                </Button>
+              }
+            >
+              <Modal.Header>What would you like to do next?</Modal.Header>
+              <Modal.Content>
+                <div style={{ margin: '0 auto' }}>
+                  <Button className='btn-primary u-m-r u-m-b-sm'>
+                    Take a Tour
+                  </Button>
+
+                  <Button
+                    onClick={() => {
+                      history.push('/tutorbio/' + user.id);
+                    }}
+                    className='btn-primary u-m-r u-m-b-sm'
+                  >
+                    View Bio Page
+                  </Button>
+
+                  <Link
+                    to={{
+                      pathname: '/tutors'
+                    }}
+                  >
+                    <Button className='btn-primary u-m-r u-m-b-sm'>
+                      Browse Tutors
+                    </Button>
+                  </Link>
+                </div>
+              </Modal.Content>
+            </Modal>
+          </div>
+        </div>
+      </>
+    );
   }
 
   function renderSubjects() {
@@ -387,6 +452,8 @@ function Onboarding() {
 
   function selectCurrentStep() {
     switch (step.currentStep) {
+      case 0:
+        return renderIntro();
       case 1:
         return renderSubjects();
       case 2:
@@ -409,22 +476,30 @@ function Onboarding() {
       </PageHeader>
       <Container>
         {selectCurrentStep()}
-        <Progress percent={step.progressPercent} progress />
+        {step.currentStep !== 0 && (
+          <Progress
+            style={{ margin: '30px' }}
+            percent={step.progressPercent}
+            progress
+          />
+        )}
         {step.currentStep !== 5 && (
           <>
-            <Button
-              className='btn-secondary u-m-r'
-              id='save'
-              onClick={(e) => saveSubjects(e)}
-            >
-              <Icon name='save outline' id='save' />
-              Save & Finish Later
-            </Button>
+            {step.currentStep !== 0 && (
+              <Button
+                className='btn-secondary u-m-r'
+                id='save'
+                onClick={(e) => saveSubjects(e)}
+              >
+                Finish Later
+              </Button>
+            )}
 
             <Button
               className='u-m-l btn-primary'
               onClick={(e) => saveSubjects(e)}
               id='next'
+              style={{ float: 'right' }}
             >
               Next
             </Button>
