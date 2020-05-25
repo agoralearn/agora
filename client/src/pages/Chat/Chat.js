@@ -32,6 +32,10 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   }, [messages]);
 
   useEffect(() => {
+    console.log('avatars', avatars);
+  }, [avatars]);
+
+  useEffect(() => {
     socket.on('message', (data) => {
       if (data.chatId === match.params.chatId) {
         setMessages((messages) => [...messages, data.message]);
@@ -47,6 +51,8 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
 
     function mapUserstoImages({ users }) {
       const avatarMap = {};
+
+      console.log(users);
 
       const otherUsers = users.filter((person) => person._id !== user.id);
 
