@@ -19,6 +19,7 @@ import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
 // import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
+import ProfileImage from '../../components/ProfileImage/ProfileImage';
 
 const tutoringInfoFields = [
   {
@@ -75,7 +76,7 @@ function Onboarding() {
   // });
   const [bio, setBio] = useState();
   const [timeFrame, setTimeFrame] = useState([]);
-  // const [image, setImage] = useState();
+  const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
   // const [price, setPrice] = useState();
@@ -86,7 +87,7 @@ function Onboarding() {
     subjects: subjectNames,
     bio: bio,
     timeFrame: timeFrame,
-    // image: image,
+    image: image,
     minGroupSize: minGroupSize,
     maxGroupSize: maxGroupSize,
     // price: price,
@@ -217,6 +218,36 @@ function Onboarding() {
     );
   }
 
+  function renderProfilePic() {
+    return (
+      <div>
+        <div style={{ marginBottom: '10px' }}>
+          <ProfileImage
+            profileImg={
+              image
+                ? image
+                : 'https://utulsa.edu/wp-content/uploads/2018/08/generic-avatar.jpg'
+            }
+            style={{ margin: '0 auto' }}
+          />
+        </div>
+        <div className='u-m-b-sm'>
+          <label>Profile Image</label>
+        </div>
+        <div className='u-m-b-sm'>
+          <Input
+            placeholder='Image url...'
+            onChange={(event) => setImage(event.target.value)}
+          ></Input>
+        </div>
+        <p>
+          Hint: Paste the link to your professional profile picture in the field
+          below. (We recommend grabbing the url from your LinkedIn Image)
+        </p>
+      </div>
+    );
+  }
+
   function checkboxFields(value) {
     const timeFrameCopy = [...timeFrame];
     const index = timeFrame.indexOf(value);
@@ -312,6 +343,8 @@ function Onboarding() {
       case 3:
         return renderTutorBio();
       case 4:
+        return renderProfilePic();
+      case 5:
         return;
       default:
         return renderSubjects();
