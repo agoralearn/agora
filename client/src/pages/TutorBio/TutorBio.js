@@ -227,6 +227,9 @@ function TutorBio({ match }) {
                             {ed}{' '}
                           </span>
                         ))}
+                      {tutor.education.length === 0 && (
+                        <p>No Education Listed</p>
+                      )}
                     </div>
                   </div>
 
@@ -251,13 +254,23 @@ function TutorBio({ match }) {
                           <Badge key={tutor.timeFrame}>{tutor.timeFrame}</Badge>
                         );
                       })}
+                      {tutor.timeFrame.length === 0 && (
+                        <p>No preference on session type</p>
+                      )}
                     </div>
                   </div>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Grid.Row>
-          <Grid.Row style={{ padding: '0px 20px', marginBottom: '200px' }}>
+          <Grid.Row
+            style={{
+              padding: '0px 20px',
+              marginBottom: '200px',
+              maxWidth: '750px',
+              margin: '0 auto'
+            }}
+          >
             <h2 style={{ margin: '0 auto', paddingBottom: '10px' }}>
               About Me
             </h2>
