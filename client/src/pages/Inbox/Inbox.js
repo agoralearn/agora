@@ -10,7 +10,7 @@ import { useAuth } from '../../utils/auth';
 export default function Inbox(props) {
   const [chats, setChats] = useState([]);
 
-  const { socket, state, user } = useAuth();
+  const { socket, state /*, user*/ } = useAuth();
 
   useEffect(() => {
     getChats();
