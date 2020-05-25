@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from 'semantic-ui-react';
+// import { useAuth } from '../../utils/auth';
 
-export default function CheckInbox({ setHelperVisible }) {
+export default function Tutorial({ setHelperVisible }) {
   const [stage, setStage] = useState(1);
+  // const { user } = useAuth();
   useEffect(() => {
     if (setHelperVisible) {
       document.body.style.overflow = 'hidden';

@@ -29,12 +29,13 @@ function Signup({ location }) {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const { isLoggedIn, user, login } = useAuth();
   const history = useHistory();
 
   if (isLoggedIn && user) {
     return user.role === 'student' ? (
-      <Redirect to='/tutors' />
+      <Redirect to={{ pathname: '/tutors', state: { firstVisit: true } }} />
     ) : (
       <Redirect to='/profile' />
     );
@@ -62,13 +63,13 @@ function Signup({ location }) {
         return login(formState.email, formState.password);
       })
       .then(() => {
-        formState.role === 'student'
-          ? history.replace('/tutors')
-          : history.replace('/onboarding');
+        formState.role === 'tutor' && history.replace('/onboarding');
       })
       .catch((err) => {
         setLoading(false);
-        setError(err.response.data.message);
+        setError('error');
+        // this error message was erroring out - look into it
+        // setError(err.response.data.message);
       });
   };
 
