@@ -19,6 +19,7 @@ import { categories } from '../../utils/subjectData';
 import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
+import Tutorial from '../../components/Helpers/Tutorial';
 
 const tutoringInfoFields = [
   {
@@ -63,6 +64,7 @@ function Onboarding() {
     progressPercent: -25
   });
   const [subjectNames, setSubjectNames] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   const [subjects, setSubjects] = useState(categories);
   const [bio, setBio] = useState();
   const [timeFrame, setTimeFrame] = useState([]);
@@ -72,7 +74,7 @@ function Onboarding() {
   const [price, setPrice] = useState();
   const [age, setAge] = useState();
   const [savedEducation, setSavedEducation] = useState([]);
-
+  const [helperVisible, setHelperVisible] = useState(false);
   const userInfo = {
     subjects: subjectNames,
     bio: bio,
@@ -85,6 +87,9 @@ function Onboarding() {
     education: savedEducation
   };
 
+  function handleModalToggle() {
+    setModalOpen(!modalOpen);
+  }
   function toggleSelected(e, cat, subcat) {
     const categoryIndex = subjects.findIndex((category) => {
       return category.header === cat;
@@ -138,10 +143,14 @@ function Onboarding() {
           </div>
           <div>
             <Modal
+              open={modalOpen}
               trigger={
                 <Button
                   className='btn-secondary'
                   style={{ marginBottom: '60px' }}
+                  onClick={() => {
+                    handleModalToggle();
+                  }}
                 >
                   Skip for now
                 </Button>
@@ -150,7 +159,13 @@ function Onboarding() {
               <Modal.Header>What would you like to do next?</Modal.Header>
               <Modal.Content>
                 <div style={{ margin: '0 auto' }}>
-                  <Button className='btn-primary u-m-r u-m-b-sm'>
+                  <Button
+                    onClick={() => {
+                      handleModalToggle();
+                      setHelperVisible(true);
+                    }}
+                    className='btn-primary u-m-r u-m-b-sm'
+                  >
                     Take a Tour
                   </Button>
 
@@ -182,35 +197,41 @@ function Onboarding() {
   }
 
   function renderSubjects() {
-    return categories.map((cat) => {
-      return (
-        <div key={cat.type}>
-          <h2>{cat.header}</h2>
-          {cat.subcat.map((subcat) => {
-            return (
-              <div
-                key={subcat.key}
-                className='u-m-r disp-inline-b'
-                onClick={(e) => {
-                  toggleSelected(e, cat.header, subcat.text);
-                }}
-              >
-                <Badge
-                  selected={subcat.selected}
-                  type={subcat.selected ? 'Badge_wrapper' : 'outline'}
-                >
-                  {subcat.text}
-                </Badge>
-              </div>
-            );
-          })}
+    return (
+      <>
+        <div className='u-m-b-sm'>
+          <p>Select the subjects you offer</p>
         </div>
-      );
-    });
+        {categories.map((cat) => {
+          return (
+            <div key={cat.type}>
+              <h2>{cat.header}</h2>
+              {cat.subcat.map((subcat) => {
+                return (
+                  <div
+                    key={subcat.key}
+                    className='u-m-r disp-inline-b'
+                    onClick={(e) => {
+                      toggleSelected(e, cat.header, subcat.text);
+                    }}
+                  >
+                    <Badge
+                      selected={subcat.selected}
+                      type={subcat.selected ? 'Badge_wrapper' : 'outline'}
+                    >
+                      {subcat.text}
+                    </Badge>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </>
+    );
   }
   function saveSubjects(e) {
     e.persist();
-    console.log(e.target.id);
     API.updateUser(userInfo)
       .then((res) => {
         if (e.target.id === 'next') {
@@ -322,7 +343,14 @@ function Onboarding() {
           <p>What would you like to do next?</p>
         </div>
         <div>
-          <Button className='btn-primary u-m-b-sm'>Take a Tour</Button>
+          <Button
+            onClick={() => {
+              setHelperVisible(true);
+            }}
+            className='btn-primary u-m-b-sm'
+          >
+            Take a Tour
+          </Button>
         </div>
 
         <div>
@@ -475,9 +503,18 @@ function Onboarding() {
         <h2>Profile Setup</h2>
       </PageHeader>
       <Container>
+        {helperVisible && (
+          <Tutorial
+            setHelperVisible={(option) => {
+              handleModalToggle();
+              setHelperVisible(option);
+            }}
+          />
+        )}
         {selectCurrentStep()}
         {step.currentStep !== 0 && (
           <Progress
+            color='green'
             style={{ margin: '30px' }}
             percent={step.progressPercent}
             progress

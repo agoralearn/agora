@@ -21,7 +21,7 @@ export default function CheckInbox({ setHelperVisible }) {
         right: 0,
         bottom: 0,
         background: 'rgba(0,0,0,.9)',
-        zIndex: 10
+        zIndex: 12
       }}
       onClick={() => setHelperVisible(false)}
     >
@@ -33,10 +33,10 @@ export default function CheckInbox({ setHelperVisible }) {
           fontSize: '24px',
           right: '90px',
           color: 'white',
-          zIndex: '11'
+          zIndex: '13'
         }}
       >
-        Keep an eye our for a response here <Icon name='arrow right' />
+        Keep an eye out for a response here <Icon name='arrow right' />
       </div>
     </div>
   );
