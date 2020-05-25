@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import API from '../../utils/API';
-// import { useAuth } from '../../utils/auth';
+import { useAuth } from '../../utils/auth';
+import { Link, useHistory } from 'react-router-dom';
 import Badge from '../../components/Badge/Badge';
-import { toast } from 'react-toastify';
 import {
   Input,
   Form,
@@ -13,11 +13,11 @@ import {
   // Grid,
   Progress,
   Icon,
-  Button
+  Button as SemanticButton
 } from 'semantic-ui-react';
 import { education } from '../../utils/categoryData';
 import { categories } from '../../utils/subjectData';
-// import Button from '../../components/Button/Button';
+import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
 
@@ -56,30 +56,21 @@ const tutoringInfoFields = [
 ];
 
 function Onboarding() {
-  toast.configure();
+  const { user } = useAuth();
+  const history = useHistory();
+
   const [step, setStep] = useState({
-    currentStep: 1,
+    currentStep: 5,
     progressPercent: 0
   });
-  // const { user } = useAuth();
   const [subjectNames, setSubjectNames] = useState([]);
   const [subjects, setSubjects] = useState(categories);
-  // const [userInfo, setUserInfo] = useState({
-  //   subjects: subjectNames,
-  //   bio: bio,
-  //   timeFrame: timeFrame,
-  //   image: image,
-  //   minGroupSize: minGroupSize,
-  //   maxGroupSize: maxGroupSize,
-  //   price: price,
-  //   age: age
-  // });
   const [bio, setBio] = useState();
   const [timeFrame, setTimeFrame] = useState([]);
   const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
-  // const [price, setPrice] = useState();
+  const [price, setPrice] = useState();
   const [age, setAge] = useState();
   const [savedEducation, setSavedEducation] = useState([]);
 
@@ -90,7 +81,7 @@ function Onboarding() {
     image: image,
     minGroupSize: minGroupSize,
     maxGroupSize: maxGroupSize,
-    // price: price,
+    price: price,
     age: age,
     education: savedEducation
   };
@@ -172,7 +163,7 @@ function Onboarding() {
 
   function renderTutoringInfo() {
     return (
-      <Form>
+      <Form style={{ maxWidth: '500px' }}>
         {tutoringInfoFields.map((field) => {
           return determineFieldType(field);
         })}
@@ -248,6 +239,46 @@ function Onboarding() {
     );
   }
 
+  function renderOnboardComplete() {
+    return (
+      <>
+        <h1>Congratulations!</h1>
+        <div className='u-m-b'>
+          <p>
+            Your profile changes have been saved. You can always update your
+            profile by clicking your image in the nav bar and going to settings.
+          </p>
+        </div>
+        <div className='u-m-b-sm'>
+          <p>What would you like to do next?</p>
+        </div>
+        <div>
+          <Button className='btn-primary u-m-b-sm'>Take a Tour</Button>
+        </div>
+
+        <div>
+          <Button
+            onClick={() => {
+              history.push('/tutorbio/' + user.id);
+            }}
+            className='btn-primary u-m-b-sm'
+          >
+            View Bio Page
+          </Button>
+        </div>
+        <div>
+          <Link
+            to={{
+              pathname: '/tutors'
+            }}
+          >
+            <Button className='btn-primary u-m-b-sm'>Browse Tutors</Button>
+          </Link>
+        </div>
+      </>
+    );
+  }
+
   function checkboxFields(value) {
     const timeFrameCopy = [...timeFrame];
     const index = timeFrame.indexOf(value);
@@ -281,7 +312,7 @@ function Onboarding() {
         );
       case 'minGroupSize':
         return (
-          <div key={field.name} className='u-m-b'>
+          <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
             <label>{field.label}</label>
             <div>
               <Input
@@ -299,7 +330,7 @@ function Onboarding() {
         );
       case 'maxGroupSize':
         return (
-          <div key={field.name} className='u-m-b'>
+          <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
             <label>{field.label}</label>
             <div>
               <Input
@@ -315,13 +346,29 @@ function Onboarding() {
         );
       case 'age':
         return (
-          <div key={field.name} className='u-m-b'>
+          <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
             <label>{field.label}</label>
             <div>
               <Input
                 name={field.name}
                 defaultValue={1}
                 onChange={(event) => setAge(event.target.value)}
+                type={field.inputType}
+                min={field.min}
+                // required={field.required}
+              ></Input>
+            </div>
+          </div>
+        );
+      case 'price':
+        return (
+          <div key={field.name} className='u-m-b u-m-r disp-inline-b'>
+            <label>{field.label}</label>
+            <div>
+              <Input
+                name={field.name}
+                defaultValue={1}
+                onChange={(event) => setPrice(event.target.value)}
                 type={field.inputType}
                 min={field.min}
                 // required={field.required}
@@ -345,7 +392,7 @@ function Onboarding() {
       case 4:
         return renderProfilePic();
       case 5:
-        return;
+        return renderOnboardComplete();
       default:
         return renderSubjects();
     }
@@ -359,21 +406,35 @@ function Onboarding() {
       <Container>
         {selectCurrentStep()}
         <Progress percent={step.progressPercent} progress />
-        <Button animated onClick={(e) => saveSubjects(e)} id='next'>
-          <Button.Content visible id='next'>
-            Next
-          </Button.Content>
-          <Button.Content hidden id='next'>
-            <Icon name='arrow right' />
-          </Button.Content>
-        </Button>
-        <Button icon labelPosition='left'>
-          <Icon name='save outline' />
-          Pause
-        </Button>
+        {step.currentStep !== 5 && (
+          <>
+            <SemanticButton animated onClick={(e) => saveSubjects(e)} id='next'>
+              <SemanticButton.Content visible id='next'>
+                Next
+              </SemanticButton.Content>
+              <SemanticButton.Content hidden id='next'>
+                <Icon name='arrow right' />
+              </SemanticButton.Content>
+            </SemanticButton>
+            <SemanticButton icon labelPosition='left'>
+              <Icon name='save outline' />
+              Pause
+            </SemanticButton>
+          </>
+        )}
       </Container>
     </div>
   );
 }
 
 export default Onboarding;
+
+/* 
+Step 0 page "set up profile" or "save for later" options
+add instructions to first pick subjects page 
+Make a modal for the save changes and finish later button that offers a tutorial, bio, browse
+Make funcitonality so that save and finish still does the API call
+Redirect link from signup needs to point to onboarding
+Makes our own styling for the progress bar, improve next and finish buttons
+-MAYBE animate progress bar
+*/

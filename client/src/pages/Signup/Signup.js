@@ -64,7 +64,7 @@ function Signup({ location }) {
       .then(() => {
         formState.role === 'student'
           ? history.replace('/tutors')
-          : history.replace('/profile');
+          : history.replace('/onboarding');
       })
       .catch((err) => {
         setLoading(false);
@@ -187,7 +187,7 @@ function Signup({ location }) {
               onChange={handleChange}
             />
           </Form.Field>
-          {formState.role === 'student' ? (
+          {formState.role === 'student' && (
             <Form.Field>
               <label htmlFor='age'>Age</label>
               <Input
@@ -201,37 +201,6 @@ function Signup({ location }) {
                 onChange={handleChange}
               />
             </Form.Field>
-          ) : (
-            <>
-              <Form.Field>
-                <label htmlFor='minGroupSize'>Minimum Group Size</label>
-                <Input
-                  required
-                  fluid
-                  placeholder='Min students per session...'
-                  name='minGroupSize'
-                  type='number'
-                  min='1'
-                  defaultValue='1'
-                  id='minGroupSize'
-                  onChange={handleChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label htmlFor='maxGroupSize'>Maximum Group Size</label>
-                <Input
-                  required
-                  fluid
-                  placeholder='Max students per session...'
-                  name='maxGroupSize'
-                  type='number'
-                  min='1'
-                  defaultValue='1'
-                  id='maxGroupSize'
-                  onChange={handleChange}
-                />
-              </Form.Field>
-            </>
           )}
           <Form.Checkbox
             required
