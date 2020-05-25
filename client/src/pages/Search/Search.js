@@ -6,6 +6,8 @@ import API from '../../utils/API';
 import { Container, Form, Dropdown, Accordion, Icon } from 'semantic-ui-react';
 import './Search.scss';
 import { subjects, education } from '../../utils/categoryData';
+import { useHistory } from 'react-router-dom';
+import Tutorial from '../../components/Helpers/Tutorial';
 
 const INITIAL_SEARCH_STATE = {
   subject: 'All Subjects',
@@ -37,6 +39,14 @@ function Search() {
   const [tutors, setTutors] = useState([]);
   const [search, setSearch] = useState(INITIAL_SEARCH_STATE);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [helperVisible, setHelperVisible] = useState(false);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (history.location && history.location.state) {
+      setHelperVisible(history.location.state.firstVisit);
+    }
+  }, [history.location]);
 
   const prices = [
     { key: 'Any', value: 'Any', text: 'Any Price' },
@@ -136,6 +146,9 @@ function Search() {
 
   return (
     <Container>
+      {helperVisible && (
+        <Tutorial setHelperVisible={(option) => setHelperVisible(option)} />
+      )}
       <PageHeader>
         <h2>Browse Tutors</h2>
       </PageHeader>

@@ -17,7 +17,7 @@
     "no-unused-vars": "error",
     "no-var": "error",
     "camelcase": "error",
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "prefer-arrow-callback": "error",

@@ -1,4 +1,4 @@
-@import "../../css/colors.scss";
+@import '../../css/colors.scss';
 
 .Badge_wrapper {
   display: inline-block;
@@ -9,4 +9,9 @@
   font-size: 12px;
   margin-bottom: 6px;
   margin-right: 10px;
+  &.outline {
+    background-color: white;
+    border: 2px solid $color-primary;
+    color: $color-primary;
+  }
 }

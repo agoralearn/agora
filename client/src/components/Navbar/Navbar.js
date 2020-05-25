@@ -30,7 +30,7 @@ function Navbar() {
         profileImg={user.image}
         height='40px'
         width='40px'
-        style={{ display: 'inline-block' }}
+        style={{ display: 'inline-block', zIndex: 10 }}
       />
     );
 
@@ -79,7 +79,7 @@ function Navbar() {
           <LogoText className='u-m-l-sm' />
         </div>
       </Link>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', zIndex: 10 }}>
         <Link to='/tutors'>
           <Button.Link className='btn-link btn-link--white u-m-r'>
             {/* Tutors */}

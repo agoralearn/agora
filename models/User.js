@@ -58,7 +58,8 @@ const UserSchema = new Schema(
       type: [String]
     },
     rating: {
-      type: Number
+      type: Number,
+      default: 5
     },
     role: {
       type: String
