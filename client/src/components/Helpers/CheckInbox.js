@@ -33,10 +33,10 @@ export default function CheckInbox({ setHelperVisible }) {
           fontSize: '24px',
           right: '90px',
           color: 'white',
-          zIndex: '11'
+          zIndex: '13'
         }}
       >
-        Keep an eye our for a response here <Icon name='arrow right' />
+        Keep an eye out for a response here <Icon name='arrow right' />
       </div>
     </div>
   );

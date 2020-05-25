@@ -1,8 +1,8 @@
 import React from 'react';
 import './Badge.scss';
 
-function Badge({ children }) {
-  return <span className='Badge_wrapper'>{children}</span>;
+function Badge({ children, type }) {
+  return <span className={`Badge_wrapper ${type}`}>{children}</span>;
 }
 
 Badge.defaultProps = {
