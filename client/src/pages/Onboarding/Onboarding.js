@@ -20,6 +20,7 @@ import Button from '../../components/Button/Button';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import ProfileImage from '../../components/ProfileImage/ProfileImage';
 import Tutorial from '../../components/Helpers/Tutorial';
+import './Onboarding.scss';
 
 const tutoringInfoFields = [
   {
@@ -50,7 +51,7 @@ const tutoringInfoFields = [
     required: true,
     min: 1
   },
-  { name: 'price', label: 'Price ($/hr)', inputType: 'number' },
+  { name: 'price', label: 'Price ($/hr)', inputType: 'number', min: 1 },
   { name: 'bio', label: 'Bio', type: 'textarea', placeholder: 'About Me...' },
   { name: 'image', label: 'Image URL' },
   {
@@ -73,11 +74,11 @@ function Onboarding() {
   const [modalOpen, setModalOpen] = useState(false);
   const [subjects, setSubjects] = useState(categories);
   const [bio, setBio] = useState();
-  const [timeFrame, setTimeFrame] = useState([]);
+  const [timeFrame, setTimeFrame] = useState(['one-time', 'on-going']);
   const [image, setImage] = useState();
   const [minGroupSize, setMinGroupSize] = useState();
   const [maxGroupSize, setMaxGroupSize] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(1);
   const [age, setAge] = useState();
   const [savedEducation, setSavedEducation] = useState([]);
   const [helperVisible, setHelperVisible] = useState(false);
@@ -221,7 +222,7 @@ function Onboarding() {
                 return (
                   <div
                     key={subcat.key}
-                    className='u-m-r disp-inline-b'
+                    className='u-m-r disp-inline-b Onboarding-subject-badge'
                     onClick={(e) => {
                       toggleSelected(e, cat.header, subcat.text);
                     }}

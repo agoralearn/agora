@@ -256,9 +256,7 @@ function TutorBio({ match }) {
                     <h2>Available For</h2>
                     <div style={{ textAlign: 'center', padding: '10px' }}>
                       {tutor.timeFrame.map((timeframe) => {
-                        return (
-                          <Badge key={tutor.timeFrame}>{tutor.timeFrame}</Badge>
-                        );
+                        return <Badge key={timeframe}>{timeframe}</Badge>;
                       })}
                       {tutor.timeFrame.length === 0 && (
                         <p>No preference on session type</p>
