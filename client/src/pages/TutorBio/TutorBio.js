@@ -162,14 +162,12 @@ function TutorBio({ match }) {
               </h1>
               <div style={{ paddingTop: '20px' }}>
                 <Image
-                  src={
-                    'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80'
-                  }
+                  src={tutor.image}
                   circular
                   centered
                   className='u-m-b'
                   fluid
-                  style={{ height: 'auto', width: '30%' }}
+                  style={{ height: 'auto', width: '30%', maxWidth: '250px' }}
                 />
               </div>
 

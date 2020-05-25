@@ -21,7 +21,7 @@ export default function CheckInbox({ setHelperVisible }) {
         right: 0,
         bottom: 0,
         background: 'rgba(0,0,0,.9)',
-        zIndex: 10
+        zIndex: 30
       }}
       onClick={() => setHelperVisible(false)}
     >

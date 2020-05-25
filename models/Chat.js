@@ -21,6 +21,10 @@ const ChatSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
+  },
+  session: {
+    type: Boolean,
+    default: false
   }
 });
 
