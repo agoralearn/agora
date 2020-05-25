@@ -233,8 +233,12 @@ function TutorBio({ match }) {
                             {ed}{' '}
                           </span>
                         ))}
+                      {tutor.education.length === 0 && (
+                        <p>No Education Listed</p>
+                      )}
                     </div>
                   </div>
+
                   <div style={{ paddingTop: '20px' }}>
                     <h2>Subjects</h2>
                     <div style={{ padding: '20px' }}>
@@ -247,15 +251,38 @@ function TutorBio({ match }) {
                       )}
                     </div>
                   </div>
+
+                  <div>
+                    <h2>Available For</h2>
+                    <div style={{ textAlign: 'center', padding: '10px' }}>
+                      {tutor.timeFrame.map((timeframe) => {
+                        return (
+                          <Badge key={tutor.timeFrame}>{tutor.timeFrame}</Badge>
+                        );
+                      })}
+                      {tutor.timeFrame.length === 0 && (
+                        <p>No preference on session type</p>
+                      )}
+                    </div>
+                  </div>
                 </Grid.Column>
               </Grid.Row>
             </Grid>
           </Grid.Row>
-          <Grid.Row style={{ padding: '0px 20px', marginBottom: '200px' }}>
+          <Grid.Row
+            style={{
+              padding: '0px 20px',
+              marginBottom: '200px',
+              maxWidth: '750px',
+              margin: '0 auto'
+            }}
+          >
             <h2 style={{ margin: '0 auto', paddingBottom: '10px' }}>
               About Me
             </h2>
-            <p>{tutor.bio}</p>
+            <div style={{ padding: '20px' }}>
+              <p>{tutor.bio}</p>
+            </div>
           </Grid.Row>
         </Grid>
       )}

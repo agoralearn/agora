@@ -168,13 +168,14 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         />
       </div>
       <div className='Chat-log'>
-        {messages.map((message, index) => {
+        {messages.map((message, index, array) => {
           return (
             <ChatBubble
               key={message._id}
               text={message.message}
               recieved={message.read}
               sender={message.sender}
+              previous={index > 0 ? array[index - 1].sender : ''}
               thumbnail={
                 message.sender === user.id
                   ? user.image
