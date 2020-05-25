@@ -48,16 +48,16 @@ export default function Inbox(props) {
   };
 
   // TODO need to send to server that we read message if unread is from there
-  const isChatUnread = (chat) => {
-    if (state.unread && state.unread.includes(chat._id)) {
-      return true;
-    }
-    if (!chat.messages[0].read.includes(user.id)) {
-      return true;
-    }
+  // const isChatUnread = (chat) => {
+  //   if (state.unread && state.unread.includes(chat._id)) {
+  //     return true;
+  //   }
+  //   if (!chat.messages[0].read.includes(user.id)) {
+  //     return true;
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
 
   return (
     <div className='inbox-container'>
