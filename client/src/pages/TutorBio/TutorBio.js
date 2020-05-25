@@ -138,6 +138,7 @@ function TutorBio({ match }) {
         handleMessageChange={handleMessageChange}
         modalError={inputError}
         isLoggedIn={isLoggedIn}
+        tutorId={match.params.userId}
       />
 
       <ToastContainer />
@@ -182,7 +183,7 @@ function TutorBio({ match }) {
                             color='yellow'
                             inverted
                             className='u-m-r'
-                          />
+                          />{' '}
                           {tutor.rating}
                         </div>
                       </Statistic.Value>

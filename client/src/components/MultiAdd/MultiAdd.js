@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './MultiAdd.scss';
 import {
   Input,
   Form,
@@ -11,42 +12,52 @@ import {
 } from 'semantic-ui-react';
 import API from '../../utils/API';
 import { unionWith } from 'lodash/array';
+import { useAuth } from '../../utils/auth';
 // match max number of students to add to max number of students tutor will take
 
-export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
+export default function MultiAdd({
+  selectedStudents,
+  setSelectedStudents,
+  tutorId
+}) {
   const [searchResults, setSearchResults] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [formError, setFormError] = useState(false);
+  const [formError, setFormError] = useState('');
+  const { user } = useAuth();
 
   function inputSubmitHandler() {
     if (inputValue.trim().length > 0) {
       API.getStudentByName({ name: inputValue })
         .then((res) => {
-          if (res.data.length < 1) {
+          const availableStudents = res.data.filter(
+            (student) => student._id !== user.id && student._id !== tutorId
+          );
+          if (availableStudents.length < 1) {
             setFormError('No students found...');
+            setSearchResults([]);
           } else {
-            setSearchResults(res.data);
+            setSearchResults(availableStudents);
           }
         })
         .catch((err) => console.log(err));
     } else {
       setFormError('Please Enter at least 2 characters');
+      setSearchResults([]);
     }
   }
+
   function selectStudentHandler(event, student) {
-    student.selected = true;
+    student.selected = !student.selected;
 
-    setSelectedStudents([...selectedStudents, student]);
+    if (student.selected) {
+      setSelectedStudents([...selectedStudents, student]);
+    } else {
+      setSelectedStudents(
+        selectedStudents.filter((stu) => stu._id !== student._id)
+      );
+    }
   }
-  function removeHandler(event, student) {
-    event.stopPropagation();
 
-    student.selected = false;
-    const newSelection = selectedStudents.filter(
-      (selStudent) => student._id !== selStudent._id
-    );
-    setSelectedStudents(newSelection);
-  }
   function renderListItems(selectedStudents, searchResults) {
     const students = unionWith(
       selectedStudents,
@@ -61,29 +72,15 @@ export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
           onClick={(event) => selectStudentHandler(event, student)}
         >
           <List.Content>
-            <Image
-              avatar
-              src='https://react.semantic-ui.com/images/avatar/small/rachel.png'
-            />
-
-            {student.name}
-            {student.selected ? (
-              <Icon
-                className='u-m-l'
-                name='remove circle'
-                color='red'
-                onClick={(event) => {
-                  removeHandler(event, student);
-                }}
-              />
-            ) : (
-              <Icon
-                className='u-m-l'
-                name='add circle'
-                color='green'
-                onClick={(event) => selectStudentHandler(event, student)}
-              />
-            )}
+            <div className='MultiAdd-student'>
+              <Image avatar src={student.image} />
+              {student.name}{' '}
+              {student.selected ? (
+                <Icon className='u-m-l' name='remove circle' color='red' />
+              ) : (
+                <Icon className='u-m-l' name='add circle' color='green' />
+              )}
+            </div>
           </List.Content>
         </List.Item>
       );
@@ -96,7 +93,7 @@ export default function MultiAdd({ selectedStudents, setSelectedStudents }) {
   }
   return (
     <Container>
-      <Form error={formError}>
+      <Form error={formError ? true : false}>
         <Message error header='Whoops!' content={formError} />
 
         <Form.Group>

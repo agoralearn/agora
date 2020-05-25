@@ -50,7 +50,8 @@ export default function MessageModal({
   handleModalToggle,
   modalError,
   isOpen,
-  isLoggedIn
+  isLoggedIn,
+  tutorId
 }) {
   const [isGroup, setIsGroup] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
@@ -92,6 +93,7 @@ export default function MessageModal({
                 <MultiAdd
                   selectedStudents={selectedStudents}
                   setSelectedStudents={setSelectedStudents}
+                  tutorId={tutorId}
                 />
               </>
             )}
