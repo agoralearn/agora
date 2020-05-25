@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './WhiteBoard.scss';
 import CanvasDraw from 'react-canvas-draw';
 import { useAuth } from '../../utils/auth/';
@@ -11,7 +11,6 @@ import { useHistory, useParams } from 'react-router-dom';
 export default function WhiteBoard() {
   const [fillColor, setFillColor] = useState('black');
   const [drawState, setDrawState] = useState(null);
-
   const [participants, setParticipants] = useState(
     useHistory().location.state.participants
   );
@@ -21,6 +20,20 @@ export default function WhiteBoard() {
   const canvasRef = useRef(null);
   const canvasWrapperRef = useRef(null);
   const { chatId } = useParams();
+
+  const updateOnlineStatus = useCallback((userIds) => {
+    setParticipants((participants) => {
+      return participants.map((user) => {
+        if (userIds.includes(user._id)) {
+          user.online = true;
+        } else {
+          user.online = false;
+        }
+
+        return user;
+      });
+    });
+  }, []);
 
   useEffect(() => {
     socket.on('newDraw', (data) => {
@@ -37,16 +50,15 @@ export default function WhiteBoard() {
       setDrawState(data);
     });
 
-    socket.on('userJoined', ({ userId, drawData }) => {
-      // if (userId === user.id && drawData) {
-      //   setDrawState(drawData);
-      //   // canvasRef.current.loadSaveData(drawData, { immediate: true });
-      // }
+    socket.on('userJoined', ({ userIds }) => {
+      updateOnlineStatus(userIds);
     });
 
-    socket.on('userLeft', ({ userId }) => {});
+    socket.on('userLeft', ({ userIds }) => {
+      updateOnlineStatus(userIds);
+    });
 
-    socket.emit('join', { chatId, participants, userId: user.id });
+    socket.emit('join', { chatId });
 
     // Clean up old socket listeners
     return () => {
@@ -58,7 +70,7 @@ export default function WhiteBoard() {
       socket.off('userLeft');
       socket.off('joinData');
     };
-  }, [socket]);
+  }, [socket, updateOnlineStatus, chatId, user.id]);
 
   function transferCtx() {
     socket.emit('draw', {
@@ -154,12 +166,12 @@ export default function WhiteBoard() {
           background: 'white'
         }}
       >
-        {/* <Chat
+        <Chat
           match={{ params: { chatId: chatId } }}
           width='300px'
           height='400px'
           miniChat
-        /> */}
+        />
       </div>
     </div>
   );

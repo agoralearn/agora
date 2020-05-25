@@ -25,6 +25,19 @@ function socketConfig(req, res, next) {
   next();
 }
 
+function getUserIdsInRoom(roomId) {
+  const room = io.sockets.adapter.rooms[roomId];
+  if (!room) {
+    return [];
+  }
+
+  const userIds = Object.keys(room.sockets).map(
+    (socketId) => socketMap[socketId]
+  );
+
+  return userIds;
+}
+
 function removeSocketSession(socketId, socketMap) {
   const socketMapClone = { ...socketMap };
   const userId = socketMapClone[socketId];
@@ -93,20 +106,27 @@ io.on('connection', (socket) => {
     socketMap = removeSocketSession(socket.id, socketMap);
   });
 
-  socket.on('leave', ({ chatId, userId }) => {
-    io.to(chatId).emit('userLeft', { userId });
+  // TODO: remove canvas data from memory when everyone leaves
+  socket.on('leave', ({ chatId }) => {
     socket.leave(chatId);
+    const users = getUserIdsInRoom(chatId);
+    if (users.length === 0) {
+      delete whiteBoardData[chatId];
+    } else {
+      io.to(chatId).emit('userLeft', {
+        userIds: getUserIdsInRoom(chatId)
+      });
+    }
   });
 
   // On connection to whiteboard
-  // TODO: On join send this user the current board
   socket.on('join', (data) => {
     socket.join(data.chatId);
     socket.emit('joinData', whiteBoardData[data.chatId]);
-    // io.to(data.chatId).emit('userJoined', {
-    //   userId: data.userId,
-    //   drawData: whiteBoardData[data.chatId]
-    // });
+
+    io.to(data.chatId).emit('userJoined', {
+      userIds: getUserIdsInRoom(data.chatId)
+    });
   });
 });
 
