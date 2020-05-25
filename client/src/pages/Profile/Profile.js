@@ -417,6 +417,8 @@ function Profile() {
               profileImg={editing ? userInfoCopy.image : userInfo.image}
               style={{ marginBottom: '10px' }}
             />
+          </div>
+          <div>
             {!editing ? (
               <Button
                 className='btn-primary'
