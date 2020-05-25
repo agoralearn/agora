@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Navbar.scss';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
@@ -7,10 +7,22 @@ import Logo from '../../components/Logo/Logo';
 import LogoText from '../../components/LogoText/LogoText';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import { Icon, Dropdown } from 'semantic-ui-react';
+import API from '../../utils/API';
 
 function Navbar() {
   const { isLoggedIn, logout, user } = useAuth();
   const history = useHistory();
+  const [image, setImage] = useState(user && user.image);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      API.getUser()
+        .then((res) => {
+          setImage(res.data.image);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   function navigateToProfile() {
     history.push('/profile');
@@ -27,7 +39,7 @@ function Navbar() {
   function showLoginOrProfile() {
     const profileImage = user && (
       <ProfileImage
-        profileImg={user.image}
+        profileImg={image}
         height='40px'
         width='40px'
         style={{ display: 'inline-block', zIndex: 10 }}
