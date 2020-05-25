@@ -29,18 +29,11 @@
 .WhiteBoard-participants {
   position: absolute;
   right: 20px;
-  display: flex;
-  flex-direction: row;
   margin-top: 10px;
   z-index: 19;
 
   & div:not(:last-child) {
-    margin-right: -20px;
-  }
-
-  & div:hover {
-    margin-right: 0px;
-    transform: scale(1.5);
+    // margin-right: -20px;
   }
 }
 

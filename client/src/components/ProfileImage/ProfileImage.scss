@@ -1,10 +1,43 @@
 @import "../../css/colors";
+
 .image-cropper {
   width: 100px;
   height: 100px;
   position: relative;
+  display: inline-block;
   overflow: hidden;
   border-radius: 50%;
+
+  &.offline::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    border-radius: 50%;
+    overflow-x: visible;
+    z-index: 100;
+    background: rgba(93, 93, 93, 0.5);
+  }
+
+  &:hover::after {
+    background: none;
+  }
+
+  // &.online::after {
+  //   content: "";
+  //   position: absolute;
+  //   display: inline-block;
+  //   height: 20px;
+  //   width: 20px;
+  //   bottom: 0;
+  //   left: 0;
+  //   border-radius: 50%;
+  //   overflow-x: visible;
+  //   z-index: 100;
+  //   background: rgb(253, 92, 92);
+  // }
 
   &.bordered {
     border: 2px solid $color-white;
