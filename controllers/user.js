@@ -49,7 +49,13 @@ module.exports = {
     if (req.query.name.length > 0) {
       const expression = new RegExp(req.query.name, 'i');
       db.User.aggregate([
-        { $project: { name: { $concat: ['$firstName', ' ', '$lastName'] } } },
+        {
+          $project: {
+            name: { $concat: ['$firstName', ' ', '$lastName'] },
+            _id: 1,
+            image: 1
+          }
+        },
         { $match: { name: expression } }
       ])
         // .select('firstName lastName image')

@@ -1,5 +1,6 @@
 import decode from 'jwt-decode';
 import axios from 'axios';
+
 export default class AuthService {
   login = (email, password) => {
     // Get a token
@@ -52,6 +53,6 @@ export default class AuthService {
     axios.defaults.headers.common.Authorization = null;
     localStorage.removeItem('id_token');
     // this will reload the page and reset the state of the application
-    window.location.reload('/');
+    window.location.replace('/');
   }
 }

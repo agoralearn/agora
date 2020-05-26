@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import './Chat.scss';
 import { useAuth } from '../../utils/auth';
@@ -48,13 +47,11 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
 
     function mapUserstoImages({ users }) {
       const avatarMap = {};
-
       const otherUsers = users.filter((person) => person._id !== user.id);
 
       otherUsers.forEach((user) => (avatarMap[user._id] = user.image));
 
       setAvatars(avatarMap);
-
       setOtherUsers(otherUsers);
     }
 
@@ -80,7 +77,7 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
               onClick={(event) =>
                 messageInputSubmitHandler(
                   event,
-                  'Session Request',
+                  'Your session has started.',
                   'sessionMsg'
                 )
               }
@@ -90,7 +87,11 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
             <Button
               className='btn-primary u-m-l'
               onClick={(event) =>
-                messageInputSubmitHandler(event, 'Rating Request', 'ratingMsg')
+                messageInputSubmitHandler(
+                  event,
+                  'Please rate your session.',
+                  'ratingMsg'
+                )
               }
             >
               Request Rating
@@ -170,56 +171,46 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
         />
       </div>
       <div className='Chat-log'>
-        {messages.map((message, index) => {
-          if (message.specialMsg) {
-            let specialMessage;
-            switch (message.specialMsg) {
-              case 'ratingMsg':
-                specialMessage = specialMessage = <RatingMessage />;
-                break;
-              case 'sessionMsg':
-                specialMessage = (
-                  <SessionMessage
-                    sessionId={match.params.chatId}
-                    participants={usersFullData}
-                  />
-                );
-                break;
-              default:
-                break;
-            }
-
-            return (
-              <ChatBubble
-                style={{ marginBottom: '10px' }}
-                key={message._id}
-                text={''}
-                recieved={message.read}
-                sender={message.sender}
-              >
-                {specialMessage}
-              </ChatBubble>
-            );
-          } else {
-            return (
-              <ChatBubble
-                key={message._id}
-                text={message.message}
-                recieved={message.read}
-                sender={message.sender}
-                thumbnail={
-                  message.sender === user.id
-                    ? user.image
-                    : avatars[message.sender]
-                }
-                date={message.createdAt}
-              />
-            );
+        {messages.map((message, index, array) => {
+          let specialMessage;
+          switch (message.specialMsg) {
+            case 'ratingMsg':
+              specialMessage = specialMessage = <RatingMessage />;
+              break;
+            case 'sessionMsg':
+              specialMessage = (
+                <SessionMessage
+                  sessionId={match.params.chatId}
+                  participants={usersFullData}
+                />
+              );
+              break;
+            default:
+              break;
           }
+
+          return (
+            <ChatBubble
+              className={specialMessage && 'ChatBubble-msg-special'}
+              key={message._id}
+              text={message.message}
+              recieved={message.read}
+              sender={message.sender}
+              previous={index > 0 ? array[index - 1].sender : ''}
+              thumbnail={
+                message.sender === user.id
+                  ? user.image
+                  : avatars[message.sender]
+              }
+              date={message.createdAt}
+              style={message.specialMsg && { marginBottom: '10px' }}
+            >
+              {specialMessage}
+            </ChatBubble>
+          );
         })}
         <div ref={chatLogRef}></div>
       </div>
-
       <form
         className='Chat-input-area'
         action=''

@@ -63,8 +63,8 @@ export default function Home() {
             </div>
 
             <p className='color-white f-w-b'>
-              Receive one on one tutoring or find a tutor for your group from
-              our many talented tutors
+              Receive one-on-one or group tutoring from one of our many talented
+              instructors
             </p>
           </div>
 
@@ -100,10 +100,12 @@ export default function Home() {
       </Hero>
 
       {/* How It works */}
+      <div style={{ marginTop: '100px' }}>
+        <PageHeader>
+          <h2>How It Works</h2>
+        </PageHeader>
+      </div>
 
-      <PageHeader>
-        <h2>How It Works</h2>
-      </PageHeader>
       <div className='Home_icons_container'>
         <Grid stackable columns={3}>
           <Grid.Column>
@@ -128,36 +130,38 @@ export default function Home() {
       </div>
 
       {/* Top Tutors Section */}
-      <Section>
-        <PageHeader>
-          <h2>Top Rated Tutors</h2>
-        </PageHeader>
-        <div>
-          {!state.loading ? (
-            state.value.map((tutor) => {
-              return (
-                <TutorCard
-                  key={tutor._id}
-                  subjects={tutor.subjects}
-                  profileImg={tutor.image}
-                  name={{
-                    firstName: tutor.firstName,
-                    lastName: tutor.lastName
-                  }}
-                  rating={tutor.rating}
-                  bio={tutor.bio}
-                  price={tutor.price}
-                  id={tutor._id}
-                />
-              );
-            })
-          ) : (
-            <Loader inline='centered' active>
-              Loading
-            </Loader>
-          )}
-        </div>
-      </Section>
+      <div style={{ marginTop: '100px' }}>
+        <Section>
+          <PageHeader>
+            <h2>Top Rated Tutors</h2>
+          </PageHeader>
+          <div>
+            {!state.loading ? (
+              state.value.splice(0, 3).map((tutor) => {
+                return (
+                  <TutorCard
+                    key={tutor._id}
+                    subjects={tutor.subjects}
+                    profileImg={tutor.image}
+                    name={{
+                      firstName: tutor.firstName,
+                      lastName: tutor.lastName
+                    }}
+                    rating={tutor.rating}
+                    bio={tutor.bio}
+                    price={tutor.price}
+                    id={tutor._id}
+                  />
+                );
+              })
+            ) : (
+              <Loader inline='centered' active>
+                Loading
+              </Loader>
+            )}
+          </div>
+        </Section>
+      </div>
     </div>
   );
 }

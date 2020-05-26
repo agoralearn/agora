@@ -40,30 +40,34 @@
 }
 
 // Add a corner on first message for user
-.Chat-message--right:first-of-type,
-.Chat-message--left + .Chat-message--right {
+.Chat-message--right.Chat-message-new-sender {
   .Chat-message__text {
     border-radius: 18px 0 18px 18px;
   }
 }
 
-.Chat-message--left:first-of-type,
-.Chat-message--right + .Chat-message--left {
+.Chat-message--left.Chat-message-new-sender {
   .Chat-message__text {
     border-radius: 0 18px 18px;
   }
 }
 
+// Hide avatar
+.Chat-message-same-sender {
+  .Chat-message__avatar-frame {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
 // Handle consecutive messages:
 // Remove extra space
-// Hide avatar
 .Chat-message--left + .Chat-message--left,
 .Chat-message--right + .Chat-message--right {
   margin-top: 0;
 
-  .Chat-message__avatar-frame {
-    visibility: hidden;
-    opacity: 0;
+  &.Chat-message-new-sender {
+    margin-top: 5px;
   }
 }
 

@@ -29,12 +29,13 @@ function Signup({ location }) {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const { isLoggedIn, user, login } = useAuth();
   const history = useHistory();
 
   if (isLoggedIn && user) {
     return user.role === 'student' ? (
-      <Redirect to='/tutors' />
+      <Redirect to={{ pathname: '/tutors', state: { firstVisit: true } }} />
     ) : (
       <Redirect to='/profile' />
     );
@@ -62,12 +63,12 @@ function Signup({ location }) {
         return login(formState.email, formState.password);
       })
       .then(() => {
-        formState.role === 'student'
-          ? history.replace('/tutors')
-          : history.replace('/profile');
+        formState.role === 'tutor' && history.replace('/onboarding');
       })
       .catch((err) => {
         setLoading(false);
+        // setError('error');
+        // this error message was erroring out - look into it
         setError(err.response.data.message);
       });
   };
@@ -187,7 +188,7 @@ function Signup({ location }) {
               onChange={handleChange}
             />
           </Form.Field>
-          {formState.role === 'student' ? (
+          {formState.role === 'student' && (
             <Form.Field>
               <label htmlFor='age'>Age</label>
               <Input
@@ -201,37 +202,6 @@ function Signup({ location }) {
                 onChange={handleChange}
               />
             </Form.Field>
-          ) : (
-            <>
-              <Form.Field>
-                <label htmlFor='minGroupSize'>Minimum Group Size</label>
-                <Input
-                  required
-                  fluid
-                  placeholder='Min students per session...'
-                  name='minGroupSize'
-                  type='number'
-                  min='1'
-                  defaultValue='1'
-                  id='minGroupSize'
-                  onChange={handleChange}
-                />
-              </Form.Field>
-              <Form.Field>
-                <label htmlFor='maxGroupSize'>Maximum Group Size</label>
-                <Input
-                  required
-                  fluid
-                  placeholder='Max students per session...'
-                  name='maxGroupSize'
-                  type='number'
-                  min='1'
-                  defaultValue='1'
-                  id='maxGroupSize'
-                  onChange={handleChange}
-                />
-              </Form.Field>
-            </>
           )}
           <Form.Checkbox
             required

@@ -12,7 +12,6 @@ export default function SessionMsg({ sessionId, participants }) {
   }
   return (
     <div>
-      <p style={{ marginBottom: '20px' }}>Your session has started.</p>
       <div>
         <div>
           <Button

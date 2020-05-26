@@ -9,13 +9,18 @@ export default function ChatBubble({
   thumbnail,
   date,
   children,
-  style
+  style,
+  previous
 }) {
   const { user } = useAuth();
   return (
     <div
       className={`Chat-message Chat-message${
         sender !== user.id ? '--left' : '--right'
+      } ${
+        sender !== previous
+          ? 'Chat-message-new-sender'
+          : 'Chat-message-same-sender'
       }`}
       style={style}
     >

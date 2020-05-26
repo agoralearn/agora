@@ -6,7 +6,8 @@ export default function Button({
   className,
   onClick,
   style,
-  disabled
+  disabled,
+  id
 }) {
   return (
     <button
@@ -14,13 +15,14 @@ export default function Button({
       onClick={onClick}
       className={`btn ${className} ${disabled ? 'disabled' : ''}`}
       style={style}
+      id={id}
     >
       {children}
     </button>
   );
 }
 
-Button.Link = function ({ children, className, onClick, style }) {
+Button.Link = function ({ children, className, onClick, style, id }) {
   return (
     <button
       onClick={onClick}
