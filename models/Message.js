@@ -19,6 +19,10 @@ const MessageSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  specialMsg: {
+    type: String,
+    defaultValue: false
   }
 });
 

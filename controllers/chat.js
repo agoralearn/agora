@@ -53,7 +53,8 @@ module.exports = {
     db.Message.create({
       sender: req.user.id,
       read: [req.user.id],
-      message: req.body.message
+      message: req.body.message,
+      specialMsg: req.body.specialMsg
     })
       // Add the message the associated chat
       .then((message) => {
