@@ -6,9 +6,11 @@ import './ChatBubble.scss';
 export default function ChatBubble({
   text,
   sender,
-  previous,
   thumbnail,
-  date
+  date,
+  children,
+  style,
+  previous
 }) {
   const { user } = useAuth();
   return (
@@ -20,6 +22,7 @@ export default function ChatBubble({
           ? 'Chat-message-new-sender'
           : 'Chat-message-same-sender'
       }`}
+      style={style}
     >
       <span className='Chat-message__avatar-frame'>
         <img
@@ -28,7 +31,12 @@ export default function ChatBubble({
           className='Chat-message__avatar'
         ></img>
       </span>
-      <p className='Chat-message__text'>{text}</p>
+      <div className='Chat-message__text'>
+        {text}
+        <div>{children}</div>
+      </div>
+      {/* <div className='Chat-message__text'>{children}</div> */}
+
       <div className='Chat-message--date'>{moment(date).format('LT')}</div>
     </div>
   );

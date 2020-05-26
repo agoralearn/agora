@@ -7,8 +7,9 @@ import API from '../../utils/API';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { Image, Modal, List } from 'semantic-ui-react';
 import Button from '../../components/Button/Button';
-import { useHistory } from 'react-router-dom';
 import TruncatedUserNames from '../../components/TruncatedUserNames/TruncatedUserNames';
+import RatingMessage from '../../components/SpecialButtons/RatingMsg';
+import SessionMessage from '../../components/SpecialButtons/SessionMsg';
 
 export default function Chat({ match, height, width, miniChat, ...props }) {
   const [messageInput, setMessageInput] = useState('');
@@ -19,7 +20,6 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   const { trueWindowHeight, trueWindowWidth } = useWindowDimensions();
   const [userModalIsOpen, setUserModalIsOpen] = useState(false);
 
-  const history = useHistory();
   // Get a ref to the chat log for scrolling
   // when submitting messages
   const chatLogRef = useRef(null);
@@ -30,10 +30,6 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
   useEffect(() => {
     chatLogRef.current.scrollIntoView(false);
   }, [messages]);
-
-  useEffect(() => {
-    console.log('avatars', avatars);
-  }, [avatars]);
 
   useEffect(() => {
     socket.on('message', (data) => {
@@ -51,15 +47,11 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
 
     function mapUserstoImages({ users }) {
       const avatarMap = {};
-
-      console.log(users);
-
       const otherUsers = users.filter((person) => person._id !== user.id);
 
       otherUsers.forEach((user) => (avatarMap[user._id] = user.image));
 
       setAvatars(avatarMap);
-
       setOtherUsers(otherUsers);
     }
 
@@ -70,12 +62,6 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
     });
   }, [match.params.chatId, user.id]);
 
-  function joinSessionHandler() {
-    history.push(`/whiteboard/${match.params.chatId}`, {
-      participants: usersFullData
-    });
-  }
-
   function renderUserListModal(users) {
     return (
       <Modal
@@ -85,9 +71,32 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
       >
         <Modal.Header>Participants</Modal.Header>
         <Modal.Content>
-          <Button className='btn-primary' onClick={joinSessionHandler}>
-            Start Session
-          </Button>
+          <div style={{ display: 'flex' }}>
+            <Button
+              className='btn-primary'
+              onClick={(event) =>
+                messageInputSubmitHandler(
+                  event,
+                  'Your session has started.',
+                  'sessionMsg'
+                )
+              }
+            >
+              Start Session
+            </Button>
+            <Button
+              className='btn-primary u-m-l'
+              onClick={(event) =>
+                messageInputSubmitHandler(
+                  event,
+                  'Please rate your session.',
+                  'ratingMsg'
+                )
+              }
+            >
+              Request Rating
+            </Button>
+          </div>
         </Modal.Content>
         <Modal.Content>
           {users.map((person) => {
@@ -106,33 +115,27 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
     );
   }
 
-  function messageInputSubmitHandler(event) {
+  function messageInputSubmitHandler(
+    event,
+    message = false,
+    specialMsgType = false
+  ) {
     event.stopPropagation();
     event.preventDefault();
 
-    /* For future work on mobile soft keyboard shnizzle */
-
-    // hiddenInput.current.focus();
-
-    // setTimeout(() => {
-    //   hiddenInput.current.focus();
-    //   setTimeout(() => {
-    //     hiddenInput.current.style.display = 'none';
-    //   }, 50);
-    //     hiddenInput.current.style.display = 'block';
-    // }, 50);
-
-    if (messageInput.trim()) {
+    if (messageInput.trim() || specialMsgType) {
       const newMessage = {
         read: [user.id],
         sender: user.id,
-        message: messageInput,
+        message: message || messageInput,
         chatId: match.params.chatId,
+        specialMsg: specialMsgType,
         receivers: usersFullData
           .filter((person) => person._id !== user.id)
           .map((person) => person._id)
       };
       sendMessage(newMessage);
+      setUserModalIsOpen(false);
     }
 
     setMessageInput('');
@@ -169,8 +172,26 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
       </div>
       <div className='Chat-log'>
         {messages.map((message, index, array) => {
+          let specialMessage;
+          switch (message.specialMsg) {
+            case 'ratingMsg':
+              specialMessage = specialMessage = <RatingMessage />;
+              break;
+            case 'sessionMsg':
+              specialMessage = (
+                <SessionMessage
+                  sessionId={match.params.chatId}
+                  participants={usersFullData}
+                />
+              );
+              break;
+            default:
+              break;
+          }
+
           return (
             <ChatBubble
+              className={specialMessage && 'ChatBubble-msg-special'}
               key={message._id}
               text={message.message}
               recieved={message.read}
@@ -182,12 +203,14 @@ export default function Chat({ match, height, width, miniChat, ...props }) {
                   : avatars[message.sender]
               }
               date={message.createdAt}
-            />
+              style={message.specialMsg && { marginBottom: '10px' }}
+            >
+              {specialMessage}
+            </ChatBubble>
           );
         })}
         <div ref={chatLogRef}></div>
       </div>
-
       <form
         className='Chat-input-area'
         action=''
